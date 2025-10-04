@@ -1,0 +1,14 @@
+h2 {
+	text-align: start;
+	font-weight: 700;
+	letter-spacing: 0.02em;
+	color: #FAB51E;
+}
+
+h3 {
+	font-weight: 400;
+	font-size: 1.3em;
+	letter-spacing: 0.02em;
+	margin-bottom: 0.5em;
+	font-style: italic;
+}
