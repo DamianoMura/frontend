@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 web app e-commerce DOTNERDEST(frontend)
 
 MILESTONE :
@@ -25,35 +24,7 @@ MILESTONE :
 6. invio email
    -invio di email di conferma ordine sia al cliente che al venditore
 
-milestone successive(extra):
-=======
-MILESTONE:
-
-1. homepage
-   -hero space
-   -visualizzazione di almeno due sezioni di prodotti (es. più venduti, ultimi arrivi)
-
-2. pagina di ricerca
-   -barra di ricerca con opzioni di ordinamento (prezzo, nome, recenti)
-   -visualizzazione dei risultati di ricerca
-
-3. pagina di dettaglio prodotto
-   -visualizzazione delle informazioni del prodotto
-   -possibilità di aggiungere il prodotto al carrello
-
-4. carrello
-   -possibilità di modificare le quantità dei prodotti nel carrello
-   -visualizzare il totale del carrello
-
-5. checkout
-   -inserimento dei dati di fatturazione e spedizione del cliente
-   -riepilogo dell’ordine con il totale
-
-6. invio email
-   -invio di email di conferma ordine sia al cliente che al venditore
-
 MILESTONE successive(extra):
->>>>>>> 39042f1 ([add]readme)
 
 (1). doppia visualizzazione dei risultati di ricerca
 -possibilità di visualizzare i risultati di ricerca in griglia o in lista
