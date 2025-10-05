@@ -1,24 +1,48 @@
-BOOROAD
-===
+MILESTONE:
 
-Il prototipo della nostra rubrica contatti
+1. homepage
+   -hero space
+   -visualizzazione di almeno due sezioni di prodotti (es. più venduti, ultimi arrivi)
 
-Cosa dovete fare?
+2. pagina di ricerca
+   -barra di ricerca con opzioni di ordinamento (prezzo, nome, recenti)
+   -visualizzazione dei risultati di ricerca
 
-	Dovremo concentrarci sulla rubrica contatti che dovrà essere usata dagli accompagnatori durante le gite.
+3. pagina di dettaglio prodotto
+   -visualizzazione delle informazioni del prodotto
+   -possibilità di aggiungere il prodotto al carrello
 
-Produciamo quindi un’interfaccia con le seguenti funzionalità:
+4. carrello
+   -possibilità di modificare le quantità dei prodotti nel carrello
+   -visualizzare il totale del carrello
 
-	- Una schermata che visualizzi la lista dei viaggi attualmente in corso (con destinazione e data di inizio e fine)
+5. checkout
+   -inserimento dei dati di fatturazione e spedizione del cliente
+   -riepilogo dell’ordine con il totale
 
-	- La pagina del singolo viaggio mostrerà una schermata di rubrica contatti, in cui siano presenti tutti i partecipanti a quel viaggio. Per ciascun partecipante, visualizziamo nome e cognome.
+6. invio email
+   -invio di email di conferma ordine sia al cliente che al venditore
 
-	- Cliccando sul nome di un partecipante, mostriamo a schermo la sua mail, il numero di telefono ed il codice fiscale.
+MILESTONE successive(extra):
 
-	- In cima alla rubrica contatti inseriamo una barra di ricerca con la quale sarà possibile filtrare i partecipanti
-	tramite nome e cognome.
+(1). doppia visualizzazione dei risultati di ricerca
+-possibilità di visualizzare i risultati di ricerca in griglia o in lista
 
-	- BONUS: Aggiungere la possibilità di inserire un nuovo viaggio ed associarvi eventuali nuovi contatti.
+(2). spedizione gratuita
+-spedizione gratuita per ordini che superano una soglia minima di spesa
 
-Nota: non è necessario produrre un backend funzionante per il prototipo; può andare benissimo un array di dati
-fittizi inserito direttamente a codice.
+(3). prodotti in promozione
+-visualizzare i prodotti in promozione con prezzo originale e scontato
+-possibilità di filtrare i prodotti in promozione nella pagina di ricerca
+
+(4). codici sconto
+-inserimento e validazione di un codice promozionale durante il checkout
+-il codice sconto deve essere valido entro un determinato periodo (dal/al)
+
+(6). paginazione dei risultati
+-implementare un sistema di paginazione per i risultati di ricerca
+-possibilità di selezionare il numero di prodotti da visualizzare per pagina
+-mantenere i filtri applicati durante il passaggio tra le pagine
+
+(7). prodotti correlati
+-visualizzare i prodotti correlati nella pagina di dettaglio di un prodotto
