@@ -1,8 +1,32 @@
-.navbar-title {
-  font-weight: bold;
-  font-size: 1.25rem;
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Righteous&display=swap');
+
+/* Non serve flex su navbar né height fissa! */
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
+.navbar-logo {
+  height: 40px;
+  width: auto;
+}
+
+/* Nascondi/mostra testo brand in responsive */
+.brand-text.desktop { display: inline;   font-family: "Righteous", sans-serif;
+  font-weight: 400;
+  font-style: normal;}
+.brand-text.mobile { display: none;   font-family: "Righteous", sans-serif;
+  font-weight: 400;
+  font-style: normal;}
+
+@media (max-width: 992px) {
+  .brand-text.desktop { display: none; }
+  .brand-text.mobile { display: inline; }
+  .navbar-search-form { display: none; }
+}
+
+/* Searchbar input min width */
 .navbar-search-form input {
   min-width: 160px;
 }
