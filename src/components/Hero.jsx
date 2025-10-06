@@ -1,14 +1,20 @@
 // src/components/Hero.jsx
-import React from 'react'
+import "../styles/Hero.css";
 
-export default function Hero({title="Benvenuto", subtitle="Scopri i nostri prodotti", cta="Scopri"}) {
-  return (
-    <section className="hero" role="region" aria-label="Hero">
-      <div className="container hero-inner">
-        <h1 className="hero-title">{title}</h1>
-        <p className="hero-sub">{subtitle}</p>
-        <a className="hero-cta" href="#products" aria-label="Vai ai prodotti">{cta}</a>
-      </div>
-    </section>
-  )
+export default function Hero({
+	title = "Benvenuto",
+	subtitle = "Scopri i nostri prodotti",
+	cta = "Scopri",
+}) {
+	return (
+		<section id="hero" role="region" aria-label="Hero">
+			<div className="p-5 mb-5 container-fluid hero-container">
+				<h1 className="text-center">.nerdNest</h1>
+				<h3 className="text-center">Il tuo rifugio per ogni innovazione</h3>
+				<div className="d-flex justify-content-center">
+					<a className="btn">{subtitle}</a>
+				</div>
+			</div>
+		</section>
+	);
 }
