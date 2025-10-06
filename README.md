@@ -47,3 +47,22 @@ MILESTONE successive(extra):
 
 (7). prodotti correlati
 -visualizzare i prodotti correlati nella pagina di dettaglio di un prodotto
+===
+
+Checklist 06/10/25
+
+- HomePage (sezioni da spostare, ridimensionare ecc..) - The Inimitable Tony
+- Hero (Stile, definizione, mood, accattivante) - The Immanent Gian
+- Product Page (Stile, definizione, visualizzazione a griglia, popolare di info + prodotti consigliati ) - The Carlo Almighty
+- Presentazione (Stile, discorso, cronometraggio, Q&A) - The Useless H
+- Kanban (Aggiornamenti) 
+
+PALETTE COLORI:
+
+   Viola : #5B4795
+   Viola 2: #6D5AA2
+      Viola Extra: #493977
+   White: #F2F3F4
+   Alt/Grey: #D4D4D4
+   Grey: #2B2B2B
+   Fuchsia: #B73DA0
