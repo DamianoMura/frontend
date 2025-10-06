@@ -1,12 +1,14 @@
 #hero {
 	width: 100%;
-	background: linear-gradient(to bottom, #5b4795 0%, #f6f7fb 100%);
+	background: linear-gradient(to bottom, #212529 0%, #5b4795 100%);
 	/* border-radius: 10px; */
 }
 
 #hero h1 {
 	font-size: 5em;
+	color: white;
 }
 
-.hero-container {
+#hero h3 {
+	color: white;
 }
