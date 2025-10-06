@@ -1,5 +1,5 @@
 // src/pages/ProductDetail.jsx
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 // FontAwesome icons
@@ -44,8 +44,11 @@ const ProductDetail = () => {
   return (
     <div className="container mt-4">
       <div className="row">
+        <div className="col-12">
+          <h1 className="text-center pb-2">{product.brand} - {product.name}</h1>
+        </div>
         {/* Product Image */}
-        <div className="col-md-6">
+        <div className="col-12 col-md-6">
           <img
             src={`http://localhost:3000/images/${product.image_url}`} // backend-provided image
             alt={product.name}
@@ -54,9 +57,9 @@ const ProductDetail = () => {
         </div>
 
         {/* Product Details */}
-        <div className="col-md-6">
-          <h2>{product.name}</h2>
-          <p>{product.description}</p>
+        <div className="col-12 col-md-6">
+          <h5>{product.description}</h5>
+          <p>Dettaglio: {product.specs}</p>
           <p>Price: {displayPrice} €</p>
           <p>Brand: {product.brand}</p>
 

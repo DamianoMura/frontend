@@ -16,7 +16,7 @@ const ProductCard = ({ product }) => {
         className="product-card-img card-img-top"
       />
       <div className="product-card-body card-body d-flex flex-column">
-        <h5 className="product-card-title card-title">{product.name}</h5>
+        <h5 className="product-card-title card-title">{product.brand} - {product.name}</h5>
         <p className="product-card-price card-text">{product.price} €</p>
         <Link
           to={`/products/${product.product_id}`}

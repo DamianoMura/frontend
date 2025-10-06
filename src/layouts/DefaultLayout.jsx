@@ -11,13 +11,11 @@ import { Outlet } from "react-router-dom";
  */
 const DefaultLayout = () => {
 	return (
-		<div className="default-layout">
+		<>
 			<Navbar />
-			<main>
-				<Outlet />
-			</main>
+			<Outlet />
 			<Footer />
-		</div>
+		</>
 	);
 };
 

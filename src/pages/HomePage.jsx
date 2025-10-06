@@ -16,14 +16,14 @@ const HomePage = () => {
 						<ProductSection
 							title="Latest Arrivals"
 							filter="latest"
-							maxItems={9}
+							maxItems={10}
 						/>
 					</div>
 					<div className="hn-section-column">
 						<ProductSection
 							title="Best Sellers"
 							filter="popular"
-							maxItems={9}
+							maxItems={10}
 						/>
 					</div>
 				</section>
