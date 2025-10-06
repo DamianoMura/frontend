@@ -1,4 +1,5 @@
 // src/components/Hero.jsx
+import { Link } from "react-router-dom";
 import "../styles/Hero.css";
 
 export default function Hero({
@@ -14,7 +15,9 @@ export default function Hero({
 					Il tuo rifugio per ogni innovazione
 				</h3>
 				<div className="d-flex justify-content-center">
-					<a className="btn">{subtitle}</a>
+					<Link to="/products" className="btn">
+						{subtitle}
+					</Link>
 				</div>
 			</div>
 		</section>
