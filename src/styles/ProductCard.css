@@ -1,0 +1,22 @@
+/* src/styles/ProductCard.css */
+
+/* --- Product Card Image --- */
+.product-card-img {
+  border-radius: 12px 12px 0 0;
+  object-fit: cover;
+  height: 180px;
+  width: 100%;
+}
+
+/* --- Product Card Container --- */
+.product-card {
+  transition: box-shadow 0.25s ease-in-out, transform 0.25s ease-in-out; /* smooth transition for shadow + lift */
+  cursor: pointer;
+}
+
+/* --- Hover Effect --- */
+.product-card:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18); /* stronger shadow */
+  transform: translateY(-2px); /* slight lift */
+}
+

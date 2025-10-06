@@ -1,0 +1,12 @@
+/* src/styles/CartSummary.css */
+
+.cart-summary-card {
+  transition: box-shadow 0.25s ease-in-out, transform 0.25s ease-in-out;
+  cursor: pointer; /* ensure pointer shows */
+}
+
+.cart-summary-card:hover {
+  box-shadow: 0 8px 20px rgba(0,0,0,0.18) !important; /* stronger shadow */
+  transform: translateY(-2px);
+}
+

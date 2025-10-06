@@ -1,25 +1,37 @@
-
+import React from 'react';
+import '../styles/HomePage.css';
 import ProductSection from '../components/ProductSection';
 
 const HomePage = () => {
   return (
-    <main className="container py-3">
-      <div className="row justify-content-center mb-5">
-        <div className="col-md-8">
-          <div className="card text-center bg-dark text-light shadow">
-            <div className="card-body">
-              <h1 className="card-title">Benvenuto su DotNerdNest</h1>
-              <p className="card-text">Il tuo rifugio per ogni innovazione</p>
-            </div>
-          </div>
+    <main className="hn-main">
+      {/* Hero Section */}
+      <section className="hn-hero">
+        <div className="hn-hero-content">
+          <h1 className="hn-hero-title">Welcome to DotNerdNest</h1>
+          <p className="hn-hero-subtitle">Tech, innovation, and comfort for your setup</p>
+          <a href="/products" className="hn-hero-btn btn btn-primary">Explore Products</a>
         </div>
-      </div>
+      </section>
 
-      <ProductSection title="Ultimi arrivi" filter="latest" scrollable />
-      <ProductSection title="Più venduti" filter="popular" scrollable />
+      {/* Sections side by side */}
+      <section className="hn-sections-container">
+        <div className="hn-section-column">
+          <ProductSection title="Latest Arrivals" filter="latest" maxItems={9} />
+        </div>
+        <div className="hn-section-column">
+          <ProductSection title="Best Sellers" filter="popular" maxItems={9} />
+        </div>
+      </section>
     </main>
   );
 };
 
 export default HomePage;
+
+
+
+
+
+
 

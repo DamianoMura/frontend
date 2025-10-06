@@ -1,0 +1,33 @@
+.footer-title {
+  font-weight: bold;
+  font-size: 1.15rem;
+}
+
+.footer-text {
+  font-size: 0.95rem;
+}
+
+.footer-nav-title {
+  text-transform: uppercase;
+  font-size: 1rem;
+}
+
+.footer-nav-link {
+  color: #f8f9fa;
+  text-decoration: none;
+}
+
+.footer-contact-title {
+  text-transform: uppercase;
+  font-size: 1rem;
+}
+
+.footer-contact-item {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+
+.footer-copyright {
+  margin-top: 1rem;
+  color: #adb5bd;
+}

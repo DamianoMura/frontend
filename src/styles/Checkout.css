@@ -1,0 +1,63 @@
+/* src/styles/Checkout.css */
+
+/* --- Checkout Container --- */
+.checkout-container {
+  margin-top: 2rem; /* Space above checkout */
+  margin-bottom: 2rem; /* Space below checkout */
+}
+
+/* --- Checkout Title --- */
+.checkout-title {
+  font-size: 2rem; /* Large title */
+  font-weight: bold; /* Emphasis */
+  margin-bottom: 1.5rem; /* Space below title */
+  text-align: center;
+}
+
+/* --- Checkout Form --- */
+.checkout-form {
+  background: #f8f9fa; /* Light gray background */
+  border-radius: 12px; /* Rounded corners */
+  padding: 2rem; /* Inner padding */
+  box-shadow: 0 2px 16px rgba(0,0,0,0.08); /* Subtle shadow */
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+/* --- Checkout Sections --- */
+.checkout-section {
+  margin-bottom: 1.5rem; /* Space between sections */
+}
+
+/* --- Form Inputs --- */
+.checkout-form input {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #ced4da;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.checkout-form input:focus {
+  outline: none;
+  border-color: #0d6efd; /* Bootstrap primary color */
+  box-shadow: 0 0 5px rgba(13,110,253,0.3); /* Soft glow on focus */
+}
+
+/* --- Confirm Button --- */
+.checkout-form .btn-success {
+  transition: transform 0.15s, box-shadow 0.2s;
+}
+
+.checkout-form .btn-success:hover {
+  transform: translateY(-2px); /* Slight lift */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15); /* Shadow on hover */
+}
+
+/* --- Confirmation Message --- */
+.checkout-confirm {
+  margin-top: 1rem;
+  color: #28a745; /* Bootstrap success color */
+  font-weight: bold;
+  text-align: center;
+}

@@ -1,0 +1,8 @@
+.navbar-title {
+  font-weight: bold;
+  font-size: 1.25rem;
+}
+
+.navbar-search-form input {
+  min-width: 160px;
+}

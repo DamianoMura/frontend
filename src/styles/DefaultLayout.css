@@ -1,0 +1,20 @@
+/* DefaultLayout.css */
+
+/* Full-height flex layout */
+.default-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Full viewport height */
+}
+
+/* Main content grows to fill space between Navbar and Footer */
+.default-main {
+  flex: 1; /* Makes main take all remaining vertical space */
+  padding-top: 1rem;
+  padding-bottom: 2rem; /* optional, spacing from footer */
+}
+
+/* Optional: footer styles */
+footer {
+  margin-top: auto; /* Push footer to bottom */
+}

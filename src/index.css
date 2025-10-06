@@ -1,5 +1,53 @@
-*{
-  padding : 0;
-  margin : 0;
-  box-sizing: border-box;
+/* src/index.css */
+
+/* --- CSS Reset (basic) --- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box; /* Include padding and border in element's total width/height */
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%; /* Ensure full height for root element */
+}
+
+/* --- Body default styles --- */
+body {
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #ffffff;
+  color: #0f172a;
+}
+
+/* --- Root element for React app --- */
+#root {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column; /* Stack header, main, footer vertically */
+}
+
+/* --- Utility classes --- */
+
+/* Hide element visually */
+.hidden {
+  display: none !important;
+}
+
+/* Center text horizontally */
+.text-center {
+  text-align: center;
+}
+
+/* Full width utility */
+.full-width {
+  width: 100%;
+}
+
+/* Full height utility */
+.full-height {
+  height: 100%;
 }
