@@ -117,18 +117,26 @@ body {
 
 /* BUTTON */
 .btn {
-	border: none;
-	padding: 0.55rem 0.85rem;
-	border-radius: 10px;
-	background: linear-gradient(90deg, var(--accent), var(--accent-2));
-	color: white;
-	cursor: pointer;
-	font-weight: 600;
-}
-.btn:active {
-	transform: translateY(1px);
+    border: none;
+    padding: 0.55rem 0.85rem;
+    border-radius: 10px;
+    background: linear-gradient(90deg, #5B4795, #B73DA0); /* Viola -> Fuchsia */
+    color: #F2F3F4; /* White */
+    cursor: pointer;
+    font-weight: 600;
+    box-shadow: 0 0 10px #B73DA0, 0 0 20px #5B4795; /* effetto glow */
+    transition: all 0.3s ease;
 }
 
+.btn:hover {
+    background: linear-gradient(90deg, #6D5AA2, #B73DA0); /* Viola 2 -> Fuchsia */
+    box-shadow: 0 0 20px #B73DA0, 0 0 30px #6D5AA2; /* glow più intenso */
+}
+
+.btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 0 5px #B73DA0, 0 0 10px #6D5AA2; /* glow ridotto al click */
+}
 /* SKELETON */
 .skeleton {
 	background: linear-gradient(90deg, #eeeeee 8%, #f5f5f5 18%, #eeeeee 33%);
