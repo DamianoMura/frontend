@@ -1,0 +1,11 @@
+.loading {
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(to bottom, #5b4795 0%, #212529 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
