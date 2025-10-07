@@ -1,6 +1,7 @@
 /* src/styles/ProductDetail.css */
 .bg-violet{
 background: linear-gradient(to bottom, #5b4795 0%, #212529 100%);
+box-shadow: 0 -15px 45px #9672ff;
 }
 ;
 

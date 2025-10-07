@@ -1,16 +1,17 @@
 // src/pages/ProductDetail.jsx
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import "../styles/ProductDetail.css";
 
 // FontAwesome icons
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCartPlus, faCartArrowDown } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCartPlus, faCartArrowDown } from "@fortawesome/free-solid-svg-icons";
 
 // Context
-import { useCart } from '../context/CartContext';
+import { useCart } from "../context/CartContext";
 
 // Cart summary component
-import CartSummary from '../components/CartSummary';
+import CartSummary from "../components/CartSummary";
 
 /**
  * ProductDetail page component
@@ -26,9 +27,9 @@ const ProductDetail = () => {
   // Fetch product data from backend on mount or when id changes
   useEffect(() => {
     fetch(`http://localhost:3000/products/${id}`)
-      .then(res => res.json())
-      .then(data => setProduct(data))
-      .catch(err => console.error(err));
+      .then((res) => res.json())
+      .then((data) => setProduct(data))
+      .catch((err) => console.error(err));
   }, [id]);
 
   if (!product) {
@@ -36,14 +37,16 @@ const ProductDetail = () => {
   }
 
   // Check if product is already in cart
-  const inCart = cart.some(item => item.product_id === product.product_id);
+  const inCart = cart.some((item) => item.product_id === product.product_id);
 
   // Safely format price
-  const displayPrice = !isNaN(Number(product.price)) ? Number(product.price).toFixed(2) : "0.00";
+  const displayPrice = !isNaN(Number(product.price))
+    ? Number(product.price).toFixed(2)
+    : "0.00";
 
   return (
     <div className="container mt-4 bg-violet text-white">
-      <div className="row">
+      <div className="row my-5">
         {/* Product Image */}
         <div className="col-md-6">
           <img
@@ -64,7 +67,7 @@ const ProductDetail = () => {
           <div className="my-3">
             {!inCart ? (
               <button
-                className="btn btn-success"
+                className="btn"
                 onClick={() => addToCart(product)}
                 title="Add to cart"
               >
