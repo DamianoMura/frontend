@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Righteous&display=swap');
+
 #hero {
 	width: 100%;
 	background: linear-gradient(to bottom, #212529 0%, #5b4795 100%);
@@ -7,6 +9,9 @@
 #hero h1 {
 	font-size: 5em;
 	color: white;
+	font-family: "Righteous", sans-serif;
+	font-weight: 400;
+	font-style: normal;
 }
 
 #hero h3 {
