@@ -1,6 +1,6 @@
-import React from 'react';
-import '../styles/ProductCard.css';
-import { Link } from 'react-router-dom';
+import React from "react";
+import "../styles/ProductCard.css";
+import { Link } from "react-router-dom";
 
 const ProductCard = ({ product }) => {
   if (!product) {
@@ -17,8 +17,10 @@ const ProductCard = ({ product }) => {
         />
       </div>
       <div className="product-card-body card-body d-flex flex-column">
-        <span className="product-card-title card-title fw-bold">{product.name}</span>
-        <p className="product-card-price card-text">€{product.price}</p>
+        <span className="product-card-title card-title fw-bold">
+          Name: {product.name}
+        </span>
+        <p className="product-card-price card-text">Price: €{product.price}</p>
         <Link
           to={`/products/${product.product_id}`}
           className="btn btn-outline-primary product-card-btn"
@@ -31,4 +33,3 @@ const ProductCard = ({ product }) => {
 };
 
 export default ProductCard;
-

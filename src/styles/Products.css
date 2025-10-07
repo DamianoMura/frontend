@@ -9,3 +9,35 @@
   font-size: 1.5rem;
   font-weight: 600;
 }
+
+.hn-main {
+	width: 100%;
+	padding: 2rem;
+	box-sizing: border-box;
+	background: linear-gradient(to bottom, #5b4795 0%, #212529 100%);
+}
+
+/* Sections container */
+.hn-sections-container {
+	display: flex;
+	gap: 2rem;
+	width: 100%;
+}
+
+/* Each section takes 50% of available width */
+.hn-section-column {
+	flex: 1 1 50%;
+	display: flex;
+	flex-direction: column;
+}
+
+/* Responsive: stack sections vertically on tablet/mobile */
+@media (max-width: 992px) {
+	.hn-sections-container {
+		flex-direction: column;
+	}
+
+	.hn-section-column {
+		flex: 1 1 100%;
+	}
+}
