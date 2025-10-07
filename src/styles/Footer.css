@@ -7,7 +7,8 @@
   font-size: 0.95rem;
 }
 
-.footer-nav-title {
+.footer-nav-title,
+.footer-contact-title {
   text-transform: uppercase;
   font-size: 1rem;
 }
@@ -15,11 +16,6 @@
 .footer-nav-link {
   color: #f8f9fa;
   text-decoration: none;
-}
-
-.footer-contact-title {
-  text-transform: uppercase;
-  font-size: 1rem;
 }
 
 .footer-contact-item {
@@ -33,15 +29,12 @@
 }
 
 .footer-nav-col {
-  /* solo un piccolo margine a destra su desktop */
-  margin-right: 26px;
+  margin-bottom: 1.5rem;
 }
 
-@media (max-width: 767.98px) {
+@media (min-width: 768px) {
   .footer-nav-col {
-    margin-right: 0;
-  }
-  .footer-contact-col {
-    margin-top: 16px;
+    margin-bottom: 0;
+    margin-right: 32px;
   }
 }
