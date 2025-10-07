@@ -9,7 +9,7 @@ const API_BASE = 'http://localhost:3000';
  * - Renders a filtered list of products in a responsive grid
  * - Limited number of items per section
  */
-const ProductSection = ({ title, filter, maxItems = 6 }) => {
+const ProductSection = ({ title, filter, maxItems = 8 }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -36,7 +36,7 @@ const ProductSection = ({ title, filter, maxItems = 6 }) => {
         <div>Loading...</div>
       ) : (
         <div className="ps-grid">
-          {products.slice(0, maxItems).map((p) => (
+          {products.slice(0, 8).map((p) => (
             <div key={p.product_id} className="ps-grid-item">
               <ProductCard product={p} />
             </div>
