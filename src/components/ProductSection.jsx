@@ -4,14 +4,15 @@ import '../styles/ProductSection.css';
 
 const API_BASE = 'http://localhost:3000';
 
-/**
- * ProductSection component
- * - Renders a filtered list of products in a responsive grid
- * - Limited number of items per section
- */
-const ProductSection = ({ title, filter, maxItems = 6 }) => {
+const getMaxItems = (width) => {
+  if (width >= 1200) return 9;
+  return 8;
+};
+
+const ProductSection = ({ title, filter }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -28,6 +29,14 @@ const ProductSection = ({ title, filter, maxItems = 6 }) => {
     };
     fetchProducts();
   }, [filter]);
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const maxItems = getMaxItems(windowWidth);
 
   return (
     <div className="ps-section">

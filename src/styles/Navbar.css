@@ -12,6 +12,15 @@
   width: auto;
 }
 
+
+.nav-link:hover, .nav-link.fw-semibold:hover{
+  color: #B73DA0;;
+}
+
+.nav-link.fw-semibold{
+  color: white;
+}
+
 /* Nascondi/mostra testo brand in responsive */
 .brand-text.desktop { display: inline;   font-family: "Righteous", sans-serif;
   font-weight: 400;

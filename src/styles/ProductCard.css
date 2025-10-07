@@ -1,22 +1,61 @@
-/* src/styles/ProductCard.css */
-
-/* --- Product Card Image --- */
-.product-card-img {
-  border-radius: 12px 12px 0 0;
-  object-fit: cover;
-  height: 180px;
-  width: 100%;
-}
-
-/* --- Product Card Container --- */
 .product-card {
-  transition: box-shadow 0.25s ease-in-out, transform 0.25s ease-in-out; /* smooth transition for shadow + lift */
-  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Fills the grid cell */
+  background-color: #fff;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  transition: transform 0.2s ease;
+  max-height: 300px;
 }
 
-/* --- Hover Effect --- */
+/* Image wrapper for uniformity */
+.product-card-img-wrapper {
+  width: 100%;
+  aspect-ratio: 4/3; /* Or 1/1 for square, adjust as you prefer */
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* margin-bottom: 1rem; */
+  border-radius: 12px 12px 0 0;
+  overflow: hidden;
+}
+
+/* The image itself, always contained and centered */
+.product-card-img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+}
+
+/* Card body for vertical distribution */
+.product-card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
+
+/* Title and price do not shrink */
+.product-card-title,
+.product-card-price {
+  flex-shrink: 0;
+}
+
+.product-card-title{
+  color: #B73DA0;
+}
+
+/* Button at the bottom */
+.product-card-btn {
+  margin-top: auto;
+}
+
 .product-card:hover {
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18); /* stronger shadow */
-  transform: translateY(-2px); /* slight lift */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+  transform: translateY(-2px);
 }
 
