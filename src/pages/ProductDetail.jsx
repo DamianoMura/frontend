@@ -47,7 +47,7 @@ const ProductDetail = () => {
         {/* Product Image */}
         <div className="col-md-6">
           <img
-            src={`http://localhost:3000/images/${product.image_url}`} // backend-provided image
+            src={product.image_url} // backend-provided image
             alt={product.name}
             className="product-detail-img img-fluid"
           />
