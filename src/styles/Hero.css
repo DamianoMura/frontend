@@ -17,3 +17,7 @@
 #hero h3 {
 	color: white;
 }
+
+.btn:hover{
+	--bs-btn-hover-color: white;
+}

@@ -11,7 +11,7 @@ const ProductCard = ({ product }) => {
     <div className="product-card card shadow-sm">
       <div className="product-card-img-wrapper">
         <img
-          src={`http://localhost:3000/images/${product.image_url}`}
+          src={product.image_url}
           alt={product.name}
           className="product-card-img card-img-top"
         />
