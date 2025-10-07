@@ -4,14 +4,15 @@ import '../styles/ProductSection.css';
 
 const API_BASE = 'http://localhost:3000';
 
-/**
- * ProductSection component
- * - Renders a filtered list of products in a responsive grid
- * - Limited number of items per section
- */
-const ProductSection = ({ title, filter, maxItems = 8 }) => {
+const getMaxItems = (width) => {
+  if (width >= 1200) return 9;
+  return 8;
+};
+
+const ProductSection = ({ title, filter }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -29,6 +30,14 @@ const ProductSection = ({ title, filter, maxItems = 8 }) => {
     fetchProducts();
   }, [filter]);
 
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const maxItems = getMaxItems(windowWidth);
+
   return (
     <div className="ps-section">
       <h2 className="ps-title">{title}</h2>
@@ -36,7 +45,7 @@ const ProductSection = ({ title, filter, maxItems = 8 }) => {
         <div>Loading...</div>
       ) : (
         <div className="ps-grid">
-          {products.slice(0, 8).map((p) => (
+          {products.slice(0, maxItems).map((p) => (
             <div key={p.product_id} className="ps-grid-item">
               <ProductCard product={p} />
             </div>

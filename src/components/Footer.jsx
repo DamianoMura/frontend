@@ -7,7 +7,7 @@ const Footer = () => (
       <div className="row">
         {/* Brand: tutto a sinistra */}
         <div className="col-12 col-md-5 mb-3 text-start d-flex flex-column justify-content-center">
-          <h5 className="footer-title">DotNerdNest</h5>
+          <h5 className="footer-title">.nerdNest</h5>
           <p className="footer-text">Tech, innovation and comfort for your setup.</p>
         </div>
         {/* Navigation + Contact: tutto a destra */}
