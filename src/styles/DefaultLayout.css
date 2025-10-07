@@ -14,7 +14,8 @@
   padding-bottom: 2rem; /* optional, spacing from footer */
 }
 
-/* Optional: footer styles */
-footer {
-  margin-top: auto; /* Push footer to bottom */
+
+
+.bg-violet{
+  background: linear-gradient(to bottom, #5b4795 0%, #212529 100%);
 }

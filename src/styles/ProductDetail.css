@@ -1,4 +1,8 @@
 /* src/styles/ProductDetail.css */
+.bg-violet{
+background: linear-gradient(to bottom, #5b4795 0%, #212529 100%);
+}
+;
 
 /* --- Product Image --- */
 .product-detail-img {

@@ -18,7 +18,7 @@ const Cart = () => {
       <h2 className="cart-title">Your Shopping Cart</h2>
 
       {cart.length === 0 ? (
-        <p>Your cart is empty.</p>
+        <p className='text-white'>Your cart is empty.</p>
       ) : (
         <div className="table-responsive shadow-sm rounded">
           <table className="table cart-table mb-4">

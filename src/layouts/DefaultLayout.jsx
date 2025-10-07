@@ -13,7 +13,7 @@ const DefaultLayout = () => {
 	return (
 		<div className="default-layout">
 			<Navbar />
-			<main>
+			<main className="default-main bg-violet">
 				<Outlet />
 			</main>
 			<Footer />

@@ -37,7 +37,7 @@ const CartSummary = () => {
         {cart.map((item) => (
           <li
             key={item.product_id}
-            className="list-group-item d-flex justify-content-between align-items-center"
+            className="list-group-item d-flex justify-content-between align-items-center text-white"
             style={{
               border: "none",
               background: "transparent",
@@ -46,7 +46,7 @@ const CartSummary = () => {
           >
             <div>
               <span className="fw-semibold">{item.name}</span>
-              <span className="text-muted ms-2">{item.brand}</span>
+              <span className="text-white ms-2">{item.brand}</span>
             </div>
             <span className="badge bg-primary rounded-pill">
               {Number(item.price).toLocaleString("en-US")} €
@@ -55,8 +55,8 @@ const CartSummary = () => {
         ))}
       </ul>
       <div className="d-flex justify-content-between align-items-center border-top pt-3">
-        <span className="fw-bold">Total</span>
-        <span className="fs-5 fw-bold text-success">
+        <span className="fw-bold color-fucsia">Total</span>
+        <span className="fs-5 fw-bold color-fucsia">
           {totalPrice.toLocaleString("en-US")} €
         </span>
       </div>

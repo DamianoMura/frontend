@@ -3,6 +3,7 @@
 .cart-summary-card {
   transition: box-shadow 0.25s ease-in-out, transform 0.25s ease-in-out;
   cursor: pointer; /* ensure pointer shows */
+  border: 2px solid fuchsia;
 }
 
 .cart-summary-card:hover {
@@ -10,3 +11,6 @@
   transform: translateY(-2px);
 }
 
+.color-fucsia{
+  color: fuchsia;
+}

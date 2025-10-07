@@ -42,7 +42,7 @@ const ProductDetail = () => {
   const displayPrice = !isNaN(Number(product.price)) ? Number(product.price).toFixed(2) : "0.00";
 
   return (
-    <div className="container mt-4">
+    <div className="container mt-4 bg-violet text-white">
       <div className="row">
         {/* Product Image */}
         <div className="col-md-6">

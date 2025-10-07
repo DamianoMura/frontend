@@ -21,6 +21,7 @@
   padding: 2rem; /* Inner padding */
   box-shadow: 0 2px 16px rgba(0,0,0,0.08); /* Subtle shadow */
   transition: box-shadow 0.2s ease-in-out;
+  border: 2px solid fuchsia;
 }
 
 /* --- Checkout Sections --- */
