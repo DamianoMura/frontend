@@ -11,7 +11,7 @@ const CartSummary = () => {
   if (!cart || cart.length === 0) return null;
 
   return (
-    <div>
+    <div className="cart-summary-card">
       <h4 className="mb-3">
         <FontAwesomeIcon icon={faCartShopping} className="me-2" />
         Cart Summary
