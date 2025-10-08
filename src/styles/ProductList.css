@@ -81,12 +81,11 @@
 @media (max-width: 768px) {
 	.product-list .product-card {
 		flex-direction: column;
+		max-height: 500px;
 	}
 
 	.product-list .product-card-img-wrapper {
 		width: 100%;
-		flex: 0 0 auto;
-		padding-top: 75%; /* solo mobile */
 	}
 
 	.product-list .card-body {
