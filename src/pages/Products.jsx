@@ -44,6 +44,7 @@ function Products() {
 
     if (sort === "name") filtered.sort((a, b) => a.name.localeCompare(b.name));
     else if (sort === "price") filtered.sort((a, b) => a.price - b.price);
+    else if (sort === "price_desc") filtered.sort((a, b) => b.price - a.price);
     else if (sort === "category_name")
       filtered.sort((a, b) => a.category_name.localeCompare(b.category_name));
     else if (sort === "latest_arrivals")
@@ -88,7 +89,8 @@ function Products() {
             >
               <option value="">Sort by...</option>
               <option value="name">Name</option>
-              <option value="price">Price</option>
+              <option value="price">Price: lower</option>
+              <option value="price_desc">Price: higher</option>
               <option value="category_name">Category</option>
               <option value="latest_arrivals">Latest arrivals</option>
               <option value="best_seller">Best seller</option>
