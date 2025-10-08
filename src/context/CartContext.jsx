@@ -19,13 +19,14 @@ export function CartProvider({ children }) {
   }, [cart]);
 
   function addToCart(product) {
-    const {product_id, name, description,specs,price,}=product;
+    const {product_id, name, description,specs,price,stock_quantity}=product;
     if (!cart.some(item => item.product_id === product.product_id)) {
       setCart([...cart, { product_id,
                           name,
                           description,
                           specs,
                           price,
+                          stock_quantity,
                           quantity: 1 
                         }]);
       
@@ -47,12 +48,13 @@ export function CartProvider({ children }) {
     
     const cartProduct= cart.find(item=>item.product_id===productId)
     let quantity=cartProduct.quantity;
+    const stock=cartProduct
     switch (operator){
       case "add" :
-        quantity++;
+       (quantity < cartProduct.stock_quantity) && quantity++ ;
       break
       case "rem":
-        (quantity-1===0) ? removeFromCart(productId) :quantity --;
+        (quantity<2) ? setCart(cart.filter(item => item.product_id !== productId)) :quantity --;
       break
     }
     setCart(cart.map(item => item.product_id === productId ? { ...item, quantity } : item));
