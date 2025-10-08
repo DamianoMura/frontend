@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
 import "../styles/Products.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,9 +10,22 @@ function Products() {
   const [onClick, setOnClick] = useState(false);
   const [filterProduct, setFilterProduct] = useState([]);
   const [search, setSearch] = useState("");
-  const [sort, setSort] = useState(""); // Sort option
+  const [sort, setSort] = useState("");
   const baseUrl = "http://localhost:3000/products";
 
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // Leggi i parametri dalla URL al primo caricamento
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const searchParam = params.get("search") || "";
+    const sortParam = params.get("sort") || "";
+    setSearch(searchParam);
+    setSort(sortParam);
+  }, [location.search]);
+
+  // Fetch iniziale
   useEffect(() => {
     fetch(baseUrl)
       .then((res) => res.json())
@@ -22,25 +36,28 @@ function Products() {
       .catch((err) => console.error(err));
   }, []);
 
+  // Filtro + ordinamento + aggiornamento URL
   useEffect(() => {
     let filtered = products.filter((product) =>
       product.name.toLowerCase().includes(search.toLowerCase())
     );
 
-    if (sort === "name") {
-      filtered.sort((a, b) => a.name.localeCompare(b.name));
-    } else if (sort === "price") {
-      filtered.sort((a, b) => a.price - b.price);
-    } else if (sort === "category_name") {
+    if (sort === "name") filtered.sort((a, b) => a.name.localeCompare(b.name));
+    else if (sort === "price") filtered.sort((a, b) => a.price - b.price);
+    else if (sort === "category_name")
       filtered.sort((a, b) => a.category_name.localeCompare(b.category_name));
-    } else if (sort === "latest_arrivals") {
+    else if (sort === "latest_arrivals")
       filtered.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-    } else if (sort === "best_seller") {
-      filtered.sort((a, b) => b.sold - a.sold);
-    }
+    else if (sort === "best_seller") filtered.sort((a, b) => b.sold - a.sold);
 
     setFilterProduct(filtered);
-  }, [search, products, sort]);
+
+    // Aggiorna la URL senza ricaricare la pagina
+    const params = new URLSearchParams();
+    if (search) params.set("search", search);
+    if (sort) params.set("sort", sort);
+    navigate({ search: params.toString() }, { replace: true });
+  }, [search, sort, products, navigate]);
 
   if (products.length === 0) {
     return <div className="container loading">Loading...</div>;
