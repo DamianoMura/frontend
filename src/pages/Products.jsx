@@ -3,6 +3,7 @@ import ProductCard from "../components/ProductCard";
 import "../styles/Products.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGripHorizontal } from "@fortawesome/free-solid-svg-icons";
+import ProductList from "../components/ProductList";
 
 function Products() {
 	const [products, setProducts] = useState([]);
@@ -23,6 +24,12 @@ function Products() {
 		);
 		setFilterProduct(filterProduct);
 	}, [search, products]);
+
+	const [showCard, setShowCard] = useState(false);
+
+	const handleToggle = () => {
+		setShowCard((prev) => !prev);
+	};
 
 	if (products.length === 0) {
 		return <div className="container loading">Loading...</div>;
@@ -47,7 +54,7 @@ function Products() {
 				</div>
 
 				<div className="col-3 my-4 text-white text-center ">
-					<button className="btn" onClick={() => setOnClick(!onClick)}>
+					<button className="btn" onClick={handleToggle}>
 						<FontAwesomeIcon icon={faGripHorizontal} />
 					</button>
 				</div>
@@ -55,19 +62,20 @@ function Products() {
 
 			<div className="row">
 				<div className="col-12 ps-section my-5">
-					<div className="row justify-content-start">
-						{filterProduct.map((product) => (
-							<div
-								className={
-									!onClick
-										? "col-12 col-md-6 col-lg-3 my-2"
-										: "col-12 col-sm-5 col-md-5 col-lg-4 m-3"
-								}
-								key={product.product_id}
-							>
-								<ProductCard product={product} />
-							</div>
-						))}
+					<div>
+						<div
+							className={`row justify-content-start ${
+								showCard ? "g-3" : "g-3"
+							}`}
+						>
+							{filterProduct.map((product) =>
+								showCard ? (
+									<ProductCard product={product} />
+								) : (
+									<ProductList product={product} />
+								)
+							)}
+						</div>
 					</div>
 				</div>
 			</div>
