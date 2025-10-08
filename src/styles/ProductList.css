@@ -9,6 +9,8 @@
 	transition: transform 0.3s ease;
 	cursor: pointer;
 	width: 100%;
+	box-sizing: border-box;
+	max-height: auto;
 }
 
 /* ✅ Effetto hover */
@@ -83,7 +85,6 @@
 
 	.product-list .product-card-img-wrapper {
 		width: 100%;
-		padding-top: 66%; /* leggermente più compatto su mobile */
 	}
 
 	.product-list .card-body {
