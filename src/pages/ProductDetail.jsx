@@ -20,17 +20,17 @@ import CartSummary from "../components/CartSummary";
  * - Displays product image, description, price, brand, and cart summary
  */
 const ProductDetail = () => {
-  const { id } = useParams();
+  const { slug } = useParams();
   const [product, setProduct] = useState(null);
   const { cart, addToCart, removeFromCart } = useCart();
 
-  // Fetch product data from backend on mount or when id changes
+  // Fetch product data from backend on mount or when slug changes
   useEffect(() => {
-    fetch(`http://localhost:3000/products/${id}`)
+    fetch(`http://localhost:3000/products/${slug}`)
       .then((res) => res.json())
       .then((data) => setProduct(data))
       .catch((err) => console.error(err));
-  }, [id]);
+  }, [slug]);
 
   if (!product) {
     return <div>Loading...</div>; // Show loading state while fetching

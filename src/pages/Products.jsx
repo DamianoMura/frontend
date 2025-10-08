@@ -14,7 +14,7 @@ function Products() {
   const baseUrl = "http://localhost:3000/products";
 
   useEffect(() => {
-    fetch(`${baseUrl}${query}`)
+    fetch(`${baseUrl}${filterProduct}`)
       .then((res) => res.json())
       .then((data) => {
         setProducts(data);
@@ -52,11 +52,13 @@ function Products() {
             <select
               className="form-select mb-2"
               value={search}
-              onChange={(e) => setQuery(`?${sort}`=`${search}`)}
+              onChange={(e) => setSort(e.target.value)}
             >
               <option value="name">Name</option>
               <option value="price">Price</option>
               <option value="category_name">Category</option>
+              <option value="latest_arrivals">latest_arrivals</option>
+              <option value="best_seller">best_seller</option>
             </select>
           </div>
           <div className="col-2 m-2">
