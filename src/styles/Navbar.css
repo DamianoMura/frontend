@@ -39,3 +39,15 @@
 .navbar-search-form input {
   min-width: 160px;
 }
+
+
+/* Highlight the active nav link */
+.nav-link.nav-active {
+  color: #B73DA0 !important;
+  font-weight: bold !important;
+}
+
+/* Keep hover effect for all links */
+.nav-link:hover, .nav-link.fw-semibold:hover {
+  color: #B73DA0;
+}
