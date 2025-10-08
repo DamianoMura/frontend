@@ -1,10 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Righteous&display=swap');
 
-/* Non serve flex su navbar né height fissa! */
+/* Brand styles */
 .navbar-brand {
   display: flex;
   align-items: center;
-  /* gap: 0px; */
 }
 
 .navbar-logo {
@@ -12,22 +11,51 @@
   width: auto;
 }
 
-
-.nav-link:hover, .nav-link.fw-semibold:hover{
+/* Nav link styles */
+.nav-link:hover, .nav-link.fw-semibold:hover {
   color: #B73DA0;;
 }
 
-.nav-link.fw-semibold{
+.nav-link.fw-semibold {
   color: white;
 }
 
-/* Nascondi/mostra testo brand in responsive */
-.brand-text.desktop { display: inline;   font-family: "Righteous", sans-serif;
+/* Highlight the active nav link */
+.nav-link.nav-active {
+  color: #B73DA0 !important;
+  font-weight: bold !important;
+}
+
+/* Cart icon styles */
+.nav-cart-icon {
+  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.nav-cart-icon.nav-active {
+  color: #B73DA0 !important;
+}
+
+.nav-cart-icon:hover {
+  color: #B73DA0;
+}
+
+/* Hide/show brand text responsive */
+.brand-text.desktop {
+  display: inline;
+  font-family: "Righteous", sans-serif;
   font-weight: 400;
-  font-style: normal;}
-.brand-text.mobile { display: none;   font-family: "Righteous", sans-serif;
+  font-style: normal;
+}
+.brand-text.mobile {
+  display: none;
+  font-family: "Righteous", sans-serif;
   font-weight: 400;
-  font-style: normal;}
+  font-style: normal;
+}
 
 @media (max-width: 450px) {
   .brand-text.desktop { display: none; }
@@ -38,16 +66,4 @@
 /* Searchbar input min width */
 .navbar-search-form input {
   min-width: 160px;
-}
-
-
-/* Highlight the active nav link */
-.nav-link.nav-active {
-  color: #B73DA0 !important;
-  font-weight: bold !important;
-}
-
-/* Keep hover effect for all links */
-.nav-link:hover, .nav-link.fw-semibold:hover {
-  color: #B73DA0;
 }

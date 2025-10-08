@@ -1,65 +1,47 @@
-// src/components/CartSummary.jsx
 import React from "react";
-import { useCart } from "../context/CartContext";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
-import '../styles/CartSummary.css'; // <-- assicurati di importare il CSS
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRightToBracket, faCartShopping } from "@fortawesome/free-solid-svg-icons";
+import { useCart } from "../context/CartContext";
 
 const CartSummary = () => {
-  const { cart } = useCart();
+  const { cart, total } = useCart();
   const navigate = useNavigate();
 
-  const totalPrice = cart.reduce(
-    (sum, product) => sum + Number(product.price || 0),
-    0
-  );
-
-  if (cart.length === 0) return null;
-
-  const handleClick = () => navigate("/cart");
+  if (!cart || cart.length === 0) return null;
 
   return (
-    <div
-      className="cart-summary-card shadow-sm p-3 rounded"
-      onClick={handleClick}
-      title="Go to Cart"
-    >
-      <div className="d-flex align-items-center mb-3">
-        <FontAwesomeIcon
-          icon={faShoppingCart}
-          className="me-2"
-          style={{ fontSize: "1.7rem", color: "#007bff" }}
-        />
-        <h4 className="mb-0">Cart Summary</h4>
-      </div>
-      <ul className="list-group mb-3">
-        {cart.map((item) => (
-          <li
-            key={item.product_id}
-            className="list-group-item d-flex justify-content-between align-items-center text-white"
-            style={{
-              border: "none",
-              background: "transparent",
-              padding: "0.75rem 1rem",
-            }}
-          >
-            <div>
-              <span className="fw-semibold">{item.name}</span>
-              <span className="text-white ms-2">{item.brand}</span>
-            </div>
-            <span className="badge bg-primary rounded-pill">
-              {Number(item.price).toLocaleString("en-US")} €
+    <div>
+      <h4 className="mb-3">
+        <FontAwesomeIcon icon={faCartShopping} className="me-2" />
+        Cart Summary
+      </h4>
+      <ul className="list-unstyled mb-3">
+        {cart.map(item => (
+          <li key={item.product_id} className="mb-1">
+            <strong>{item.name}</strong>
+            <span className="text-muted ms-2">{item.brand}</span>
+            <span className="badge bg-primary ms-2">
+              {Number(item.price).toFixed(2)} €
             </span>
           </li>
         ))}
       </ul>
-      <div className="d-flex justify-content-between align-items-center border-top pt-3">
-        <span className="fw-bold color-fucsia">Total</span>
-        <span className="fs-5 fw-bold color-fucsia">
-          {totalPrice.toLocaleString("en-US")} €
+      <hr />
+      <div className="d-flex justify-content-between align-items-center mb-2">
+        <span className="fw-bold" style={{ color: "#e100c7" }}>Total</span>
+        <span className="fw-bold fs-5" style={{ color: "#e100c7" }}>
+          {Number(total).toLocaleString("it-IT", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €
         </span>
       </div>
+      <button
+        className="btn btn-outline-primary btn-checkout-inside mt-3 w-100"
+        onClick={() => navigate("/checkout")}
+        title="Go to Checkout"
+      >
+        <FontAwesomeIcon icon={faArrowRightToBracket} className="me-2" />
+        Checkout
+      </button>
     </div>
   );
 };

@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import "../styles/Navbar.css";
 import nerdNestLogo from "../assets/imgs/nerdNest-logo.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 
 const Navbar = () => (
   <nav className="navbar navbar-expand-lg navbar-dark bg-dark border-body">
@@ -37,14 +37,16 @@ const Navbar = () => (
               Products
             </NavLink>
           </li>
+        </ul>
+        <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
           <li className="nav-item">
             <NavLink
               className={({ isActive }) =>
-                "nav-link" + (isActive ? " nav-active fw-bold" : "")
+                "nav-link nav-cart-icon" + (isActive ? " nav-active fw-bold" : "")
               }
               to="/cart"
             >
-              Cart
+              <FontAwesomeIcon icon={faCartShopping} />
             </NavLink>
           </li>
         </ul>

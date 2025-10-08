@@ -1,4 +1,3 @@
-// src/context/CartContext.jsx
 import React, { createContext, useContext, useState, useEffect } from "react";
 
 const CartContext = createContext();
@@ -37,6 +36,14 @@ export function CartProvider({ children }) {
     setCart(cart.map(item => item.product_id === productId ? { ...item, quantity } : item));
   }
 
+  // Calcola il totale in modo robusto (no NaN)
+  const total = cart.reduce((sum, item) => {
+    const price = Number(item.price);
+    const qty = Number(item.quantity || 1);
+    // Somma solo se il prezzo è un numero valido
+    return sum + (!isNaN(price) && !isNaN(qty) ? price * qty : 0);
+  }, 0);
+
   return (
     <CartContext.Provider value={{
       cart,
@@ -44,6 +51,7 @@ export function CartProvider({ children }) {
       removeFromCart,
       clearCart,
       updateQuantity,
+      total,
     }}>
       {children}
     </CartContext.Provider>
