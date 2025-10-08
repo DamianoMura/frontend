@@ -9,7 +9,7 @@ import CartSummary from "../components/CartSummary";
 const ProductDetail = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
-  const { cart, addToCart, removeFromCart , updateQuantity } = useCart();
+  const { cart, addToCart, removeFromCart } = useCart();
   
   useEffect(() => {
       
@@ -64,8 +64,7 @@ const ProductDetail = () => {
                 <FontAwesomeIcon icon={faCartArrowDown} />
               </button>
             )}
-            <button className="btn" onClick={() => updateQuantity(product.product_id,"add")}>+</button>
-            <button className="btn px-3" onClick={() => updateQuantity(product.product_id,"rem")}>-</button>
+            
           </div>
         </div>
 

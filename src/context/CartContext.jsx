@@ -54,7 +54,7 @@ export function CartProvider({ children }) {
        (quantity < cartProduct.stock_quantity) && quantity++ ;
       break
       case "rem":
-        (quantity<2) ? setCart(cart.filter(item => item.product_id !== productId)) :quantity --;
+        (quantity>1) && quantity --;
       break
     }
     setCart(cart.map(item => item.product_id === productId ? { ...item, quantity } : item));

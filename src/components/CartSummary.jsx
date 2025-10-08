@@ -1,11 +1,11 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRightToBracket, faCartShopping } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRightToBracket, faCartShopping,faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { useCart } from "../context/CartContext";
 
 const CartSummary = () => {
-  const { cart, total } = useCart();
+  const { cart, total, updateQuantity, removeFromCart } = useCart();
   const navigate = useNavigate();
 
   if (!cart || cart.length === 0) return null;
@@ -20,10 +20,25 @@ const CartSummary = () => {
         {cart.map(item => (
           <li key={item.product_id} className="mb-1">
             <strong>{item.name}</strong>
-            <span className="text-muted ms-2">{item.brand}</span>
+            <span className="ms-2">{item.brand}</span>
             <span className="badge bg-primary ms-2">
-              {Number(item.price).toFixed(2)} €
+              {
+              item.quantity>1 
+              ? `x${item.quantity} = ${Number(item.quantity*item.price).toLocaleString("it-IT", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`  
+              :Number(item.price).toLocaleString("it-IT", { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+              }
             </span>
+              <br/>
+              <button className="btn" onClick={() => updateQuantity(item.  product_id,"add")}> + </button>
+              {
+                item.quantity>1 
+                ? <button className="btn px-3" onClick={() => updateQuantity(item.product_id,"rem")}> - </button>
+                : <button className="btn" onClick={() => removeFromCart(item.product_id)}>
+                  <FontAwesomeIcon icon={faTrashCan} className="me-2" />
+                </button>
+              }
+              
+            
           </li>
         ))}
       </ul>
