@@ -14,6 +14,17 @@ function Products() {
 	const [sort, setSort] = useState("");
 	const baseUrl = "http://localhost:3000/products";
 
+	// paginazione
+	const [currentPage, setCurrentPage] = useState(1);
+	const productsPerPage = 8;
+	const indexOfLastProduct = currentPage * productsPerPage;
+	const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+	const currentProducts = filterProduct.slice(
+		indexOfFirstProduct,
+		indexOfLastProduct
+	);
+	const totalPages = Math.ceil(filterProduct.length / productsPerPage);
+
 	const navigate = useNavigate();
 	const location = useLocation();
 
@@ -117,7 +128,7 @@ function Products() {
 					<div
 						className={`row justify-content-start ${showCard ? "g-3" : "g-3"}`}
 					>
-						{filterProduct.map((product) =>
+						{currentProducts.map((product) =>
 							showCard ? (
 								<ProductList product={product} />
 							) : (
@@ -127,6 +138,30 @@ function Products() {
 							)
 						)}
 					</div>
+				</div>
+				{/* paginazione */}
+				<div className="d-flex justify-content-center align-items-center mt-4 gap-3">
+					<button
+						className="btn"
+						onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+						disabled={currentPage === 1}
+					>
+						← Prev
+					</button>
+
+					<span className="fw-bold text-white">
+						Pagina {currentPage} di {totalPages}
+					</span>
+
+					<button
+						className="btn"
+						onClick={() =>
+							setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+						}
+						disabled={currentPage === totalPages}
+					>
+						Next →
+					</button>
 				</div>
 			</div>
 		</div>
