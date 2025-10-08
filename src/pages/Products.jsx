@@ -10,11 +10,10 @@ function Products() {
   const [filterProduct, setFilterProduct] = useState([]);
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState(""); // Sort option
-  const [query, setQuery] = useState("");
   const baseUrl = "http://localhost:3000/products";
 
   useEffect(() => {
-    fetch(`${baseUrl}${filterProduct}`)
+    fetch(baseUrl)
       .then((res) => res.json())
       .then((data) => {
         setProducts(data);
@@ -24,12 +23,24 @@ function Products() {
   }, []);
 
   useEffect(() => {
-    const filterProduct = products.filter((product) =>
+    let filtered = products.filter((product) =>
       product.name.toLowerCase().includes(search.toLowerCase())
     );
 
-    setFilterProduct(filterProduct);
-  }, [search, products]);
+    if (sort === "name") {
+      filtered.sort((a, b) => a.name.localeCompare(b.name));
+    } else if (sort === "price") {
+      filtered.sort((a, b) => a.price - b.price);
+    } else if (sort === "category_name") {
+      filtered.sort((a, b) => a.category_name.localeCompare(b.category_name));
+    } else if (sort === "latest_arrivals") {
+      filtered.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+    } else if (sort === "best_seller") {
+      filtered.sort((a, b) => b.sold - a.sold);
+    }
+
+    setFilterProduct(filtered);
+  }, [search, products, sort]);
 
   if (products.length === 0) {
     return <div className="container loading">Loading...</div>;
@@ -38,7 +49,11 @@ function Products() {
   return (
     <div id="products" className="container-fluid hn-main">
       <div className="row justify-content-center d-flex hn-sections-container">
-        <form className="d-flex" role="search">
+        <form
+          className="d-flex"
+          role="search"
+          onSubmit={(e) => e.preventDefault()}
+        >
           <div className="col-4 m-2">
             <input
               type="text"
@@ -51,23 +66,23 @@ function Products() {
           <div className="col-4 m-2">
             <select
               className="form-select mb-2"
-              value={search}
+              value={sort}
               onChange={(e) => setSort(e.target.value)}
             >
+              <option value="">Sort by...</option>
               <option value="name">Name</option>
               <option value="price">Price</option>
               <option value="category_name">Category</option>
-              <option value="latest_arrivals">latest_arrivals</option>
-              <option value="best_seller">best_seller</option>
+              <option value="latest_arrivals">Latest arrivals</option>
+              <option value="best_seller">Best seller</option>
             </select>
           </div>
-          <div className="col-2 m-2">
-            <button className="btn btn-outline-success ms-2" type="submit">
-              Search
-            </button>
-          </div>
-          <div className="col-3 m-2 text-white text-center ">
-            <button className="btn" onClick={() => setOnClick(!onClick)}>
+          <div className="col-3 m-2 text-white text-center">
+            <button
+              type="button"
+              className="btn"
+              onClick={() => setOnClick(!onClick)}
+            >
               <FontAwesomeIcon icon={faGripHorizontal} />
             </button>
           </div>
