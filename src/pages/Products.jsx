@@ -28,7 +28,7 @@ function Products() {
 	const navigate = useNavigate();
 	const location = useLocation();
 
-	// quando si effettua una ricerca resetta la paginazione ad 1
+	// paginazione - quando si effettua una ricerca resetta la paginazione ad 1
 	useEffect(() => {
 		setCurrentPage(1); // ← aggiungi questo
 	}, [search, sort]);
