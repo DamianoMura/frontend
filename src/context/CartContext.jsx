@@ -19,10 +19,11 @@ export function CartProvider({ children }) {
   }, [cart]);
 
   function addToCart(product) {
-    const {product_id, name, description,specs,price,stock_quantity}=product;
+    const {product_id, name, description,specs,price,stock_quantity, brand}=product;
     if (!cart.some(item => item.product_id === product.product_id)) {
       setCart([...cart, { product_id,
                           name,
+                          brand,
                           description,
                           specs,
                           price,
