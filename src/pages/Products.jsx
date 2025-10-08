@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
+import ProductList from "../components/ProductList";
 import "../styles/Products.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGripHorizontal } from "@fortawesome/free-solid-svg-icons";
@@ -24,6 +25,13 @@ function Products() {
 		setSearch(searchParam);
 		setSort(sortParam);
 	}, [location.search]);
+
+	// switch componente card
+	const [showCard, setShowCard] = useState(false);
+
+	const handleToggle = () => {
+		setShowCard((prev) => !prev);
+	};
 
 	// Fetch iniziale
 	useEffect(() => {
@@ -97,11 +105,7 @@ function Products() {
 						</select>
 					</div>
 					<div className="col-3 m-2 text-white text-center">
-						<button
-							type="button"
-							className="btn"
-							onClick={() => setOnClick(!onClick)}
-						>
+						<button type="button" className="btn" onClick={handleToggle}>
 							<FontAwesomeIcon icon={faGripHorizontal} />
 						</button>
 					</div>
@@ -110,19 +114,18 @@ function Products() {
 
 			<div className="row">
 				<div className="col-12 ps-section my-5">
-					<div className="row justify-content-start">
-						{filterProduct.map((product) => (
-							<div
-								className={
-									!onClick
-										? "col-12 col-md-6 col-lg-3 my-2"
-										: "col-12 col-sm-5 col-md-5 col-lg-4 m-3"
-								}
-								key={product.product_id}
-							>
-								<ProductCard product={product} />
-							</div>
-						))}
+					<div
+						className={`row justify-content-start ${showCard ? "g-3" : "g-3"}`}
+					>
+						{filterProduct.map((product) =>
+							showCard ? (
+								<ProductList product={product} />
+							) : (
+								<div className="col-12 col-md-6 col-lg-3">
+									<ProductCard product={product} />
+								</div>
+							)
+						)}
 					</div>
 				</div>
 			</div>
