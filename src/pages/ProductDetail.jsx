@@ -9,9 +9,10 @@ import CartSummary from "../components/CartSummary";
 const ProductDetail = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
-  const { cart, addToCart, removeFromCart } = useCart();
-
+  const { cart, addToCart, removeFromCart , updateQuantity } = useCart();
+  
   useEffect(() => {
+      
     fetch(`http://localhost:3000/products/${id}`)
       .then((res) => res.json())
       .then((data) => setProduct(data))
@@ -63,6 +64,8 @@ const ProductDetail = () => {
                 <FontAwesomeIcon icon={faCartArrowDown} />
               </button>
             )}
+            <button className="btn" onClick={() => updateQuantity(product.product_id,"add")}>+</button>
+            <button className="btn px-3" onClick={() => updateQuantity(product.product_id,"rem")}>-</button>
           </div>
         </div>
 
