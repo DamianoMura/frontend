@@ -4,7 +4,7 @@ import ProductCard from "../components/ProductCard";
 import ProductList from "../components/ProductList";
 import "../styles/Products.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGripHorizontal } from "@fortawesome/free-solid-svg-icons";
+import { faGripHorizontal, faListUl } from "@fortawesome/free-solid-svg-icons";
 
 function Products() {
 	const [products, setProducts] = useState([]);
@@ -27,6 +27,11 @@ function Products() {
 
 	const navigate = useNavigate();
 	const location = useLocation();
+
+	// quando si effettua una ricerca resetta la paginazione ad 1
+	useEffect(() => {
+		setCurrentPage(1); // ← aggiungi questo
+	}, [search, sort]);
 
 	// Leggi i parametri dalla URL al primo caricamento
 	useEffect(() => {
@@ -115,9 +120,9 @@ function Products() {
 							<option value="best_seller">Best seller</option>
 						</select>
 					</div>
-					<div className="col-3 m-2 text-white text-center">
-						<button type="button" className="btn" onClick={handleToggle}>
-							<FontAwesomeIcon icon={faGripHorizontal} />
+					<div className="col-4 m-2 text-white text-end ">
+						<button type="button" className="btn me-4" onClick={handleToggle}>
+							<FontAwesomeIcon icon={showCard ? faListUl : faGripHorizontal} />
 						</button>
 					</div>
 				</form>
