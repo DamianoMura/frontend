@@ -90,8 +90,8 @@ function Products() {
               <option value="name">Name</option>
               <option value="price">Price</option>
               <option value="category_name">Category</option>
-              <option value="latest_arrivals">Latest arrivals</option>
-              <option value="best_seller">Best seller</option>
+              <option value="latest">Latest arrivals</option>
+              <option value="popular">Best seller</option>
             </select>
           </div>
           <div className="col-3 m-2 text-white text-center">
