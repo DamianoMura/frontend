@@ -1,9 +1,9 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRightToBracket, faCartShopping,faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRightToBracket, faCartShopping,faTrashCan , faCartPlus, faCartArrowDown } from "@fortawesome/free-solid-svg-icons";
 import { useCart } from "../context/CartContext";
-
+import '../styles/CartSummary.css';
 const CartSummary = () => {
   const { cart, total, updateQuantity, removeFromCart } = useCart();
   const navigate = useNavigate();
@@ -19,24 +19,32 @@ const CartSummary = () => {
       <ul className="list-unstyled mb-3">
         {cart.map(item => (
           <li key={item.product_id} className="mb-1">
-            <strong>{item.name}</strong>
-            <span className="ms-2">{item.brand}</span>
-            <span className="badge bg-primary ms-2">
+            <div>
+              <strong>{item.name}</strong>
+              <span className="ms-2">{item.brand}</span>
+            </div>
+            <div className="d-flex align-items-center justify-content-between">
+              <div className="mt-3">
+                <button className="cart-s-btn" onClick={() => updateQuantity(item.  product_id,"add")}><FontAwesomeIcon icon={faCartPlus} className="text-center" /></button>
+                  {
+                    item.quantity>1 
+                    ? <button className="cart-s-btn" onClick={() => updateQuantity(item.product_id,"rem")}><FontAwesomeIcon icon={faCartArrowDown} className="text-center" /></button>
+                    : <button className="cart-s-btn" onClick={() => removeFromCart(item.product_id)}><FontAwesomeIcon icon={faTrashCan} className="text-center" /></button>
+                  }
+              </div>
+              <span className="badge bg-primary ms-2 d-flex">
               {
               item.quantity>1 
-              ? `x${item.quantity} = ${Number(item.quantity*item.price).toLocaleString("it-IT", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`  
+              ? `x ${item.quantity} = ${Number(item.quantity*item.price).toLocaleString("it-IT", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`  
               :Number(item.price).toLocaleString("it-IT", { minimumFractionDigits: 2, maximumFractionDigits: 2 })
               }
             </span>
+            </div>
+            
+            
+            
               <br/>
-              <button className="btn" onClick={() => updateQuantity(item.  product_id,"add")}> + </button>
-              {
-                item.quantity>1 
-                ? <button className="btn px-3" onClick={() => updateQuantity(item.product_id,"rem")}> - </button>
-                : <button className="btn" onClick={() => removeFromCart(item.product_id)}>
-                  <FontAwesomeIcon icon={faTrashCan} className="me-2" />
-                </button>
-              }
+              
               
             
           </li>
