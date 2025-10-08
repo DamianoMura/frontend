@@ -18,7 +18,7 @@ const ProductList = ({ product }) => {
 					/>
 				</div>
 				<div className="card-body">
-					<div className="card-header">
+					<div className="card-header d-flex justify-content-between">
 						<h5 className="card-title">{product.name}</h5>
 						<p className="card-text">
 							<small className="text-body-secondary">
@@ -28,7 +28,7 @@ const ProductList = ({ product }) => {
 					</div>
 					<p className="card-text">{product.specs}</p>
 					<p className="card-text">{product.description}</p>
-					<p className="card-text">{product.price}</p>
+					<p className="card-text-price">€ {product.price}</p>
 					<Link
 						to={`/products/${product.slug}`}
 						className="btn btn-outline-primary product-card-btn"

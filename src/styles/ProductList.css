@@ -50,7 +50,7 @@
 .product-list .card-title {
 	font-size: 1.2rem;
 	font-weight: 800;
-	margin-bottom: 0.25rem;
+	margin-bottom: 2rem;
 	color: #5b4795;
 }
 
@@ -69,9 +69,9 @@
 }
 
 /* ✅ Prezzo evidenziato */
-.product-list .card-text:last-child {
+.product-list .card-text-price {
 	font-weight: bold;
-	color: #1e7e34;
+	color: #b73da0;
 	margin-top: auto;
 }
 
