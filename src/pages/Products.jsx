@@ -117,11 +117,11 @@ function Products() {
 					>
 						{filterProduct.map((product) =>
 							showCard ? (
+								<ProductList product={product} />
+							) : (
 								<div className="col-12 col-md-6 col-lg-3">
 									<ProductCard product={product} />
 								</div>
-							) : (
-								<ProductList product={product} />
 							)
 						)}
 					</div>
