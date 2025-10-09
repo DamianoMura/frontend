@@ -19,21 +19,47 @@ export function CartProvider({ children }) {
   }, [cart]);
 
   function addToCart(product) {
+    const {product_id, name, description,specs,price,stock_quantity, brand}=product;
     if (!cart.some(item => item.product_id === product.product_id)) {
-      setCart([...cart, { ...product, quantity: 1 }]);
+      setCart([...cart, { product_id,
+                          name,
+                          brand,
+                          description,
+                          specs,
+                          price,
+                          stock_quantity,
+                          quantity: 1 
+                        }]);
+      
     }
+   
   }
 
   function removeFromCart(productId) {
+   
     setCart(cart.filter(item => item.product_id !== productId));
+    
   }
 
   function clearCart() {
     setCart([]);
   }
 
-  function updateQuantity(productId, quantity) {
+  function updateQuantity(productId, operator) {
+    
+    const cartProduct= cart.find(item=>item.product_id===productId)
+    let quantity=cartProduct.quantity;
+    const stock=cartProduct
+    switch (operator){
+      case "add" :
+       (quantity < cartProduct.stock_quantity) && quantity++ ;
+      break
+      case "rem":
+        (quantity>1) && quantity --;
+      break
+    }
     setCart(cart.map(item => item.product_id === productId ? { ...item, quantity } : item));
+    
   }
 
   // Calcola il totale in modo robusto (no NaN)

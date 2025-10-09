@@ -68,13 +68,11 @@ const ProductDetail = () => {
 
         {/* Colonna sempre presente per il summary */}
         <div className="product-summary-col">
-          {cart && cart.length > 0 ? (
-            <div className="cart-summary-card">
-              <CartSummary />
-            </div>
-          ) : (
-            <div className="cart-summary-card cart-summary-placeholder"></div>
-          )}
+          {cart.length>0  &&
+            
+              <CartSummary className="cart-summary-card"/>
+            
+          }
         </div>
       </div>
     </div>
