@@ -1,0 +1,60 @@
+/* Container principale */
+.notfound-container {
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(to bottom, #5b4795 0%, #212529 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #fff;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+.notfound-title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #f2f3f4; /* White text for contrast */
+}
+
+/* Testo descrittivo */
+.notfound-text {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  color: #d4d4d4; /* Alt/Grey for secondary text */
+}
+
+/* Bottone */
+.notfound-button {
+  background-color: #b73da0; /* Fuchsia */
+  color: #f2f3f4;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.notfound-button i {
+  margin-right: 0.5rem;
+}
+
+.notfound-button:hover {
+  background-color: #6d5aa2; /* Viola 2 */
+  transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+  .notfound-title {
+    font-size: 2.2rem;
+  }
+
+  .notfound-text {
+    font-size: 1rem;
+  }
+}
