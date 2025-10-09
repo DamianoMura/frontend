@@ -13,20 +13,18 @@
 
 /* Nav link styles */
 .nav-link:hover, .nav-link.fw-semibold:hover {
-  color: #B73DA0;;
+  color: #B73DA0;
 }
 
 .nav-link.fw-semibold {
   color: white;
 }
 
-/* Highlight the active nav link */
 .nav-link.nav-active {
   color: #B73DA0 !important;
   font-weight: bold !important;
 }
 
-/* Cart icon styles */
 .nav-cart-icon {
   font-size: 1.3rem;
   display: flex;
@@ -43,27 +41,52 @@
   color: #B73DA0;
 }
 
-/* Hide/show brand text responsive */
+/* Brand text responsive */
 .brand-text.desktop {
   display: inline;
   font-family: "Righteous", sans-serif;
-  font-weight: 400;
-  font-style: normal;
 }
 .brand-text.mobile {
   display: none;
   font-family: "Righteous", sans-serif;
-  font-weight: 400;
-  font-style: normal;
 }
-
 @media (max-width: 450px) {
   .brand-text.desktop { display: none; }
   .brand-text.mobile { display: inline; }
-  .navbar-search-form { display: none; }
 }
 
-/* Searchbar input min width */
-.navbar-search-form input {
-  min-width: 160px;
+/* Custom navbar layout with flex */
+.custom-navbar-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.custom-navbar-nav {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 0;
+  padding-left: 0;
+  list-style: none;
+  gap: 0.5rem;
+}
+
+.navbar-nav .nav-item {
+  margin: 0 0.2rem;
+}
+
+/* Ensure cart is always visible */
+@media (max-width: 600px) {
+  .custom-navbar-nav {
+    gap: 0.2rem;
+  }
+  .navbar-logo {
+    height: 40px;
+  }
+  .nav-cart-icon {
+    font-size: 1.1rem;
+    padding: 4px;
+  }
 }
