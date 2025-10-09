@@ -1,43 +1,65 @@
-import React, { useState } from 'react';
-import '../styles/Checkout.css';
+import React, { useState, useEffect } from "react";
+import "../styles/Checkout.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import { useCart } from "../context/CartContext";
 
-const API_BASE = 'http://localhost:3000';
+const API_BASE = "http://localhost:3000";
 
 const Checkout = () => {
   const { cart, total } = useCart();
-  const [billing, setBilling] = useState({ name: '', email: '' });
-  const [shipping, setShipping] = useState({ address: '', city: '', postalCode: '', country: '' });
-  const [confirmMsg, setConfirmMsg] = useState('');
+  const [billing, setBilling] = useState({ name: "", email: "" });
+  const [shipping, setShipping] = useState({
+    address: "",
+    city: "",
+    address_street_number: "",
+    postalCode: "",
+    country: "",
+    code: "",
+  });
+  const [confirmMsg, setConfirmMsg] = useState("");
+  const [discount, setDiscount] = useState([]);
+
+  const discountUrl = "http://localhost:3000/discount-codes";
+
+  // Fetch discount
+  useEffect(() => {
+    fetch(discountUrl)
+      .then((res) => res.json())
+      .then((data) => setDiscount(data))
+      .catch((err) => console.error(err));
+  }, []);
 
   // Handle order submission
   const handleOrder = async (e) => {
     e.preventDefault();
     try {
       const res = await fetch(`${API_BASE}/orders`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           customer_name: billing.name,
           customer_email: billing.email,
           address_street: shipping.address,
           address_city: shipping.city,
+          address_street_number: shipping.address_street_number,
           postal_code: shipping.postalCode,
           country: shipping.country,
           billing: `${billing.name}, ${billing.email}`,
           order_date: new Date().toISOString().slice(0, 10),
           total_price: total,
-          discount_code_id: null
-        })
+          discount_code_id: null,
+        }),
       });
 
-      if (res.ok) setConfirmMsg('Order placed! Confirmation email sent.');
-      else setConfirmMsg('There was an error processing your order.');
+      if (res.ok) {
+        setConfirmMsg("Order placed! Confirmation email sent.");
+      } else {
+        setConfirmMsg("There was an error processing your order.");
+      }
     } catch (err) {
       console.error(err);
-      setConfirmMsg('There was an error processing your order.');
+      setConfirmMsg("There was an error processing your order.");
     }
   };
 
@@ -56,7 +78,7 @@ const Checkout = () => {
               placeholder="Name"
               required
               value={billing.name}
-              onChange={e => setBilling({ ...billing, name: e.target.value })}
+              onChange={(e) => setBilling({ ...billing, name: e.target.value })}
             />
             <input
               type="email"
@@ -64,7 +86,9 @@ const Checkout = () => {
               placeholder="Email"
               required
               value={billing.email}
-              onChange={e => setBilling({ ...billing, email: e.target.value })}
+              onChange={(e) =>
+                setBilling({ ...billing, email: e.target.value })
+              }
             />
           </div>
 
@@ -77,7 +101,9 @@ const Checkout = () => {
               placeholder="Address"
               required
               value={shipping.address}
-              onChange={e => setShipping({ ...shipping, address: e.target.value })}
+              onChange={(e) =>
+                setShipping({ ...shipping, address: e.target.value })
+              }
             />
             <input
               type="text"
@@ -85,7 +111,9 @@ const Checkout = () => {
               placeholder="City"
               required
               value={shipping.city}
-              onChange={e => setShipping({ ...shipping, city: e.target.value })}
+              onChange={(e) =>
+                setShipping({ ...shipping, city: e.target.value })
+              }
             />
             <input
               type="text"
@@ -93,15 +121,41 @@ const Checkout = () => {
               placeholder="Postal Code"
               required
               value={shipping.postalCode}
-              onChange={e => setShipping({ ...shipping, postalCode: e.target.value })}
+              onChange={(e) =>
+                setShipping({ ...shipping, postalCode: e.target.value })
+              }
             />
             <input
               type="text"
-              className="form-control"
+              className="form-control mb-2"
+              placeholder="Street Number"
+              required
+              value={shipping.address_street_number}
+              onChange={(e) =>
+                setShipping({
+                  ...shipping,
+                  address_street_number: e.target.value,
+                })
+              }
+            />
+            <input
+              type="text"
+              className="form-control mb-2"
               placeholder="Country"
               required
               value={shipping.country}
-              onChange={e => setShipping({ ...shipping, country: e.target.value })}
+              onChange={(e) =>
+                setShipping({ ...shipping, country: e.target.value })
+              }
+            />
+            <input
+              type="text"
+              className="form-control mb-5"
+              placeholder="Discount code"
+              value={shipping.code}
+              onChange={(e) =>
+                setShipping({ ...shipping, code: e.target.value })
+              }
             />
           </div>
 
@@ -113,7 +167,7 @@ const Checkout = () => {
             </h4>
             <ul className="list-unstyled mb-3">
               {cart && cart.length > 0 ? (
-                cart.map(item => (
+                cart.map((item) => (
                   <li key={item.product_id} className="mb-1">
                     <strong>{item.name}</strong>
                     <span className="text-muted ms-2">{item.brand}</span>
@@ -131,18 +185,28 @@ const Checkout = () => {
             </ul>
             <hr />
             <div className="d-flex justify-content-between align-items-center mb-2">
-              <span className="fw-bold" style={{ color: "#e100c7" }}>Total</span>
+              <span className="fw-bold" style={{ color: "#e100c7" }}>
+                Total
+              </span>
               <span className="fw-bold fs-5" style={{ color: "#e100c7" }}>
-                {Number(total).toLocaleString("it-IT", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €
+                {Number(total).toLocaleString("it-IT", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}{" "}
+                €
               </span>
             </div>
           </div>
 
           {/* Submit Button */}
-          <button className="btn btn-success checkout-btn" type="submit">Confirm Order</button>
+          <button className="btn btn-success checkout-btn" type="submit">
+            Confirm Order
+          </button>
 
           {/* Confirmation Message */}
-          {confirmMsg && <div className="checkout-confirm mt-3">{confirmMsg}</div>}
+          {confirmMsg && (
+            <div className="checkout-confirm mt-3">{confirmMsg}</div>
+          )}
         </form>
       </div>
     </div>
