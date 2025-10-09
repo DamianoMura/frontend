@@ -96,58 +96,60 @@ function Products() {
 	return (
 		<div id="products" className="container-fluid hn-main">
 			<div className="row justify-content-center d-flex hn-sections-container">
-				<form
-					className="d-flex"
-					role="search"
-					onSubmit={(e) => e.preventDefault()}
-				>
-					<div className="col-4 m-2">
-						<input
-							type="text"
-							className="form-control"
-							placeholder="Find your products"
-							value={search}
-							onChange={(e) => setSearch(e.target.value)}
-						/>
-					</div>
-					<div className="col-4 m-2">
-						<select
-							className="form-select mb-2"
-							value={sort}
-							onChange={(e) => setSort(e.target.value)}
-						>
-							<option value="">Sort by...</option>
-							<option value="name">Name</option>
-							<option value="price">Price: lower</option>
-							<option value="price_desc">Price: higher</option>
-							<option value="category_name">Category</option>
-							<option value="latest_arrivals">Latest arrivals</option>
-							<option value="best_seller">Best seller</option>
-						</select>
-					</div>
-					<div className="col-4 m-2 text-white text-end ">
-						<button
-							type="button"
-							className="btn me-4"
-							onClick={() => {
-								setProductsPerPage(productsPerPage - 1);
-							}}
-						>
-							<FontAwesomeIcon icon={faMinus} />
-						</button>
-						<span className="me-4">{productsPerPage}</span>
-						<button
-							type="button"
-							className="btn me-4"
-							onClick={() => {
-								setProductsPerPage(productsPerPage + 1);
-							}}
-						>
-							<FontAwesomeIcon icon={faPlus} />
-						</button>
-						<button type="button" className="btn me-4" onClick={handleToggle}>
-							<FontAwesomeIcon icon={showCard ? faListUl : faGripHorizontal} />
-						</button>
+				<form role="search" onSubmit={(e) => e.preventDefault()}>
+					<div className="row">
+						<div className="col-6 col-lg-4">
+							<input
+								type="text"
+								className="form-control"
+								placeholder="Find your products"
+								value={search}
+								onChange={(e) => setSearch(e.target.value)}
+							/>
+						</div>
+						<div className="col-6 col-lg-4">
+							<select
+								className="form-select mb-2"
+								value={sort}
+								onChange={(e) => setSort(e.target.value)}
+							>
+								<option value="">Sort by...</option>
+								<option value="name">Name</option>
+								<option value="price">Price: lower</option>
+								<option value="price_desc">Price: higher</option>
+								<option value="category_name">Category</option>
+								<option value="latest_arrivals">Latest arrivals</option>
+								<option value="best_seller">Best seller</option>
+							</select>
+						</div>
+						<div className="col-12 col-lg-4 text-white d-flex justify-content-between">
+							<div>
+								<button
+									type="button"
+									className="btn me-4"
+									onClick={() => {
+										setProductsPerPage(productsPerPage - 1);
+									}}
+								>
+									<FontAwesomeIcon icon={faMinus} />
+								</button>
+								<span className="me-4">{productsPerPage}</span>
+								<button
+									type="button"
+									className="btn me-4"
+									onClick={() => {
+										setProductsPerPage(productsPerPage + 1);
+									}}
+								>
+									<FontAwesomeIcon icon={faPlus} />
+								</button>
+							</div>
+							<button type="button" className="btn" onClick={handleToggle}>
+								<FontAwesomeIcon
+									icon={showCard ? faListUl : faGripHorizontal}
+								/>
+							</button>
+						</div>
 					</div>
 				</form>
 			</div>

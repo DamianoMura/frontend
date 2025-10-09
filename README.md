@@ -3,31 +3,31 @@ web app e-commerce DOTNERDEST(frontend)
 MILESTONE :
 
 1. homepage
-   -hero space
-   -visualizzazione di almeno due sezioni di prodotti (es. più venduti, ultimi arrivi)
+   -hero space ok
+   -visualizzazione di almeno due sezioni di prodotti (es. più venduti, ultimi arrivi) ok
 
 2. pagina di ricerca
-   -barra di ricerca con opzioni di ordinamento (prezzo, nome, recenti)
-   -visualizzazione dei risultati di ricerca
+   -barra di ricerca con opzioni di ordinamento (prezzo, nome, recenti) ok
+   -visualizzazione dei risultati di ricerca ok
 
 3. pagina di dettaglio prodotto
-   -visualizzazione delle informazioni del prodotto
-   -possibilità di aggiungere il prodotto al carrello
+   -visualizzazione delle informazioni del prodotto ok
+   -possibilità di aggiungere il prodotto al carrello ok
 
 4. carrello
-   -possibilità di modificare le quantità dei prodotti nel carrello
-   -visualizzare il totale del carrello
+   -possibilità di modificare le quantità dei prodotti nel carrello ok
+   -visualizzare il totale del carrello ok
 
 5. checkout
-   -inserimento dei dati di fatturazione e spedizione del cliente
-   -riepilogo dell’ordine con il totale
+   -inserimento dei dati di fatturazione e spedizione del cliente ok
+   -riepilogo dell’ordine con il totale ok
 6. invio email
-   -invio di email di conferma ordine sia al cliente che al venditore
+   -invio di email di conferma ordine sia al cliente che al venditore ok
 
 MILESTONE successive(extra):
 
-(1). doppia visualizzazione dei risultati di ricerca
--possibilità di visualizzare i risultati di ricerca in griglia o in lista
+(1). doppia visualizzazione dei risultati di ricerca ok
+-possibilità di visualizzare i risultati di ricerca in griglia o in lista ok
 
 (2). spedizione gratuita
 -spedizione gratuita per ordini che superano una soglia minima di spesa
@@ -36,7 +36,7 @@ MILESTONE successive(extra):
 -visualizzare i prodotti in promozione con prezzo originale e scontato
 -possibilità di filtrare i prodotti in promozione nella pagina di ricerca
 
-(4). codici sconto
+(4). codici sconto ok
 -inserimento e validazione di un codice promozionale durante il checkout
 -il codice sconto deve essere valido entro un determinato periodo (dal/al)
 
@@ -55,14 +55,14 @@ Checklist 06/10/25
 - Hero (Stile, definizione, mood, accattivante) - The Immanent Gian
 - Product Page (Stile, definizione, visualizzazione a griglia, popolare di info + prodotti consigliati ) - The Carlo Almighty
 - Presentazione (Stile, discorso, cronometraggio, Q&A) - The Useless H
-- Kanban (Aggiornamenti) 
+- Kanban (Aggiornamenti)
 
 PALETTE COLORI:
 
-   Viola : #5B4795
-   Viola 2: #6D5AA2
-      Viola Extra: #493977
-   White: #F2F3F4
-   Alt/Grey: #D4D4D4
-   Grey: #2B2B2B
-   Fuchsia: #B73DA0
+Viola : #5B4795
+Viola 2: #6D5AA2
+Viola Extra: #493977
+White: #F2F3F4
+Alt/Grey: #D4D4D4
+Grey: #2B2B2B
+Fuchsia: #B73DA0

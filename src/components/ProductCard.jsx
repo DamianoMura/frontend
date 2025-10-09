@@ -18,9 +18,9 @@ const ProductCard = ({ product }) => {
 			</div>
 			<div className="product-card-body card-body d-flex flex-column">
 				<span className="product-card-title card-title fw-bold">
-					Name: {product.name}
+					{product.name}
 				</span>
-				<p className="product-card-price card-text">Price: €{product.price}</p>
+				<p className="product-card-price card-text">€{product.price}</p>
 				<Link
 					to={`/products/${product.slug}`}
 					className="btn btn-outline-primary product-card-btn"
