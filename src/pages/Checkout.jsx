@@ -8,6 +8,21 @@ const API_BASE = "http://localhost:3000";
 
 const Checkout = () => {
   const { cart, total } = useCart();
+  const [orderSent,setOrderSent] = useState({ 
+    
+    customer_name: "", 
+    customer_email: "",
+    address_street: "",
+    address_city: "",
+    address_street_number: "",
+    postal_code: "",
+    country: "",
+    discount_code_id : null,
+    id:"",
+    billing:"",
+    order_date:""
+  });
+ 
   const [order, setOrder] = useState({
     customer_name: "", 
     customer_email: "",
@@ -30,8 +45,8 @@ const Checkout = () => {
       .then((res) => res.json())
       .then((data) => setDiscountList(data))
       .catch((err) => console.error(err));
-  }, []);
-
+  }, [orderSent]);
+  
     const handleOrder = (e)=> {
     e.preventDefault();
     const discount= discountList.find((item)=>item.code===discountCode)
@@ -42,7 +57,7 @@ const Checkout = () => {
   data: {...order,items:cart}
   }).then((resp)=>{
     ////qui la risposta dopo l'inserimento
-    console.log(resp.data.billing)
+    setOrderSent({...resp.data})
    }).catch((err)=>{console.log(err)})
   };
 
@@ -52,9 +67,10 @@ const Checkout = () => {
   return (
     <div>
       <div className="checkout-container container my-5">
-        <h1 className="checkout-title">Checkout</h1>
-
-        <form className="checkout-form" onSubmit={handleOrder}>
+       {
+        !orderSent ?<h1 className="checkout-title">Checkout</h1> : <h1 className="checkout-title">Your Order Details</h1>
+       } 
+        {!orderSent ? <form className="checkout-form" onSubmit={handleOrder}>
           {/* Billing Section */}
           <div className="checkout-section mb-3">
             <h4>Billing Details</h4>
@@ -194,7 +210,13 @@ const Checkout = () => {
           {confirmMsg && (
             <div className="checkout-confirm mt-3">{confirmMsg}</div>
           )}
-        </form>
+        </form> 
+
+        : <div> {orderSent.id} </div>
+        
+        }
+        
+       
       </div>
     </div>
   );
