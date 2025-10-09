@@ -93,8 +93,7 @@ function Products() {
 		return <div className="container loading">Loading...</div>;
 	}
 
-	
-  return (
+	return (
   <div id="products" className="container-fluid hn-main">
     <div className="row justify-content-center d-flex hn-sections-container">
       <form
@@ -113,37 +112,75 @@ function Products() {
           />
         </div>
 
-        {/* Sort dropdown */}
-        <div className="col-6 col-md-4">
-          <select
-            className="form-select"
-            value={sort}
-            onChange={(e) => setSort(e.target.value)}
-          >
-            <option value="">Sort by...</option>
-            <option value="name">Name</option>
-            <option value="price">Price: lower</option>
-            <option value="price_desc">Price: higher</option>
-            <option value="category_name">Category</option>
-            <option value="latest_arrivals">Latest arrivals</option>
-            <option value="best_seller">Best seller</option>
-          </select>
-        </div>
+        {/* Sort dropdown + Products per page */}
+        <div className="col-12 col-md-8 d-flex flex-wrap gap-3 align-items-center">
+          <div className="flex-grow-1">
+            <select
+              className="form-select"
+              value={sort}
+              onChange={(e) => setSort(e.target.value)}
+            >
+              <option value="">Sort by...</option>
+              <option value="name">Name</option>
+              <option value="price">Price: lower</option>
+              <option value="price_desc">Price: higher</option>
+              <option value="category_name">Category</option>
+              <option value="latest_arrivals">Latest arrivals</option>
+              <option value="best_seller">Best seller</option>
+            </select>
+          </div>
 
-        {/* Toggle visualizzazione */}
-        <div className="col-6 col-md-4 text-md-end text-start">
-          <button
-            type="button"
-            className="btn btn-outline-light"
-            onClick={handleToggle}
-          >
-            <FontAwesomeIcon icon={showCard ? faListUl : faGripHorizontal} />
-          </button>
+          {/*Products per page selector */}
+          <div className="d-flex align-items-center gap-2 text-white">
+            <button
+              type="button"
+              className="btn btn-sm"
+              onClick={() => setProductsPerPage((prev) => Math.max(prev - 1, 1))}
+            >
+              <FontAwesomeIcon icon={faMinus} />
+            </button>
+            <span>n°{productsPerPage} / pagina</span>
+            <button
+              type="button"
+              className="btn btn-sm"
+              onClick={() => setProductsPerPage((prev) => prev + 1)}
+            >
+              <FontAwesomeIcon icon={faPlus} />
+            </button>
+          </div>
+
+          {/*Toggle visualizzazione */}
+          <div>
+            <button
+              type="button"
+              className="btn btn-outline-light"
+              onClick={handleToggle}
+            >
+              <FontAwesomeIcon icon={showCard ? faListUl : faGripHorizontal} />
+            </button>
+          </div>
         </div>
       </form>
     </div>
 
-    {/* Pagination + Items per page */}
+    {/*Product grid/list */}
+    <div className="row">
+      <div className="col-12 ps-section my-5">
+        <div className={`row justify-content-start ${showCard ? "g-3" : "g-3"}`}>
+          {currentProducts.map((product) =>
+            showCard ? (
+              <ProductList key={product.id} product={product} />
+            ) : (
+              <div key={product.id} className="col-12 col-md-6 col-lg-3">
+                <ProductCard product={product} />
+              </div>
+            )
+          )}
+        </div>
+      </div>
+    </div>
+
+    {/*Pagination at bottom */}
     <div className="d-flex flex-wrap justify-content-center align-items-center mt-4 gap-3">
       <div className="d-flex align-items-center gap-2">
         <button
@@ -167,41 +204,6 @@ function Products() {
         >
           Next →
         </button>
-      </div>
-
-      <div className="d-flex align-items-center gap-2 text-white">
-        <button
-          type="button"
-          className="btn btn-sm"
-          onClick={() => setProductsPerPage((prev) => Math.max(prev - 1, 1))}
-        >
-          <FontAwesomeIcon icon={faMinus} />
-        </button>
-        <span>n°{productsPerPage} / pagina</span>
-        <button
-          type="button"
-          className="btn btn-sm"
-          onClick={() => setProductsPerPage((prev) => prev + 1)}
-        >
-          <FontAwesomeIcon icon={faPlus} />
-        </button>
-      </div>
-    </div>
-
-    {/* Product grid/list */}
-    <div className="row">
-      <div className="col-12 ps-section my-5">
-        <div className={`row justify-content-start ${showCard ? "g-3" : "g-3"}`}>
-          {currentProducts.map((product) =>
-            showCard ? (
-              <ProductList key={product.id} product={product} />
-            ) : (
-              <div key={product.id} className="col-12 col-md-6 col-lg-3">
-                <ProductCard product={product} />
-              </div>
-            )
-          )}
-        </div>
       </div>
     </div>
   </div>
