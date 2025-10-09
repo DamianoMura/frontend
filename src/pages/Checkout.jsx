@@ -3,22 +3,24 @@ import "../styles/Checkout.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import { useCart } from "../context/CartContext";
-
+import axios from 'axios';
 const API_BASE = "http://localhost:3000";
 
 const Checkout = () => {
   const { cart, total } = useCart();
-  const [billing, setBilling] = useState({ name: "", email: "" });
-  const [shipping, setShipping] = useState({
-    address: "",
-    city: "",
+  const [order, setOrder] = useState({
+    customer_name: "", 
+    customer_email: "",
+    address_street: "",
+    address_city: "",
     address_street_number: "",
-    postalCode: "",
+    postal_code: "",
     country: "",
-    code: "",
+    discount_code_id : null
   });
   const [confirmMsg, setConfirmMsg] = useState("");
-  const [discount, setDiscount] = useState([]);
+  const [discountList, setDiscountList] = useState([]);
+  const [discountCode, setDiscountCode] = useState("");
 
   const discountUrl = "http://localhost:3000/discount-codes";
 
@@ -26,42 +28,53 @@ const Checkout = () => {
   useEffect(() => {
     fetch(discountUrl)
       .then((res) => res.json())
-      .then((data) => setDiscount(data))
+      .then((data) => setDiscountList(data))
       .catch((err) => console.error(err));
   }, []);
 
-  // Handle order submission
-  const handleOrder = async (e) => {
+    const handleOrder = (e)=> {
     e.preventDefault();
-    try {
-      const res = await fetch(`${API_BASE}/orders`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          customer_name: billing.name,
-          customer_email: billing.email,
-          address_street: shipping.address,
-          address_city: shipping.city,
-          address_street_number: shipping.address_street_number,
-          postal_code: shipping.postalCode,
-          country: shipping.country,
-          billing: `${billing.name}, ${billing.email}`,
-          order_date: new Date().toISOString().slice(0, 10),
-          total_price: total,
-          discount_code_id: null,
-        }),
-      });
-
-      if (res.ok) {
-        setConfirmMsg("Order placed! Confirmation email sent.");
-      } else {
-        setConfirmMsg("There was an error processing your order.");
-      }
-    } catch (err) {
-      console.error(err);
-      setConfirmMsg("There was an error processing your order.");
-    }
+    const discount= discountList.find((item)=>item.code===discountCode)
+    discount && setOrder({...order,discount_code_id : discount.code_id})
+  axios({
+  method: 'post',
+  url: API_BASE+"/orders/",
+  data: {...order,items:cart}
+  }).then((resp)=>{
+    console.log(resp)
+   }).catch((err)=>{console.log(err)})
   };
+
+
+  // Handle order submission
+  // const handleOrder = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     const res = await fetch(`${API_BASE}/orders`, {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({
+  //         customer_name: order.customer_name,
+  //         customer_email: order.customer_email,
+  //         address_street: order.address_street,
+  //         address_street_number: order.address_street_number,
+  //         address_city: order.address_city,
+  //         postal_code: order.postal_code,
+  //         country: order.country,
+  //         discount_code_id: null,
+  //       }),
+  //     });
+
+  //     if (res.ok) {
+  //       setConfirmMsg("Order placed! Confirmation email sent.");
+  //     } else {
+  //       setConfirmMsg("There was an error processing your order.");
+  //     }
+  //   } catch (err) {
+  //     console.error(err);
+  //     setConfirmMsg("There was an error processing your order.");
+  //   }
+  // };
 
   return (
     <div>
@@ -77,17 +90,17 @@ const Checkout = () => {
               className="form-control mb-2"
               placeholder="Name"
               required
-              value={billing.name}
-              onChange={(e) => setBilling({ ...billing, name: e.target.value })}
+              value={order.customer_name}
+              onChange={(e) => setOrder({ ...order, customer_name: e.target.value })}
             />
             <input
               type="email"
               className="form-control"
               placeholder="Email"
               required
-              value={billing.email}
+              value={order.customer_email}
               onChange={(e) =>
-                setBilling({ ...billing, email: e.target.value })
+                setOrder({ ...order, customer_email: e.target.value })
               }
             />
           </div>
@@ -98,42 +111,22 @@ const Checkout = () => {
             <input
               type="text"
               className="form-control mb-2"
-              placeholder="Address"
+              placeholder="Address street"
               required
-              value={shipping.address}
+              value={order.address_street}
               onChange={(e) =>
-                setShipping({ ...shipping, address: e.target.value })
+                setOrder({ ...order, address_street: e.target.value })
               }
             />
             <input
-              type="text"
-              className="form-control mb-2"
-              placeholder="City"
-              required
-              value={shipping.city}
-              onChange={(e) =>
-                setShipping({ ...shipping, city: e.target.value })
-              }
-            />
-            <input
-              type="text"
-              className="form-control mb-2"
-              placeholder="Postal Code"
-              required
-              value={shipping.postalCode}
-              onChange={(e) =>
-                setShipping({ ...shipping, postalCode: e.target.value })
-              }
-            />
-            <input
-              type="text"
+              type="number"
               className="form-control mb-2"
               placeholder="Street Number"
               required
-              value={shipping.address_street_number}
+              value={order.address_street_number}
               onChange={(e) =>
-                setShipping({
-                  ...shipping,
+                setOrder({
+                  ...order,
                   address_street_number: e.target.value,
                 })
               }
@@ -141,20 +134,41 @@ const Checkout = () => {
             <input
               type="text"
               className="form-control mb-2"
+              placeholder="City"
+              required
+              value={order.address_city}
+              onChange={(e) =>
+                setOrder({ ...order, address_city: e.target.value })
+              }
+            />
+            <input
+              type="text"
+              className="form-control mb-2"
+              placeholder="Postal Code"
+              required
+              value={order.postal_code}
+              onChange={(e) =>
+                setOrder({ ...order, postal_code: e.target.value })
+              }
+            />
+           
+            <input
+              type="text"
+              className="form-control mb-2"
               placeholder="Country"
               required
-              value={shipping.country}
+              value={order.country}
               onChange={(e) =>
-                setShipping({ ...shipping, country: e.target.value })
+                setOrder({ ...order, country: e.target.value })
               }
             />
             <input
               type="text"
               className="form-control mb-5"
               placeholder="Discount code"
-              value={shipping.code}
+              value={discountCode}
               onChange={(e) =>
-                setShipping({ ...shipping, code: e.target.value })
+                setDiscountCode(e.target.value)
               }
             />
           </div>
