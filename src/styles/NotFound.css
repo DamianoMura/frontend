@@ -17,19 +17,18 @@
   font-size: 3rem;
   font-weight: 700;
   margin-bottom: 1rem;
-  color: #f2f3f4; /* White text for contrast */
+  color: #f2f3f4; 
 }
 
-/* Testo descrittivo */
 .notfound-text {
   font-size: 1.2rem;
   margin-bottom: 2rem;
-  color: #d4d4d4; /* Alt/Grey for secondary text */
+  color: #d4d4d4; 
 }
 
-/* Bottone */
+
 .notfound-button {
-  background-color: #b73da0; /* Fuchsia */
+  background-color: #b73da0; 
   color: #f2f3f4;
   border: none;
   padding: 0.75rem 1.5rem;
@@ -44,7 +43,7 @@
 }
 
 .notfound-button:hover {
-  background-color: #6d5aa2; /* Viola 2 */
+  background-color: #6d5aa2; 
   transform: translateY(-2px);
 }
 

@@ -10,7 +10,7 @@ function NotFound() {
       <Link to="/" className="text-decoration-none">
         <button className="notfound-button">
           <i className="fa-regular fa-house"></i>
-          Torna alla Home
+          Back to Home
         </button>
       </Link>
     </div>
