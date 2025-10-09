@@ -46,35 +46,7 @@ const Checkout = () => {
   };
 
 
-  // Handle order submission
-  // const handleOrder = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const res = await fetch(`${API_BASE}/orders`, {
-  //       method: "POST",
-  //       headers: { "Content-Type": "application/json" },
-  //       body: JSON.stringify({
-  //         customer_name: order.customer_name,
-  //         customer_email: order.customer_email,
-  //         address_street: order.address_street,
-  //         address_street_number: order.address_street_number,
-  //         address_city: order.address_city,
-  //         postal_code: order.postal_code,
-  //         country: order.country,
-  //         discount_code_id: null,
-  //       }),
-  //     });
-
-  //     if (res.ok) {
-  //       setConfirmMsg("Order placed! Confirmation email sent.");
-  //     } else {
-  //       setConfirmMsg("There was an error processing your order.");
-  //     }
-  //   } catch (err) {
-  //     console.error(err);
-  //     setConfirmMsg("There was an error processing your order.");
-  //   }
-  // };
+ 
 
   return (
     <div>
