@@ -4,7 +4,12 @@ import ProductCard from "../components/ProductCard";
 import ProductList from "../components/ProductList";
 import "../styles/Products.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGripHorizontal, faListUl } from "@fortawesome/free-solid-svg-icons";
+import {
+	faGripHorizontal,
+	faListUl,
+	faPlus,
+	faMinus,
+} from "@fortawesome/free-solid-svg-icons";
 
 function Products() {
 	const [products, setProducts] = useState([]);
@@ -16,7 +21,7 @@ function Products() {
 
 	// paginazione
 	const [currentPage, setCurrentPage] = useState(1);
-	const productsPerPage = 8;
+	const [productsPerPage, setProductsPerPage] = useState(8);
 	const indexOfLastProduct = currentPage * productsPerPage;
 	const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
 	const currentProducts = filterProduct.slice(
@@ -121,6 +126,25 @@ function Products() {
 						</select>
 					</div>
 					<div className="col-4 m-2 text-white text-end ">
+						<button
+							type="button"
+							className="btn me-4"
+							onClick={() => {
+								setProductsPerPage(productsPerPage - 1);
+							}}
+						>
+							<FontAwesomeIcon icon={faMinus} />
+						</button>
+						<span className="me-4">{productsPerPage}</span>
+						<button
+							type="button"
+							className="btn me-4"
+							onClick={() => {
+								setProductsPerPage(productsPerPage + 1);
+							}}
+						>
+							<FontAwesomeIcon icon={faPlus} />
+						</button>
 						<button type="button" className="btn me-4" onClick={handleToggle}>
 							<FontAwesomeIcon icon={showCard ? faListUl : faGripHorizontal} />
 						</button>
