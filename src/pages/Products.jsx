@@ -161,9 +161,9 @@ function Products() {
 					>
 						{currentProducts.map((product) =>
 							showCard ? (
-								<ProductList product={product} />
+								<ProductList key={product.id} product={product} />
 							) : (
-								<div className="col-12 col-md-6 col-lg-3">
+								<div key={product.id} className="col-12 col-md-6 col-lg-3">
 									<ProductCard product={product} />
 								</div>
 							)
