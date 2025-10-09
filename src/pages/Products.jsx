@@ -95,66 +95,52 @@ function Products() {
 
 	
   return (
-        <div id="products" className="container-fluid hn-main">
-            <div className="row justify-content-center d-flex hn-sections-container">
-                <form
-                    className="d-flex"
-                    role="search"
-                    onSubmit={(e) => e.preventDefault()}
-                >
-                    <div className="col-4 m-2">
-                        <input
-                            type="text"
-                            className="form-control"
-                            placeholder="Find your products"
-                            value={search}
-                            onChange={(e) => setSearch(e.target.value)}
-                        />
-                    </div>
-                    <div className="col-4 m-2">
-                        <select
-                            className="form-select mb-2"
-                            value={sort}
-                            onChange={(e) => setSort(e.target.value)}
-                        >
-                            <option value="">Sort by...</option>
-                            <option value="name">Name</option>
-                            <option value="price">Price: lower</option>
-                            <option value="price_desc">Price: higher</option>
-                            <option value="category_name">Category</option>
-                            <option value="latest_arrivals">Latest arrivals</option>
-                            <option value="best_seller">Best seller</option>
-                        </select>
-                    </div>
-                    <div className="col-4 m-2 text-white text-end ">
-                        <button
-                            type="button"
-                            className="btn me-4"
-                            onClick={() => {
-                                setProductsPerPage(productsPerPage - 1);
-                            }}
-                        >
-                            <FontAwesomeIcon icon={faMinus} />
-                        </button>
-                        <span className="me-4">{productsPerPage}</span>
-                        <button
-                            type="button"
-                            className="btn me-4"
-                            onClick={() => {
-                                setProductsPerPage(productsPerPage + 1);
-                            }}
-                        >
-                            <FontAwesomeIcon icon={faPlus} />
-                        </button>
-                        <button type="button" className="btn me-4" onClick={handleToggle}>
-                            <FontAwesomeIcon icon={showCard ? faListUl : faGripHorizontal} />
-                        </button>
-                    </div>
-                </form>
-            </div>
+    <div id="products" className="container-fluid hn-main">
+        <div className="row justify-content-center d-flex hn-sections-container">
+            <form
+                className="d-flex flex-wrap justify-content-center"
+                role="search"
+                onSubmit={(e) => e.preventDefault()}
+            >
+                <div className="col-12 col-md-4 m-2">
+                    <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Find your products"
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                    />
+                </div>
+                <div className="col-12 col-md-4 m-2">
+                    <select
+                        className="form-select mb-2"
+                        value={sort}
+                        onChange={(e) => setSort(e.target.value)}
+                    >
+                        <option value="">Sort by...</option>
+                        <option value="name">Name</option>
+                        <option value="price">Price: lower</option>
+                        <option value="price_desc">Price: higher</option>
+                        <option value="category_name">Category</option>
+                        <option value="latest_arrivals">Latest arrivals</option>
+                        <option value="best_seller">Best seller</option>
+                    </select>
+                </div>
+                <div className="col-12 col-md-4 m-2 text-white text-end">
+                    <button
+                        type="button"
+                        className="btn me-2"
+                        onClick={handleToggle}
+                    >
+                        <FontAwesomeIcon icon={showCard ? faListUl : faGripHorizontal} />
+                    </button>
+                </div>
+            </form>
+        </div>
 
-            {/* 🔼 Paginazione spostata sopra i prodotti */}
-            <div className="d-flex justify-content-center align-items-center mt-4 gap-3">
+        {/* Paginazione + Selettore prodotti per pagina */}
+        <div className="d-flex flex-wrap justify-content-center align-items-center mt-4 gap-3">
+            <div className="d-flex align-items-center gap-2">
                 <button
                     className="btn"
                     onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
@@ -178,25 +164,46 @@ function Products() {
                 </button>
             </div>
 
-            <div className="row">
-                <div className="col-12 ps-section my-5">
-                    <div
-                        className={`row justify-content-start ${showCard ? "g-3" : "g-3"}`}
-                    >
-                        {currentProducts.map((product) =>
-                            showCard ? (
-                                <ProductList product={product} />
-                            ) : (
-                                <div className="col-12 col-md-6 col-lg-3">
-                                    <ProductCard product={product} />
-                                </div>
-                            )
-                        )}
-                    </div>
+            {/* Selettore prodotti per pagina */}
+            <div className="d-flex align-items-center gap-2 text-white">
+                <button
+                    type="button"
+                    className="btn btn-sm"
+                    onClick={() => setProductsPerPage((prev) => Math.max(prev - 1, 1))}
+                >
+                    <FontAwesomeIcon icon={faMinus} />
+                </button>
+                <span>{productsPerPage} / pagina</span>
+                <button
+                    type="button"
+                    className="btn btn-sm"
+                    onClick={() => setProductsPerPage((prev) => prev + 1)}
+                >
+                    <FontAwesomeIcon icon={faPlus} />
+                </button>
+            </div>
+        </div>
+
+        <div className="row">
+            <div className="col-12 ps-section my-5">
+                <div
+                    className={`row justify-content-start ${showCard ? "g-3" : "g-3"}`}
+                >
+                    {currentProducts.map((product) =>
+                        showCard ? (
+                            <ProductList key={product.id} product={product} />
+                        ) : (
+                            <div key={product.id} className="col-12 col-md-6 col-lg-3">
+                                <ProductCard product={product} />
+                            </div>
+                        )
+                    )}
                 </div>
             </div>
         </div>
+    </div>
   );
+
 };
 
 export default Products;
