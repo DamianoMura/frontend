@@ -45,7 +45,7 @@ const Checkout = () => {
       .then((res) => res.json())
       .then((data) => setDiscountList(data))
       .catch((err) => console.error(err));
-  }, [orderSent]);
+  }, []);
   
     const handleOrder = (e)=> {
     e.preventDefault();
@@ -68,9 +68,9 @@ const Checkout = () => {
     <div>
       <div className="checkout-container container my-5">
        {
-        !orderSent ?<h1 className="checkout-title">Checkout</h1> : <h1 className="checkout-title">Your Order Details</h1>
+        orderSent.id==="" ?<h1 className="checkout-title">Checkout</h1> : <h1 className="checkout-title">Your Order Details</h1>
        } 
-        {!orderSent ? <form className="checkout-form" onSubmit={handleOrder}>
+        {orderSent.id==="" ? <form className="checkout-form" onSubmit={handleOrder}>
           {/* Billing Section */}
           <div className="checkout-section mb-3">
             <h4>Billing Details</h4>
