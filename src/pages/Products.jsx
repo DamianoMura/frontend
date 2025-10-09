@@ -144,7 +144,7 @@ function Products() {
 						)}
 					</div>
 				</div>
-				{/* paginazione */}
+				{/* paginazione - navigazione */}
 				<div className="d-flex justify-content-center align-items-center mt-4 gap-3">
 					<button
 						className="btn"
