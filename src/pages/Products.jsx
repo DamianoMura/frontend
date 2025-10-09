@@ -4,7 +4,7 @@ import ProductCard from "../components/ProductCard";
 import ProductList from "../components/ProductList";
 import "../styles/Products.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGripHorizontal } from "@fortawesome/free-solid-svg-icons";
+import { faGripHorizontal, faListUl } from "@fortawesome/free-solid-svg-icons";
 
 function Products() {
 	const [products, setProducts] = useState([]);
@@ -14,8 +14,24 @@ function Products() {
 	const [sort, setSort] = useState("");
 	const baseUrl = "http://localhost:3000/products";
 
+	// paginazione
+	const [currentPage, setCurrentPage] = useState(1);
+	const productsPerPage = 8;
+	const indexOfLastProduct = currentPage * productsPerPage;
+	const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+	const currentProducts = filterProduct.slice(
+		indexOfFirstProduct,
+		indexOfLastProduct
+	);
+	const totalPages = Math.ceil(filterProduct.length / productsPerPage);
+
 	const navigate = useNavigate();
 	const location = useLocation();
+
+	// paginazione - quando si effettua una ricerca resetta la paginazione ad 1
+	useEffect(() => {
+		setCurrentPage(1); // ← aggiungi questo
+	}, [search, sort]);
 
 	// Leggi i parametri dalla URL al primo caricamento
 	useEffect(() => {
@@ -104,9 +120,9 @@ function Products() {
 							<option value="best_seller">Best seller</option>
 						</select>
 					</div>
-					<div className="col-3 m-2 text-white text-center">
-						<button type="button" className="btn" onClick={handleToggle}>
-							<FontAwesomeIcon icon={faGripHorizontal} />
+					<div className="col-4 m-2 text-white text-end ">
+						<button type="button" className="btn me-4" onClick={handleToggle}>
+							<FontAwesomeIcon icon={showCard ? faListUl : faGripHorizontal} />
 						</button>
 					</div>
 				</form>
@@ -117,7 +133,7 @@ function Products() {
 					<div
 						className={`row justify-content-start ${showCard ? "g-3" : "g-3"}`}
 					>
-						{filterProduct.map((product) =>
+						{currentProducts.map((product) =>
 							showCard ? (
 								<ProductList product={product} />
 							) : (
@@ -127,6 +143,30 @@ function Products() {
 							)
 						)}
 					</div>
+				</div>
+				{/* paginazione - navigazione */}
+				<div className="d-flex justify-content-center align-items-center mt-4 gap-3">
+					<button
+						className="btn"
+						onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+						disabled={currentPage === 1}
+					>
+						← Prev
+					</button>
+
+					<span className="fw-bold text-white">
+						Pagina {currentPage} di {totalPages}
+					</span>
+
+					<button
+						className="btn"
+						onClick={() =>
+							setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+						}
+						disabled={currentPage === totalPages}
+					>
+						Next →
+					</button>
 				</div>
 			</div>
 		</div>
