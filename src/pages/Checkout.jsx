@@ -41,7 +41,8 @@ const Checkout = () => {
   url: API_BASE+"/orders/",
   data: {...order,items:cart}
   }).then((resp)=>{
-    console.log(resp)
+    ////qui la risposta dopo l'inserimento
+    console.log(resp.data.billing)
    }).catch((err)=>{console.log(err)})
   };
 
