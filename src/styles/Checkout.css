@@ -1,64 +1,156 @@
-/* src/styles/Checkout.css */
+/* --- Background gradient like homepage --- */
+.checkout-bg {
+  min-height: 100vh;
+  width: 100%;
+  background: linear-gradient(180deg, #6e4cb8 0%, #232134 100%);
+  /* Non assoluto: NON copre navbar/footer */
+}
 
 /* --- Checkout Container --- */
 .checkout-container {
+  position: relative;
+  z-index: 1;
   margin-top: 2rem; /* Space above checkout */
   margin-bottom: 2rem; /* Space below checkout */
+  max-width: 600px;
+  background: rgba(33, 37, 41, 0.89); /* scuro trasparente come le card */
+  border-radius: 16px;
+  box-shadow: 0 0 16px #b73da033;
+  padding: 2.5rem 2.5rem 2rem 2.5rem;
 }
 
 /* --- Checkout Title --- */
 .checkout-title {
-  font-size: 2rem; /* Large title */
-  font-weight: bold; /* Emphasis */
-  margin-bottom: 1.5rem; /* Space below title */
+  font-size: 2.2rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
   text-align: center;
+  color: #fff;
+  letter-spacing: 1px;
 }
 
 /* --- Checkout Form --- */
 .checkout-form {
-  background: #f8f9fa; /* Light gray background */
-  border-radius: 12px; /* Rounded corners */
-  padding: 2rem; /* Inner padding */
-  box-shadow: 0 2px 16px rgba(0,0,0,0.08); /* Subtle shadow */
-  transition: box-shadow 0.2s ease-in-out;
-  border: 2px solid fuchsia;
+  width: 100%;
+  background: transparent;
+  border-radius: 12px;
+  padding: 0;
+  border: none;
+  box-shadow: none;
 }
 
 /* --- Checkout Sections --- */
 .checkout-section {
-  margin-bottom: 1.5rem; /* Space between sections */
+  margin-bottom: 2rem;
+  color: #fff;
 }
 
 /* --- Form Inputs --- */
 .checkout-form input {
   width: 100%;
-  padding: 0.5rem;
-  margin-bottom: 0.5rem;
-  border-radius: 6px;
-  border: 1px solid #ced4da;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  padding: 0.7rem 1rem;
+  margin-bottom: 0.7rem;
+  border-radius: 8px;
+  border: 1.5px solid #b73da0;
+  background: #644DA4;
+  color: #fff;
+  font-size: 1.06rem;
+  font-family: inherit;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
 }
 
 .checkout-form input:focus {
   outline: none;
-  border-color: #0d6efd; /* Bootstrap primary color */
-  box-shadow: 0 0 5px rgba(13,110,253,0.3); /* Soft glow on focus */
+  border-color: #b73da0;
+  background: #fcfbff;
+  box-shadow: 0 0 6px #b73da088;
 }
 
 /* --- Confirm Button --- */
-.checkout-form .btn-success {
-  transition: transform 0.15s, box-shadow 0.2s;
+.checkout-btn {
+  background: #b73da0;
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  font-size: 1.18rem;
+  padding: 0.85rem 0;
+  border-radius: 11px;
+  width: 100%;
+  margin-top: 1.3rem;
+  transition: background 0.18s, box-shadow 0.22s, transform 0.18s;
+  box-shadow: 0 4px 14px #b73da022;
 }
 
-.checkout-form .btn-success:hover {
-  transform: translateY(-2px); /* Slight lift */
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15); /* Shadow on hover */
+.checkout-btn:hover,
+.checkout-btn:focus {
+  background: #e100c7;
+  color: #fff;
+  box-shadow: 0 6px 24px #e100c744;
+  transform: translateY(-2px) scale(1.02);
 }
 
 /* --- Confirmation Message --- */
 .checkout-confirm {
-  margin-top: 1rem;
-  color: #28a745; /* Bootstrap success color */
+  margin-top: 1.5rem;
+  color: #b73da0;
   font-weight: bold;
+  font-size: 1.09rem;
   text-align: center;
+}
+
+/* --- Order Summary List --- */
+.checkout-section ul {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 1rem;
+}
+
+.checkout-section li {
+  color: #e7d9f4;
+  font-size: 1.07rem;
+  margin-bottom: 0.4rem;
+  background: #241e36;
+  border-radius: 5px;
+  padding: 0.5rem 0.7rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.checkout-section .badge.bg-primary {
+  background: #b73da0 !important;
+  color: #fff !important;
+  font-weight: 500;
+  font-size: 1rem;
+  margin-left: 8px;
+}
+
+.checkout-section .badge.bg-secondary {
+  background: #232134 !important;
+  color: #fff !important;
+  font-weight: 400;
+  font-size: 0.97rem;
+  margin-left: 8px;
+}
+
+/* --- Order Summary Total --- */
+.checkout-section h5,
+.checkout-section .fs-5 {
+  color: #e100c7;
+  text-align: right;
+  font-weight: 700;
+  font-size: 1.25rem;
+  margin-top: 1.2rem;
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+  .checkout-container {
+    max-width: 100vw;
+    padding: 1.2rem 0.2rem 1.5rem 0.2rem;
+  }
+  .checkout-title {
+    font-size: 1.5rem;
+  }
 }

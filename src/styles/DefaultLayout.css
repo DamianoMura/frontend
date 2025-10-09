@@ -10,7 +10,7 @@
 /* Main content grows to fill space between Navbar and Footer */
 .default-main {
   flex: 1; /* Makes main take all remaining vertical space */
-  padding-bottom: 2rem; /* optional, spacing from footer */
+  padding-bottom: 2rem; /*optional, spacing from footer*/
 }
 
 
