@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import "../styles/Checkout.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCartShopping,
@@ -9,17 +10,13 @@ import {
 import { useCart } from "../context/CartContext";
 import axios from "axios";
 import ChecklistCard from "../components/ChecklistCard";
-import "../styles/Checkout.css";
 
 const API_BASE = "http://localhost:3000";
 const DELIVERY_FEE = 1.9;
 const FREE_DELIVERY_THRESHOLD = 1500;
 
 const Checkout = () => {
-  const { cart, total } = useCart();
-
   const [orderSent, setOrderSent] = useState({
-    id: "",
     customer_name: "",
     customer_email: "",
     address_street: "",
@@ -27,8 +24,10 @@ const Checkout = () => {
     address_street_number: "",
     postal_code: "",
     country: "",
-    discount_code: null,
-    discount_percent: 0,
+    discount_code_id: null,
+    id: "",
+    billing: "",
+    order_date: "",
   });
 
   const [order, setOrder] = useState({
@@ -39,247 +38,316 @@ const Checkout = () => {
     address_street_number: "",
     postal_code: "",
     country: "",
+    discount_code_id: null,
   });
 
-  const [discountList, setDiscountList] = useState([]);
-  const [appliedDiscount, setAppliedDiscount] = useState(null);
-  const [discountCode, setDiscountCode] = useState("");
   const [confirmMsg, setConfirmMsg] = useState("");
+  const [discountList, setDiscountList] = useState([]);
+  const [discountCode, setDiscountCode] = useState("");
+  const { cart, updateQuantity, removeFromCart } = useCart();
+
+  const discountUrl = "http://localhost:3000/discount-codes";
 
   useEffect(() => {
-    fetch(`${API_BASE}/discount-codes`)
+    fetch(discountUrl)
       .then((res) => res.json())
       .then((data) => setDiscountList(data))
       .catch((err) => console.error(err));
   }, []);
 
-  const today = new Date();
-  const validDiscounts = discountList.filter((d) => {
-    const from = new Date(d.valid_from);
-    const until = new Date(d.valid_until);
-    return today >= from && today <= until;
-  });
+  // Always recalculate total from cart for absolute accuracy
+  const total = cart.reduce(
+    (sum, item) => sum + Number(item.price) * Number(item.quantity || 1),
+    0
+  );
+  const hasFreeDelivery = total >= FREE_DELIVERY_THRESHOLD;
+  const effectiveDeliveryFee = hasFreeDelivery ? 0 : DELIVERY_FEE;
+  const displayTotal = cart.length > 0 ? total + effectiveDeliveryFee : 0;
 
-  const finalTotal = appliedDiscount
-    ? total - (total * appliedDiscount.discount_percent) / 100
-    : total;
-
-  const handleApplyDiscount = () => {
-    const found = validDiscounts.find(
-      (d) => d.code.toLowerCase() === discountCode.trim().toLowerCase()
-    );
-
-    if (found) {
-      setAppliedDiscount(found);
-      setConfirmMsg(`Valid code! ${found.discount_percent}% discount applied.`);
-    } else {
-      setAppliedDiscount(null);
-      setConfirmMsg("Invalid discount code.");
-    }
-  };
-
-  const handleOrder = async (e) => {
+  const handleOrder = (e) => {
     e.preventDefault();
-    const discount = appliedDiscount;
+    const discount = discountList.find((item) => item.code === discountCode);
+    discount && setOrder({ ...order, discount_code_id: discount.code_id });
 
-    const orderData = {
-      ...order,
-      discount_code: discount ? discount.code : null,
-      discount_percent: discount ? discount.discount_percent : 0,
-      items: cart,
-    };
-
-    try {
-      const resp = await axios.post(`${API_BASE}/orders/`, orderData);
-      setOrderSent({ ...resp.data });
-      setConfirmMsg("Ordine inviato con successo!");
-    } catch (err) {
-      console.error(err);
-      setConfirmMsg("Errore durante l'invio dell'ordine.");
-    }
+    axios({
+      method: "post",
+      url: API_BASE + "/orders/",
+      data: { ...order, items: cart },
+    })
+      .then((resp) => {
+        setOrderSent({ ...resp.data });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
-    <div className="checkout-container">
-      {orderSent.id === "" ? (
-        <form className="checkout-form" onSubmit={handleOrder}>
-          <h1 className="text-center mb-4 text-white">Checkout</h1>
-
-          {/* Billing Details */}
-          <div className="mb-4 text-white">
-            <h4>Billing Details</h4>
-            <input
-              type="text"
-              className="form-control mb-2"
-              placeholder="Name"
-              required
-              value={order.customer_name}
-              onChange={(e) =>
-                setOrder({ ...order, customer_name: e.target.value })
-              }
-            />
-            <input
-              type="email"
-              className="form-control"
-              placeholder="Email"
-              required
-              value={order.customer_email}
-              onChange={(e) =>
-                setOrder({ ...order, customer_email: e.target.value })
-              }
-            />
-          </div>
-
-          {/* Shipping Details */}
-          <div className="mb-4 text-white">
-            <h4>Shipping Details</h4>
-            <input
-              type="text"
-              className="form-control mb-2"
-              placeholder="Address street"
-              required
-              value={order.address_street}
-              onChange={(e) =>
-                setOrder({ ...order, address_street: e.target.value })
-              }
-            />
-            <input
-              type="number"
-              className="form-control mb-2"
-              placeholder="Street Number"
-              required
-              value={order.address_street_number}
-              onChange={(e) =>
-                setOrder({ ...order, address_street_number: e.target.value })
-              }
-            />
-            <input
-              type="text"
-              className="form-control mb-2"
-              placeholder="City"
-              required
-              value={order.address_city}
-              onChange={(e) =>
-                setOrder({ ...order, address_city: e.target.value })
-              }
-            />
-            <input
-              type="text"
-              className="form-control mb-2"
-              placeholder="Postal Code"
-              required
-              value={order.postal_code}
-              onChange={(e) =>
-                setOrder({ ...order, postal_code: e.target.value })
-              }
-            />
-            <input
-              type="text"
-              className="form-control mb-2"
-              placeholder="Country"
-              required
-              value={order.country}
-              onChange={(e) => setOrder({ ...order, country: e.target.value })}
-            />
-
-            {/* Discount Code */}
-            <div className="d-flex align-items-center mt-2">
+    <div>
+      <div className="checkout-container container my-5">
+        {orderSent.id === "" ? (
+          <h1 className="checkout-title">Checkout</h1>
+        ) : (
+          <h1 className="checkout-title">Your Order Details</h1>
+        )}
+        {orderSent.id === "" ? (
+          <form className="checkout-form" onSubmit={handleOrder}>
+            {/* Billing Section */}
+            <div className="checkout-section mb-3">
+              <h4>Billing Details</h4>
               <input
                 type="text"
-                className="form-control me-2"
-                placeholder="Enter your discount code"
+                className="form-control mb-2"
+                placeholder="Name"
+                required
+                value={order.customer_name}
+                onChange={(e) =>
+                  setOrder({ ...order, customer_name: e.target.value })
+                }
+              />
+              <input
+                type="email"
+                className="form-control"
+                placeholder="Email"
+                required
+                value={order.customer_email}
+                onChange={(e) =>
+                  setOrder({ ...order, customer_email: e.target.value })
+                }
+              />
+            </div>
+
+            {/* Shipping Section */}
+            <div className="checkout-section mb-3">
+              <h4>Shipping Details</h4>
+              <input
+                type="text"
+                className="form-control mb-2"
+                placeholder="Address street"
+                required
+                value={order.address_street}
+                onChange={(e) =>
+                  setOrder({ ...order, address_street: e.target.value })
+                }
+              />
+              <input
+                type="number"
+                className="form-control mb-2"
+                placeholder="Street Number"
+                required
+                value={order.address_street_number}
+                onChange={(e) =>
+                  setOrder({
+                    ...order,
+                    address_street_number: e.target.value,
+                  })
+                }
+              />
+              <input
+                type="text"
+                className="form-control mb-2"
+                placeholder="City"
+                required
+                value={order.address_city}
+                onChange={(e) =>
+                  setOrder({ ...order, address_city: e.target.value })
+                }
+              />
+              <input
+                type="text"
+                className="form-control mb-2"
+                placeholder="Postal Code"
+                required
+                value={order.postal_code}
+                onChange={(e) =>
+                  setOrder({ ...order, postal_code: e.target.value })
+                }
+              />
+              <input
+                type="text"
+                className="form-control mb-2"
+                placeholder="Country"
+                required
+                value={order.country}
+                onChange={(e) =>
+                  setOrder({ ...order, country: e.target.value })
+                }
+              />
+              <input
+                type="text"
+                className="form-control mb-5"
+                placeholder="Discount code"
                 value={discountCode}
                 onChange={(e) => setDiscountCode(e.target.value)}
               />
-              <button
-                type="button"
-                className="btn btn-primary"
-                onClick={handleApplyDiscount}
-              >
-                Apply
-              </button>
             </div>
-          </div>
 
-          {/* Order Summary */}
-          <div className="mb-4 text-white">
-            <h4 className="mb-3">
-              <FontAwesomeIcon icon={faCartShopping} className="me-2" /> Order
-              Summary
-            </h4>
-            <ul className="list-group mb-3">
+            {/* Order Summary Section */}
+            <div className="checkout-section mb-3">
+              <h4 className="mb-3">
+                <FontAwesomeIcon icon={faCartShopping} className="me-2" />
+                Order Summary
+              </h4>
+              <ul className="list-unstyled mb-3">
+                {cart && cart.length > 0 ? (
+                  cart.map((item) => (
+                    <li key={item.product_id} className="checkout-summary-row">
+                      <span className="checkout-summary-name">{item.name}</span>
+                      <span className="checkout-summary-actions-box">
+                        <button
+                          type="button"
+                          className="qty-btn-sm"
+                          aria-label="Decrease quantity"
+                          onClick={() =>
+                            item.quantity > 1
+                              ? updateQuantity(item.product_id, "rem")
+                              : removeFromCart(item.product_id)
+                          }
+                        >
+                          <FontAwesomeIcon icon={faCircleMinus} />
+                        </button>
+                        <span className="checkout-summary-qty-sm">
+                          {item.quantity}
+                        </span>
+                        <button
+                          type="button"
+                          className="qty-btn-sm"
+                          aria-label="Increase quantity"
+                          onClick={() =>
+                            item.quantity < item.stock_quantity
+                              ? updateQuantity(item.product_id, "add")
+                              : null
+                          }
+                          disabled={item.quantity === item.stock_quantity}
+                        >
+                          <FontAwesomeIcon icon={faCirclePlus} />
+                        </button>
+                        <span className="checkout-summary-price-sm">
+                          {Number(item.price).toLocaleString("it-IT", {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })}{" "}
+                          €
+                        </span>
+                        <button
+                          type="button"
+                          className="qty-btn-sm qty-btn-trash"
+                          aria-label="Remove item"
+                          onClick={() => removeFromCart(item.product_id)}
+                        >
+                          <FontAwesomeIcon icon={faTrashCan} />
+                        </button>
+                      </span>
+                    </li>
+                  ))
+                ) : (
+                  <li>Nessun prodotto nel carrello.</li>
+                )}
+              </ul>
               {cart && cart.length > 0 ? (
-                cart.map((item) => (
-                  <li
-                    key={item.product_id}
-                    className="list-group-item d-flex justify-content-between align-items-center"
-                  >
-                    <div>
-                      <strong>{item.name}</strong> <br />
-                      <small className="text-muted">{item.brand}</small>
-                    </div>
-                    <div>
-                      <span className="badge bg-primary rounded-pill me-2">
-                        {Number(item.price).toFixed(2)} €
+                <>
+                  <hr />
+                  {/* Delivery Fee */}
+                  <div className="checkout-row mb-2">
+                    <span className="label-multiline">
+                      <span
+                        className="label fw-bold"
+                        style={{ color: "#9F2E8C" }}
+                      >
+                        Delivery Fee
                       </span>
-                      <span className="badge bg-secondary rounded-pill">
-                        x{item.quantity}
-                      </span>
-                    </div>
-                  </li>
-                ))
+                      {hasFreeDelivery && (
+                        <span className="label-placeholder">&nbsp;</span>
+                      )}
+                    </span>
+                    <span className="delivery-value-col">
+                      {hasFreeDelivery ? (
+                        <>
+                          <span className="delivery-fee-inline">
+                            <span className="strikethrough">
+                              {DELIVERY_FEE.toLocaleString("it-IT", {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                              })}{" "}
+                              €
+                            </span>
+                            <span className="free-value">0,00 €</span>
+                          </span>
+                          <span className="free-msg">
+                            Hai diritto alla spedizione gratuita!
+                          </span>
+                        </>
+                      ) : (
+                        <span className="delivery-fee-normal">
+                          <span
+                            className="fw-bold fs-6"
+                            style={{ color: "#9F2E8C" }}
+                          >
+                            {DELIVERY_FEE.toLocaleString("it-IT", {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })}{" "}
+                            €
+                          </span>
+                        </span>
+                      )}
+                    </span>
+                  </div>
+                  {/* Total row */}
+                  <div className="checkout-row mb-2">
+                    <span
+                      className="label fw-bold"
+                      style={{ color: "#9F2E8C" }}
+                    >
+                      Total
+                    </span>
+                    <span
+                      className="total-value fw-bold fs-5"
+                      style={{ color: "#9F2E8C" }}
+                    >
+                      {displayTotal.toLocaleString("it-IT", {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}{" "}
+                      €
+                    </span>
+                  </div>
+                </>
               ) : (
-                <li className="list-group-item">
-                  Nessun prodotto nel carrello.
-                </li>
+                <div className="checkout-row mb-2">
+                  <span className="label fw-bold" style={{ color: "#9F2E8C" }}>
+                    Total
+                  </span>
+                  <span
+                    className="total-value fw-bold fs-5"
+                    style={{ color: "#9F2E8C" }}
+                  >
+                    0,00 €
+                  </span>
+                </div>
               )}
-            </ul>
+            </div>
 
-            {appliedDiscount && (
-              <div className="mb-2">
-                <span>Prezzo originale: </span>
-                <span className="text-decoration-line-through me-2">
-                  {total.toLocaleString("it-IT", {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  })}{" "}
-                  €
-                </span>
-                <span>Prezzo scontato: </span>
-                <span>
-                  {finalTotal.toLocaleString("it-IT", {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  })}{" "}
-                  €
-                </span>
-              </div>
+            {/* Submit Button */}
+            <button className="btn btn-success checkout-btn" type="submit">
+              Confirm Order
+            </button>
+
+            {/* Confirmation Message */}
+            {confirmMsg && (
+              <div className="checkout-confirm mt-3">{confirmMsg}</div>
             )}
-
-            <div className="d-flex justify-content-between align-items-center fw-bold fs-5">
-              <span>Total</span>
-              <span>
-                {finalTotal.toLocaleString("it-IT", {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}{" "}
-                €
-              </span>
-            </div>
+          </form>
+        ) : (
+          <div key={orderSent.id}>
+            <ChecklistCard
+              orderSent={orderSent}
+              cart={cart}
+              total={displayTotal}
+            />
           </div>
-
-          <button className="btn btn-success w-100" type="submit">
-            Confirm Order
-          </button>
-          {confirmMsg && (
-            <div className="text-center mt-3 text-warning fw-bold">
-              {confirmMsg}
-            </div>
-          )}
-        </form>
-      ) : (
-        <ChecklistCard orderSent={orderSent} cart={cart} total={finalTotal} />
-      )}
+        )}
+      </div>
     </div>
   );
 };
