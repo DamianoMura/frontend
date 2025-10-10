@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from "react";
-import "../styles/Checkout.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import { useCart } from "../context/CartContext";
 import axios from "axios";
 import ChecklistCard from "../components/ChecklistCard";
+import "../styles/Checkout.css";
+
 const API_BASE = "http://localhost:3000";
 
 const Checkout = () => {
   const { cart, total } = useCart();
+
   const [orderSent, setOrderSent] = useState({
+    id: "",
     customer_name: "",
     customer_email: "",
     address_street: "",
@@ -17,10 +20,8 @@ const Checkout = () => {
     address_street_number: "",
     postal_code: "",
     country: "",
-    discount_code_id: null,
-    id: "",
-    billing: "",
-    order_date: "",
+    discount_code: null,
+    discount_percent: 0,
   });
 
   const [order, setOrder] = useState({
@@ -31,196 +32,237 @@ const Checkout = () => {
     address_street_number: "",
     postal_code: "",
     country: "",
-    discount_code_id: null,
   });
-  const [confirmMsg, setConfirmMsg] = useState("");
+
   const [discountList, setDiscountList] = useState([]);
   const [discountCode, setDiscountCode] = useState("");
+  const [confirmMsg, setConfirmMsg] = useState("");
 
-  const discountUrl = "http://localhost:3000/discount-codes";
-
-  // Fetch discount
   useEffect(() => {
-    fetch(discountUrl)
+    fetch(`${API_BASE}/discount-codes`)
       .then((res) => res.json())
       .then((data) => setDiscountList(data))
       .catch((err) => console.error(err));
   }, []);
 
-  const handleOrder = (e) => {
+  const today = new Date();
+  const validDiscounts = discountList.filter((d) => {
+    const from = new Date(d.valid_from);
+    const until = new Date(d.valid_until);
+    return today >= from && today <= until;
+  });
+
+  const appliedDiscount = discountList.find((d) => d.code === discountCode);
+  const finalTotal = appliedDiscount
+    ? total - (total * appliedDiscount.discount_percent) / 100
+    : total;
+
+  const handleOrder = async (e) => {
     e.preventDefault();
-    const discount = discountList.find((item) => item.code === discountCode);
-    discount && setOrder({ ...order, discount_code_id: discount.code_id });
-    axios({
-      method: "post",
-      url: API_BASE + "/orders/",
-      data: { ...order, items: cart },
-    })
-      .then((resp) => {
-        ////qui la risposta dopo l'inserimento
-        setOrderSent({ ...resp.data });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    const discount = discountList.find((d) => d.code === discountCode);
+    if (discount) {
+      const from = new Date(discount.valid_from);
+      const until = new Date(discount.valid_until);
+      if (today < from || today > until) {
+        setConfirmMsg("Il codice sconto non è valido oggi.");
+        return;
+      }
+    }
+
+    const orderData = {
+      ...order,
+      discount_code: discount ? discount.code : null,
+      discount_percent: discount ? discount.discount_percent : 0,
+      items: cart,
+    };
+
+    try {
+      const resp = await axios.post(`${API_BASE}/orders/`, orderData);
+      setOrderSent({ ...resp.data });
+      setConfirmMsg("Ordine inviato con successo!");
+    } catch (err) {
+      console.error(err);
+      setConfirmMsg("Errore durante l'invio dell'ordine.");
+    }
   };
 
   return (
-    <div>
-      <div className="checkout-container container my-5">
-        {orderSent.id === "" ? (
-          <h1 className="checkout-title">Checkout</h1>
-        ) : (
-          <h1 className="checkout-title">Your Order Details</h1>
-        )}
-        {orderSent.id === "" ? (
-          <form className="checkout-form" onSubmit={handleOrder}>
-            {/* Billing Section */}
-            <div className="checkout-section mb-3">
-              <h4>Billing Details</h4>
-              <input
-                type="text"
-                className="form-control mb-2"
-                placeholder="Name"
-                required
-                value={order.customer_name}
-                onChange={(e) =>
-                  setOrder({ ...order, customer_name: e.target.value })
-                }
-              />
-              <input
-                type="email"
-                className="form-control"
-                placeholder="Email"
-                required
-                value={order.customer_email}
-                onChange={(e) =>
-                  setOrder({ ...order, customer_email: e.target.value })
-                }
-              />
-            </div>
+    <div className="checkout-container">
+      {orderSent.id === "" ? (
+        <form className="checkout-form" onSubmit={handleOrder}>
+          <h1 className="text-center mb-4 text-white">Checkout</h1>
 
-            {/* Shipping Section */}
-            <div className="checkout-section mb-3">
-              <h4>Shipping Details</h4>
-              <input
-                type="text"
-                className="form-control mb-2"
-                placeholder="Address street"
-                required
-                value={order.address_street}
-                onChange={(e) =>
-                  setOrder({ ...order, address_street: e.target.value })
-                }
-              />
-              <input
-                type="number"
-                className="form-control mb-2"
-                placeholder="Street Number"
-                required
-                value={order.address_street_number}
-                onChange={(e) =>
-                  setOrder({
-                    ...order,
-                    address_street_number: e.target.value,
-                  })
-                }
-              />
-              <input
-                type="text"
-                className="form-control mb-2"
-                placeholder="City"
-                required
-                value={order.address_city}
-                onChange={(e) =>
-                  setOrder({ ...order, address_city: e.target.value })
-                }
-              />
-              <input
-                type="text"
-                className="form-control mb-2"
-                placeholder="Postal Code"
-                required
-                value={order.postal_code}
-                onChange={(e) =>
-                  setOrder({ ...order, postal_code: e.target.value })
-                }
-              />
+          {/* Billing Details */}
+          <div className="mb-4 text-white">
+            <h4>Billing Details</h4>
+            <input
+              type="text"
+              className="form-control mb-2"
+              placeholder="Name"
+              required
+              value={order.customer_name}
+              onChange={(e) =>
+                setOrder({ ...order, customer_name: e.target.value })
+              }
+            />
+            <input
+              type="email"
+              className="form-control"
+              placeholder="Email"
+              required
+              value={order.customer_email}
+              onChange={(e) =>
+                setOrder({ ...order, customer_email: e.target.value })
+              }
+            />
+          </div>
 
-              <input
-                type="text"
-                className="form-control mb-2"
-                placeholder="Country"
-                required
-                value={order.country}
-                onChange={(e) =>
-                  setOrder({ ...order, country: e.target.value })
-                }
-              />
-              <input
-                type="text"
-                className="form-control mb-5"
-                placeholder="Discount code"
-                value={discountCode}
-                onChange={(e) => setDiscountCode(e.target.value)}
-              />
-            </div>
+          {/* Shipping Details */}
+          <div className="mb-4 text-white">
+            <h4>Shipping Details</h4>
+            <input
+              type="text"
+              className="form-control mb-2"
+              placeholder="Address street"
+              required
+              value={order.address_street}
+              onChange={(e) =>
+                setOrder({ ...order, address_street: e.target.value })
+              }
+            />
+            <input
+              type="number"
+              className="form-control mb-2"
+              placeholder="Street Number"
+              required
+              value={order.address_street_number}
+              onChange={(e) =>
+                setOrder({ ...order, address_street_number: e.target.value })
+              }
+            />
+            <input
+              type="text"
+              className="form-control mb-2"
+              placeholder="City"
+              required
+              value={order.address_city}
+              onChange={(e) =>
+                setOrder({ ...order, address_city: e.target.value })
+              }
+            />
+            <input
+              type="text"
+              className="form-control mb-2"
+              placeholder="Postal Code"
+              required
+              value={order.postal_code}
+              onChange={(e) =>
+                setOrder({ ...order, postal_code: e.target.value })
+              }
+            />
+            <input
+              type="text"
+              className="form-control mb-2"
+              placeholder="Country"
+              required
+              value={order.country}
+              onChange={(e) => setOrder({ ...order, country: e.target.value })}
+            />
 
-            {/* Order Summary Section */}
-            <div className="checkout-section mb-3">
-              <h4 className="mb-3">
-                <FontAwesomeIcon icon={faCartShopping} className="me-2" />
-                Order Summary
-              </h4>
-              <ul className="list-unstyled mb-3">
-                {cart && cart.length > 0 ? (
-                  cart.map((item) => (
-                    <li key={item.product_id} className="mb-1">
-                      <strong>{item.name}</strong>
-                      <span className="text-muted ms-2">{item.brand}</span>
-                      <span className="badge bg-primary ms-2">
+            {/* Discount Code */}
+            <select
+              className="form-select mt-2"
+              value={discountCode}
+              onChange={(e) => setDiscountCode(e.target.value)}
+            >
+              <option value="">Choose your discount code</option>
+              {validDiscounts.map((discount) => (
+                <option key={discount.code} value={discount.code}>
+                  {discount.code} ({discount.discount_percent}% off)
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Order Summary */}
+          <div className="mb-4 text-white">
+            <h4 className="mb-3">
+              <FontAwesomeIcon icon={faCartShopping} className="me-2" /> Order
+              Summary
+            </h4>
+            <ul className="list-group mb-3">
+              {cart && cart.length > 0 ? (
+                cart.map((item) => (
+                  <li
+                    key={item.product_id}
+                    className="list-group-item d-flex justify-content-between align-items-center"
+                  >
+                    <div>
+                      <strong>{item.name}</strong> <br />
+                      <small className="text-muted">{item.brand}</small>
+                    </div>
+                    <div>
+                      <span className="badge bg-primary rounded-pill me-2">
                         {Number(item.price).toFixed(2)} €
                       </span>
-                      <span className="badge bg-secondary ms-2">
+                      <span className="badge bg-secondary rounded-pill">
                         x{item.quantity}
                       </span>
-                    </li>
-                  ))
-                ) : (
-                  <li>Nessun prodotto nel carrello.</li>
-                )}
-              </ul>
-              <hr />
-              <div className="d-flex justify-content-between align-items-center mb-2">
-                <span className="fw-bold" style={{ color: "#e100c7" }}>
-                  Total
+                    </div>
+                  </li>
+                ))
+              ) : (
+                <li className="list-group-item">
+                  Nessun prodotto nel carrello.
+                </li>
+              )}
+            </ul>
+
+            {appliedDiscount && (
+              <div className="mb-2">
+                <span>Prezzo originale: </span>
+                <span className="text-decoration-line-through me-2">
+                  {total.toLocaleString("it-IT", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}{" "}
+                  €
                 </span>
-                <span className="fw-bold fs-5" style={{ color: "#e100c7" }}>
-                  {Number(total).toLocaleString("it-IT", {
+                <span>Prezzo scontato: </span>
+                <span>
+                  {finalTotal.toLocaleString("it-IT", {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2,
                   })}{" "}
                   €
                 </span>
               </div>
-            </div>
-
-            {/* Submit Button */}
-            <button className="btn btn-success checkout-btn" type="submit">
-              Confirm Order
-            </button>
-
-            {/* Confirmation Message */}
-            {confirmMsg && (
-              <div className="checkout-confirm mt-3">{confirmMsg}</div>
             )}
-          </form>
-        ) : (
-          <div key={orderSent.id}>
-            <ChecklistCard orderSent={orderSent} cart={cart} total={total} />
+
+            <div className="d-flex justify-content-between align-items-center fw-bold fs-5">
+              <span>Total</span>
+              <span>
+                {finalTotal.toLocaleString("it-IT", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}{" "}
+                €
+              </span>
+            </div>
           </div>
-        )}
-      </div>
+
+          <button className="btn btn-success w-100" type="submit">
+            Confirm Order
+          </button>
+          {confirmMsg && (
+            <div className="text-center mt-3 text-warning fw-bold">
+              {confirmMsg}
+            </div>
+          )}
+        </form>
+      ) : (
+        <ChecklistCard orderSent={orderSent} cart={cart} total={finalTotal} />
+      )}
     </div>
   );
 };
