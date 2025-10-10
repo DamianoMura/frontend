@@ -9,18 +9,32 @@ import CartSummary from "../components/CartSummary";
 const ProductDetail = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const { cart, addToCart, removeFromCart } = useCart();
 
   useEffect(() => {
+    setLoading(true);
+    setError(false);
+
     fetch(`http://localhost:3000/products/${id}`)
       .then((res) => res.json())
-      .then((data) => setProduct(data))
-      .catch((err) => console.error(err));
+      .then((data) => {
+        if (data && data.product_id) {
+          setProduct(data);
+        } else {
+          setError(true);
+        }
+      })
+      .catch((err) => {
+        console.error("Errore nel recupero del prodotto:", err);
+        setError(true);
+      })
+      .finally(() => setLoading(false));
   }, [id]);
 
-  if (!product) {
-    return <div>Loading...</div>;
-  }
+  if (loading) return <div>Caricamento in corso...</div>;
+  if (error || !product) return <div>Prodotto non trovato</div>;
 
   const inCart = cart.some((item) => item.product_id === product.product_id);
   const displayPrice = !isNaN(Number(product.price))
@@ -51,6 +65,7 @@ const ProductDetail = () => {
                 className="btn"
                 onClick={() => addToCart(product)}
                 title="Add to cart"
+                disabled={!product || !product.product_id}
               >
                 <FontAwesomeIcon icon={faCartPlus} />
               </button>
@@ -66,13 +81,9 @@ const ProductDetail = () => {
           </div>
         </div>
 
-        {/* Colonna sempre presente per il summary */}
+        {/* Summary */}
         <div className="product-summary-col">
-          {cart.length>0  &&
-            
-              <CartSummary className="cart-summary-card"/>
-            
-          }
+          {cart.length > 0 && <CartSummary className="cart-summary-card" />}
         </div>
       </div>
     </div>
