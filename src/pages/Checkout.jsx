@@ -44,18 +44,17 @@ const Checkout = () => {
   const [confirmMsg, setConfirmMsg] = useState("");
   const [discountList, setDiscountList] = useState([]);
   const [discountCode, setDiscountCode] = useState("");
+  const [appliedDiscount, setAppliedDiscount] = useState(null);
   const { cart, updateQuantity, removeFromCart } = useCart();
 
-  const discountUrl = "http://localhost:3000/discount-codes";
-
   useEffect(() => {
-    fetch(discountUrl)
+    fetch(`${API_BASE}/discount-codes`)
       .then((res) => res.json())
       .then((data) => setDiscountList(data))
       .catch((err) => console.error(err));
   }, []);
 
-  // Always recalculate total from cart for absolute accuracy
+  // Calcolo totale
   const total = cart.reduce(
     (sum, item) => sum + Number(item.price) * Number(item.quantity || 1),
     0
@@ -64,22 +63,41 @@ const Checkout = () => {
   const effectiveDeliveryFee = hasFreeDelivery ? 0 : DELIVERY_FEE;
   const displayTotal = cart.length > 0 ? total + effectiveDeliveryFee : 0;
 
+  // Totale scontato se applicato
+  const discountedTotal = appliedDiscount?.discount_percent
+    ? displayTotal * (1 - appliedDiscount.discount_percent / 100)
+    : displayTotal;
+
+  const handleApplyDiscount = () => {
+    const found = discountList.find(
+      (d) => d.code.toLowerCase() === discountCode.trim().toLowerCase()
+    );
+    if (found) {
+      setAppliedDiscount(found);
+      setConfirmMsg(
+        `Valid ${found.code}! discount of ${found.discount_percent}% applied.`
+      );
+    } else {
+      setAppliedDiscount(null);
+      setConfirmMsg("Invalid discount code.");
+    }
+  };
+
   const handleOrder = (e) => {
     e.preventDefault();
-    const discount = discountList.find((item) => item.code === discountCode);
-    discount && setOrder({ ...order, discount_code_id: discount.code_id });
+    const discount = discountList.find(
+      (item) => item.code.toLowerCase() === discountCode.trim().toLowerCase()
+    );
+    const orderData = {
+      ...order,
+      items: cart,
+      discount_code_id: discount?.code_id || null,
+    };
 
-    axios({
-      method: "post",
-      url: API_BASE + "/orders/",
-      data: { ...order, items: cart },
-    })
-      .then((resp) => {
-        setOrderSent({ ...resp.data });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    axios
+      .post(`${API_BASE}/orders/`, orderData)
+      .then((resp) => setOrderSent(resp.data))
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -173,13 +191,23 @@ const Checkout = () => {
                   setOrder({ ...order, country: e.target.value })
                 }
               />
-              <input
-                type="text"
-                className="form-control mb-5"
-                placeholder="Discount code"
-                value={discountCode}
-                onChange={(e) => setDiscountCode(e.target.value)}
-              />
+
+              <div className="d-flex align-items-center mt-2">
+                <input
+                  type="text"
+                  className="form-control me-2"
+                  placeholder="Enter your discount code"
+                  value={discountCode}
+                  onChange={(e) => setDiscountCode(e.target.value)}
+                />
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={handleApplyDiscount}
+                >
+                  Apply
+                </button>
+              </div>
             </div>
 
             {/* Order Summary Section */}
@@ -241,10 +269,11 @@ const Checkout = () => {
                     </li>
                   ))
                 ) : (
-                  <li>Nessun prodotto nel carrello.</li>
+                  <li>No products in cart.</li>
                 )}
               </ul>
-              {cart && cart.length > 0 ? (
+
+              {cart.length > 0 && (
                 <>
                   <hr />
                   {/* Delivery Fee */}
@@ -274,7 +303,7 @@ const Checkout = () => {
                             <span className="free-value">0,00 €</span>
                           </span>
                           <span className="free-msg">
-                            Hai diritto alla spedizione gratuita!
+                            Congrats! Free delivery applied.
                           </span>
                         </>
                       ) : (
@@ -293,6 +322,7 @@ const Checkout = () => {
                       )}
                     </span>
                   </div>
+
                   {/* Total row */}
                   <div className="checkout-row mb-2">
                     <span
@@ -305,7 +335,7 @@ const Checkout = () => {
                       className="total-value fw-bold fs-5"
                       style={{ color: "#9F2E8C" }}
                     >
-                      {displayTotal.toLocaleString("it-IT", {
+                      {discountedTotal.toLocaleString("it-IT", {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2,
                       })}{" "}
@@ -313,27 +343,13 @@ const Checkout = () => {
                     </span>
                   </div>
                 </>
-              ) : (
-                <div className="checkout-row mb-2">
-                  <span className="label fw-bold" style={{ color: "#9F2E8C" }}>
-                    Total
-                  </span>
-                  <span
-                    className="total-value fw-bold fs-5"
-                    style={{ color: "#9F2E8C" }}
-                  >
-                    0,00 €
-                  </span>
-                </div>
               )}
             </div>
 
-            {/* Submit Button */}
             <button className="btn btn-success checkout-btn" type="submit">
               Confirm Order
             </button>
 
-            {/* Confirmation Message */}
             {confirmMsg && (
               <div className="checkout-confirm mt-3">{confirmMsg}</div>
             )}
@@ -343,7 +359,8 @@ const Checkout = () => {
             <ChecklistCard
               orderSent={orderSent}
               cart={cart}
-              total={displayTotal}
+              total={discountedTotal}
+              appliedDiscount={appliedDiscount}
             />
           </div>
         )}

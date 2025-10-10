@@ -1,0 +1,97 @@
+.card-checklist {
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.card-checklist h2 {
+  color: #e100c7;
+  text-align: center;
+  margin-bottom: 2rem;
+  font-weight: 700;
+}
+
+.card-checklist h5 {
+  font-weight: 700;
+  color: #9f2e8c;
+  margin-bottom: 0.75rem;
+}
+
+.card-checklist p {
+  margin: 0.25rem 0;
+  color: #444;
+}
+
+.card-checklist .section {
+  margin-bottom: 1.5rem;
+}
+
+.card-checklist .list-group-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #eee;
+}
+
+.card-checklist .list-group-item:last-child {
+  border-bottom: none;
+}
+
+.card-checklist .badge {
+  background-color: #9f2e8c !important;
+  font-size: 0.9rem;
+  padding: 0.6rem 0.8rem;
+}
+
+.card-checklist .summary-box {
+  background-color: #f9f1fa;
+  border-radius: 10px;
+  padding: 1rem;
+  margin-top: 1.5rem;
+}
+
+.card-checklist .summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+.card-checklist .summary-row strong {
+  color: #444;
+}
+
+.card-checklist .summary-row.total {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #e100c7;
+}
+
+.card-checklist .discount-text {
+  color: #008000;
+  font-weight: 600;
+}
+
+.card-checklist .divider {
+  border-top: 2px solid #e6c5e6;
+  margin: 1.5rem 0;
+}
+
+@media (max-width: 576px) {
+  .card-checklist {
+    padding: 1.2rem;
+  }
+
+  .card-checklist h2 {
+    font-size: 1.4rem;
+  }
+
+  .card-checklist .summary-row.total {
+    font-size: 1.1rem;
+  }
+}
