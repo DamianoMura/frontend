@@ -325,8 +325,7 @@ const Checkout = () => {
           <div key={orderSent.id}>
             <ChecklistCard
               orderSent={orderSent}
-              cart={cart}
-              total={displayTotal}
+              
             />
           </div>
         )}

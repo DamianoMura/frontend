@@ -2,7 +2,7 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 
-function ChecklistCard({ orderSent, total }) {
+function ChecklistCard({ orderSent }) {
   const {
     customer_name,
     customer_email,
@@ -12,8 +12,10 @@ function ChecklistCard({ orderSent, total }) {
     postal_code,
     country,
     items,
-    discount_code_id
+    discount_code_id,
+    id,
   } = orderSent;
+  const total = items.map((item)=> total+=item.price)
   return (
     <div className="card p-4">
       <h2 className="text-center mb-4" style={{ color: "#e100c7" }}>
