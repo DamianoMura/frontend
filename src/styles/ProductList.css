@@ -93,3 +93,13 @@
 		padding-top: 1rem;
 	}
 }
+
+.product-card-btn {
+  width: auto;
+  min-width: 100px;
+  max-width: 140px;
+  padding: 0.50rem 0.5rem;
+  align-self: start; 
+  text-align: center;
+  white-space: nowrap;
+}

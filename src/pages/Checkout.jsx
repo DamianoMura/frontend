@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCartShopping,
+  faCirclePlus,
+  faCircleMinus,
+  faTrashCan,
+} from "@fortawesome/free-solid-svg-icons";
 import { useCart } from "../context/CartContext";
 import axios from "axios";
 import ChecklistCard from "../components/ChecklistCard";
 import "../styles/Checkout.css";
 
 const API_BASE = "http://localhost:3000";
+const DELIVERY_FEE = 1.9;
+const FREE_DELIVERY_THRESHOLD = 1500;
 
 const Checkout = () => {
   const { cart, total } = useCart();

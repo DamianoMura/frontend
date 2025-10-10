@@ -13,15 +13,15 @@ MILESTONE :
 3. pagina di dettaglio prodotto
    -visualizzazione delle informazioni del prodotto ok
    -possibilità di aggiungere il prodotto al carrello ok
-   -se il prodotto non esiste non si può aggiungere Anthony
+   -se il prodotto non esiste non si può aggiungere Anthony(ok)
 
    - gestione 404 prodotto non trovato (detail . ovunque )
 
 4. carrello
    -possibilità di modificare le quantità dei prodotti nel carrello ok
    -visualizzare il totale del carrello ok
-   bottoni da sistemare da invertire renderli
-   NAV bar aggiungere il numero di prodotti visibili nel carrello dall'icona (logica) color style={{ color: "#e100c7" }}> Anthony
+   bottoni da sistemare da invertire renderli anthony(ok)
+   NAV bar aggiungere il numero di prodotti visibili nel carrello dall'icona (logica) color style={{ color: "#e100c7" }}> Anthony(ok)
 
 5. checkout
    -inserimento dei dati di fatturazione e spedizione del cliente ok
@@ -34,7 +34,7 @@ MILESTONE successive(extra):
 
 (1). doppia visualizzazione dei risultati di ricerca ok
 -possibilità di visualizzare i risultati di ricerca in griglia o in lista ok
-modificare il pulsante details Anthony
+modificare il pulsante details Anthony(ok)
 
 (2). spedizione gratuita
 -spedizione gratuita per ordini che superano una soglia minima di spesa

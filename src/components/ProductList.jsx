@@ -31,8 +31,7 @@ const ProductList = ({ product }) => {
 					<p className="card-text-price">€ {product.price}</p>
 					<Link
 						to={`/products/${product.slug}`}
-						className="btn btn-outline-primary product-card-btn"
-					>
+						className="btn btn-outline-primary btn-sm product-card-btn">
 						Details
 					</Link>
 				</div>
