@@ -1,14 +1,21 @@
 import React, { useState, useEffect } from "react";
 import "../styles/Checkout.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCartShopping,
+  faCirclePlus,
+  faCircleMinus,
+  faTrashCan,
+} from "@fortawesome/free-solid-svg-icons";
 import { useCart } from "../context/CartContext";
 import axios from "axios";
 import ChecklistCard from "../components/ChecklistCard";
+
 const API_BASE = "http://localhost:3000";
+const DELIVERY_FEE = 1.9;
+const FREE_DELIVERY_THRESHOLD = 1500;
 
 const Checkout = () => {
-  const { cart, total } = useCart();
   const [orderSent, setOrderSent] = useState({
     customer_name: "",
     customer_email: "",
@@ -33,13 +40,14 @@ const Checkout = () => {
     country: "",
     discount_code_id: null,
   });
+
   const [confirmMsg, setConfirmMsg] = useState("");
   const [discountList, setDiscountList] = useState([]);
   const [discountCode, setDiscountCode] = useState("");
+  const { cart, total, updateQuantity, removeFromCart } = useCart();
 
   const discountUrl = "http://localhost:3000/discount-codes";
 
-  // Fetch discount
   useEffect(() => {
     fetch(discountUrl)
       .then((res) => res.json())
@@ -51,19 +59,23 @@ const Checkout = () => {
     e.preventDefault();
     const discount = discountList.find((item) => item.code === discountCode);
     discount && setOrder({ ...order, discount_code_id: discount.code_id });
+
     axios({
       method: "post",
       url: API_BASE + "/orders/",
       data: { ...order, items: cart },
     })
       .then((resp) => {
-        ////qui la risposta dopo l'inserimento
         setOrderSent({ ...resp.data });
       })
       .catch((err) => {
         console.log(err);
       });
   };
+
+  const hasFreeDelivery = Number(total) > FREE_DELIVERY_THRESHOLD;
+  const effectiveDeliveryFee = hasFreeDelivery ? 0 : DELIVERY_FEE;
+  const displayTotal = Number(total) + effectiveDeliveryFee;
 
   return (
     <div>
@@ -146,7 +158,6 @@ const Checkout = () => {
                   setOrder({ ...order, postal_code: e.target.value })
                 }
               />
-
               <input
                 type="text"
                 className="form-control mb-2"
@@ -172,31 +183,105 @@ const Checkout = () => {
                 <FontAwesomeIcon icon={faCartShopping} className="me-2" />
                 Order Summary
               </h4>
-              <ul className="list-unstyled mb-3">
-                {cart && cart.length > 0 ? (
-                  cart.map((item) => (
-                    <li key={item.product_id} className="mb-1">
-                      <strong>{item.name}</strong>
-                      <span className="text-muted ms-2">{item.brand}</span>
-                      <span className="badge bg-primary ms-2">
-                        {Number(item.price).toFixed(2)} €
-                      </span>
-                      <span className="badge bg-secondary ms-2">
-                        x{item.quantity}
-                      </span>
-                    </li>
-                  ))
-                ) : (
-                  <li>Nessun prodotto nel carrello.</li>
-                )}
-              </ul>
+<ul className="list-unstyled mb-3">
+  {cart && cart.length > 0 ? (
+    cart.map((item) => (
+      <li key={item.product_id} className="checkout-summary-row">
+        <span className="checkout-summary-name">{item.name}</span>
+        <span className="checkout-summary-actions-box">
+          <button
+            type="button"
+            className="qty-btn-sm"
+            aria-label="Decrease quantity"
+            onClick={() =>
+              item.quantity > 1
+                ? updateQuantity(item.product_id, "rem")
+                : removeFromCart(item.product_id)
+            }
+          >
+            <FontAwesomeIcon icon={faCircleMinus} />
+          </button>
+          <span className="checkout-summary-qty-sm">{item.quantity}</span>
+          <button
+            type="button"
+            className="qty-btn-sm"
+            aria-label="Increase quantity"
+            onClick={() =>
+              item.quantity < item.stock_quantity
+                ? updateQuantity(item.product_id, "add")
+                : null
+            }
+            disabled={item.quantity === item.stock_quantity}
+          >
+            <FontAwesomeIcon icon={faCirclePlus} />
+          </button>
+          <span className="checkout-summary-price-sm">
+            {Number(item.price).toLocaleString("it-IT", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}{" "}
+            €
+          </span>
+          <button
+            type="button"
+            className="qty-btn-sm qty-btn-trash"
+            aria-label="Remove item"
+            onClick={() => removeFromCart(item.product_id)}
+          >
+            <FontAwesomeIcon icon={faTrashCan} />
+          </button>
+        </span>
+      </li>
+    ))
+  ) : (
+    <li>Nessun prodotto nel carrello.</li>
+  )}
+</ul>
               <hr />
-              <div className="d-flex justify-content-between align-items-center mb-2">
-                <span className="fw-bold" style={{ color: "#e100c7" }}>
+              {/* Delivery Fee */}
+              <div className="checkout-row mb-2">
+                <span className="label fw-bold" style={{ color: "#e100c7" }}>
+                  Delivery Fee
+                </span>
+                <span className="delivery-value-col">
+                  {hasFreeDelivery ? (
+                    <>
+                      <span>
+                        <span className="strikethrough">
+                          {DELIVERY_FEE.toLocaleString("it-IT", {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })}{" "}
+                          €
+                        </span>
+                        <br />
+                        <span className="free-value">0,00 €</span>
+                      </span>
+                      <span className="free-msg">
+                        Hai diritto alla spedizione gratuita!
+                      </span>
+                    </>
+                  ) : (
+                    <span className="fw-bold fs-6" style={{ color: "#e100c7" }}>
+                      {DELIVERY_FEE.toLocaleString("it-IT", {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}{" "}
+                      €
+                    </span>
+                  )}
+                </span>
+              </div>
+              {/* Total row */}
+              <div className="checkout-row mb-2">
+                <span className="label fw-bold" style={{ color: "#e100c7" }}>
                   Total
                 </span>
-                <span className="fw-bold fs-5" style={{ color: "#e100c7" }}>
-                  {Number(total).toLocaleString("it-IT", {
+                <span
+                  className="total-value fw-bold fs-5"
+                  style={{ color: "#e100c7" }}
+                >
+                  {displayTotal.toLocaleString("it-IT", {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2,
                   })}{" "}
@@ -217,7 +302,11 @@ const Checkout = () => {
           </form>
         ) : (
           <div key={orderSent.id}>
-            <ChecklistCard orderSent={orderSent} cart={cart} total={total} />
+            <ChecklistCard
+              orderSent={orderSent}
+              cart={cart}
+              total={displayTotal}
+            />
           </div>
         )}
       </div>
