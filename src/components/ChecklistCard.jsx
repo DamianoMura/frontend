@@ -2,7 +2,7 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 
-function ChecklistCard({ orderSent, cart, total }) {
+function ChecklistCard({ orderSent, total }) {
   const {
     customer_name,
     customer_email,
@@ -11,8 +11,8 @@ function ChecklistCard({ orderSent, cart, total }) {
     address_city,
     postal_code,
     country,
-    discount_code_id,
-    id,
+    items,
+    discount_code_id
   } = orderSent;
   return (
     <div className="card p-4">
@@ -45,7 +45,7 @@ function ChecklistCard({ orderSent, cart, total }) {
       </h5>
 
       <ul className="list-group mb-3">
-        {cart.map((item) => (
+        {items.map((item) => (
           <li
             key={item.product_id}
             className="list-group-item d-flex justify-content-between align-items-center"
