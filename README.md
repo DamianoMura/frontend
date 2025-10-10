@@ -20,7 +20,7 @@ MILESTONE :
 4. carrello
    -possibilità di modificare le quantità dei prodotti nel carrello ok
    -visualizzare il totale del carrello ok
-   bottoni da sistemare da invertire renderli
+   bottoni da sistemare da invertire renderli anthony(ok)
    NAV bar aggiungere il numero di prodotti visibili nel carrello dall'icona (logica) color style={{ color: "#e100c7" }}> Anthony
 
 5. checkout
