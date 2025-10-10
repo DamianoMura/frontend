@@ -13,7 +13,7 @@ MILESTONE :
 3. pagina di dettaglio prodotto
    -visualizzazione delle informazioni del prodotto ok
    -possibilità di aggiungere il prodotto al carrello ok
-   -se il prodotto non esiste non si può aggiungere Anthony
+   -se il prodotto non esiste non si può aggiungere Anthony(ok)
 
    - gestione 404 prodotto non trovato (detail . ovunque )
 
