@@ -27,14 +27,22 @@ const ProductDetail = () => {
         }
       })
       .catch((err) => {
-        console.error("Errore nel recupero del prodotto:", err);
+        console.error("products not found", err);
         setError(true);
       })
       .finally(() => setLoading(false));
   }, [id]);
 
   if (loading) return <div>Caricamento in corso...</div>;
-  if (error || !product) return <div className="d-flex justify-content-center align-items-center text-center mt-4"style={{ fontSize: "50px", color: "fuchsia" }}>Prodotto non trovato!</div>;
+  if (error || !product)
+    return (
+      <div
+        className="d-flex justify-content-center align-items-center text-center mt-4"
+        style={{ fontSize: "50px", color: "fuchsia" }}
+      >
+        Products not found
+      </div>
+    );
 
   const inCart = cart.some((item) => item.product_id === product.product_id);
   const displayPrice = !isNaN(Number(product.price))
