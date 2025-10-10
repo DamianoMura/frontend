@@ -34,7 +34,7 @@ MILESTONE successive(extra):
 
 (1). doppia visualizzazione dei risultati di ricerca ok
 -possibilità di visualizzare i risultati di ricerca in griglia o in lista ok
-modificare il pulsante details Anthony
+modificare il pulsante details Anthony(ok)
 
 (2). spedizione gratuita
 -spedizione gratuita per ordini che superano una soglia minima di spesa
