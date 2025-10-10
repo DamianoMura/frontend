@@ -249,21 +249,24 @@ const Checkout = () => {
                   <hr />
                   {/* Delivery Fee */}
                   <div className="checkout-row mb-2">
-                    <span className="label fw-bold" style={{ color: "#e100c7" }}>
-                      Delivery Fee
+                    <span className="label-multiline">
+                      <span className="label fw-bold" style={{ color: "#9F2E8C" }}>
+                        Delivery Fee
+                      </span>
+                      {hasFreeDelivery && (
+                        <span className="label-placeholder">&nbsp;</span>
+                      )}
                     </span>
                     <span className="delivery-value-col">
                       {hasFreeDelivery ? (
                         <>
-                          <span>
+                          <span className="delivery-fee-inline">
                             <span className="strikethrough">
                               {DELIVERY_FEE.toLocaleString("it-IT", {
                                 minimumFractionDigits: 2,
                                 maximumFractionDigits: 2,
-                              })}{" "}
-                              €
+                              })} €
                             </span>
-                            <br />
                             <span className="free-value">0,00 €</span>
                           </span>
                           <span className="free-msg">
@@ -271,25 +274,23 @@ const Checkout = () => {
                           </span>
                         </>
                       ) : (
-                        <span
-                          className="fw-bold fs-6"
-                          style={{ color: "#e100c7" }}
-                        >
-                          {DELIVERY_FEE.toLocaleString("it-IT", {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                          })}{" "}
-                          €
+                        <span className="delivery-fee-normal">
+                          <span className="fw-bold fs-6" style={{ color: "#9F2E8C" }}>
+                            {DELIVERY_FEE.toLocaleString("it-IT", {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })} €
+                          </span>
                         </span>
                       )}
                     </span>
                   </div>
                   {/* Total row */}
                   <div className="checkout-row mb-2">
-                    <span className="label fw-bold" style={{ color: "#e100c7" }}>
+                    <span className="label fw-bold" style={{ color: "#9F2E8C" }}>
                       Total
                     </span>
-                    <span className="total-value fw-bold fs-5" style={{ color: "#e100c7" }}>
+                    <span className="total-value fw-bold fs-5" style={{ color: "#9F2E8C" }}>
                       {displayTotal.toLocaleString("it-IT", {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2,
@@ -300,10 +301,10 @@ const Checkout = () => {
                 </>
               ) : (
                 <div className="checkout-row mb-2">
-                  <span className="label fw-bold" style={{ color: "#e100c7" }}>
+                  <span className="label fw-bold" style={{ color: "#9F2E8C" }}>
                     Total
                   </span>
-                  <span className="total-value fw-bold fs-5" style={{ color: "#e100c7" }}>
+                  <span className="total-value fw-bold fs-5" style={{ color: "#9F2E8C" }}>
                     0,00 €
                   </span>
                 </div>
