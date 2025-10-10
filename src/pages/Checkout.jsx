@@ -44,7 +44,7 @@ const Checkout = () => {
   const [confirmMsg, setConfirmMsg] = useState("");
   const [discountList, setDiscountList] = useState([]);
   const [discountCode, setDiscountCode] = useState("");
-  const { cart, total, updateQuantity, removeFromCart } = useCart();
+  const { cart, updateQuantity, removeFromCart } = useCart();
 
   const discountUrl = "http://localhost:3000/discount-codes";
 
@@ -54,6 +54,15 @@ const Checkout = () => {
       .then((data) => setDiscountList(data))
       .catch((err) => console.error(err));
   }, []);
+
+  // Always recalculate total from cart for absolute accuracy
+  const total = cart.reduce(
+    (sum, item) => sum + Number(item.price) * Number(item.quantity || 1),
+    0
+  );
+  const hasFreeDelivery = total >= FREE_DELIVERY_THRESHOLD;
+  const effectiveDeliveryFee = hasFreeDelivery ? 0 : DELIVERY_FEE;
+  const displayTotal = cart.length > 0 ? total + effectiveDeliveryFee : 0;
 
   const handleOrder = (e) => {
     e.preventDefault();
@@ -72,10 +81,6 @@ const Checkout = () => {
         console.log(err);
       });
   };
-
-  const hasFreeDelivery = Number(total) > FREE_DELIVERY_THRESHOLD;
-  const effectiveDeliveryFee = hasFreeDelivery ? 0 : DELIVERY_FEE;
-  const displayTotal = Number(total) + effectiveDeliveryFee;
 
   return (
     <div>
@@ -183,111 +188,126 @@ const Checkout = () => {
                 <FontAwesomeIcon icon={faCartShopping} className="me-2" />
                 Order Summary
               </h4>
-<ul className="list-unstyled mb-3">
-  {cart && cart.length > 0 ? (
-    cart.map((item) => (
-      <li key={item.product_id} className="checkout-summary-row">
-        <span className="checkout-summary-name">{item.name}</span>
-        <span className="checkout-summary-actions-box">
-          <button
-            type="button"
-            className="qty-btn-sm"
-            aria-label="Decrease quantity"
-            onClick={() =>
-              item.quantity > 1
-                ? updateQuantity(item.product_id, "rem")
-                : removeFromCart(item.product_id)
-            }
-          >
-            <FontAwesomeIcon icon={faCircleMinus} />
-          </button>
-          <span className="checkout-summary-qty-sm">{item.quantity}</span>
-          <button
-            type="button"
-            className="qty-btn-sm"
-            aria-label="Increase quantity"
-            onClick={() =>
-              item.quantity < item.stock_quantity
-                ? updateQuantity(item.product_id, "add")
-                : null
-            }
-            disabled={item.quantity === item.stock_quantity}
-          >
-            <FontAwesomeIcon icon={faCirclePlus} />
-          </button>
-          <span className="checkout-summary-price-sm">
-            {Number(item.price).toLocaleString("it-IT", {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })}{" "}
-            €
-          </span>
-          <button
-            type="button"
-            className="qty-btn-sm qty-btn-trash"
-            aria-label="Remove item"
-            onClick={() => removeFromCart(item.product_id)}
-          >
-            <FontAwesomeIcon icon={faTrashCan} />
-          </button>
-        </span>
-      </li>
-    ))
-  ) : (
-    <li>Nessun prodotto nel carrello.</li>
-  )}
-</ul>
-              <hr />
-              {/* Delivery Fee */}
-              <div className="checkout-row mb-2">
-                <span className="label fw-bold" style={{ color: "#e100c7" }}>
-                  Delivery Fee
-                </span>
-                <span className="delivery-value-col">
-                  {hasFreeDelivery ? (
-                    <>
-                      <span>
-                        <span className="strikethrough">
+              <ul className="list-unstyled mb-3">
+                {cart && cart.length > 0 ? (
+                  cart.map((item) => (
+                    <li key={item.product_id} className="checkout-summary-row">
+                      <span className="checkout-summary-name">{item.name}</span>
+                      <span className="checkout-summary-actions-box">
+                        <button
+                          type="button"
+                          className="qty-btn-sm"
+                          aria-label="Decrease quantity"
+                          onClick={() =>
+                            item.quantity > 1
+                              ? updateQuantity(item.product_id, "rem")
+                              : removeFromCart(item.product_id)
+                          }
+                        >
+                          <FontAwesomeIcon icon={faCircleMinus} />
+                        </button>
+                        <span className="checkout-summary-qty-sm">
+                          {item.quantity}
+                        </span>
+                        <button
+                          type="button"
+                          className="qty-btn-sm"
+                          aria-label="Increase quantity"
+                          onClick={() =>
+                            item.quantity < item.stock_quantity
+                              ? updateQuantity(item.product_id, "add")
+                              : null
+                          }
+                          disabled={item.quantity === item.stock_quantity}
+                        >
+                          <FontAwesomeIcon icon={faCirclePlus} />
+                        </button>
+                        <span className="checkout-summary-price-sm">
+                          {Number(item.price).toLocaleString("it-IT", {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })}{" "}
+                          €
+                        </span>
+                        <button
+                          type="button"
+                          className="qty-btn-sm qty-btn-trash"
+                          aria-label="Remove item"
+                          onClick={() => removeFromCart(item.product_id)}
+                        >
+                          <FontAwesomeIcon icon={faTrashCan} />
+                        </button>
+                      </span>
+                    </li>
+                  ))
+                ) : (
+                  <li>Nessun prodotto nel carrello.</li>
+                )}
+              </ul>
+              {cart && cart.length > 0 ? (
+                <>
+                  <hr />
+                  {/* Delivery Fee */}
+                  <div className="checkout-row mb-2">
+                    <span className="label fw-bold" style={{ color: "#e100c7" }}>
+                      Delivery Fee
+                    </span>
+                    <span className="delivery-value-col">
+                      {hasFreeDelivery ? (
+                        <>
+                          <span>
+                            <span className="strikethrough">
+                              {DELIVERY_FEE.toLocaleString("it-IT", {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                              })}{" "}
+                              €
+                            </span>
+                            <br />
+                            <span className="free-value">0,00 €</span>
+                          </span>
+                          <span className="free-msg">
+                            Hai diritto alla spedizione gratuita!
+                          </span>
+                        </>
+                      ) : (
+                        <span
+                          className="fw-bold fs-6"
+                          style={{ color: "#e100c7" }}
+                        >
                           {DELIVERY_FEE.toLocaleString("it-IT", {
                             minimumFractionDigits: 2,
                             maximumFractionDigits: 2,
                           })}{" "}
                           €
                         </span>
-                        <br />
-                        <span className="free-value">0,00 €</span>
-                      </span>
-                      <span className="free-msg">
-                        Hai diritto alla spedizione gratuita!
-                      </span>
-                    </>
-                  ) : (
-                    <span className="fw-bold fs-6" style={{ color: "#e100c7" }}>
-                      {DELIVERY_FEE.toLocaleString("it-IT", {
+                      )}
+                    </span>
+                  </div>
+                  {/* Total row */}
+                  <div className="checkout-row mb-2">
+                    <span className="label fw-bold" style={{ color: "#e100c7" }}>
+                      Total
+                    </span>
+                    <span className="total-value fw-bold fs-5" style={{ color: "#e100c7" }}>
+                      {displayTotal.toLocaleString("it-IT", {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2,
                       })}{" "}
                       €
                     </span>
-                  )}
-                </span>
-              </div>
-              {/* Total row */}
-              <div className="checkout-row mb-2">
-                <span className="label fw-bold" style={{ color: "#e100c7" }}>
-                  Total
-                </span>
-                <span
-                  className="total-value fw-bold fs-5"
-                  style={{ color: "#e100c7" }}
-                >
-                  {displayTotal.toLocaleString("it-IT", {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  })}{" "}
-                  €
-                </span>
-              </div>
+                  </div>
+                </>
+              ) : (
+                <div className="checkout-row mb-2">
+                  <span className="label fw-bold" style={{ color: "#e100c7" }}>
+                    Total
+                  </span>
+                  <span className="total-value fw-bold fs-5" style={{ color: "#e100c7" }}>
+                    0,00 €
+                  </span>
+                </div>
+              )}
             </div>
 
             {/* Submit Button */}
