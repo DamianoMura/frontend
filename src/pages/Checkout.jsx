@@ -35,6 +35,7 @@ const Checkout = () => {
   });
 
   const [discountList, setDiscountList] = useState([]);
+  const [appliedDiscount, setAppliedDiscount] = useState(null);
   const [discountCode, setDiscountCode] = useState("");
   const [confirmMsg, setConfirmMsg] = useState("");
 
@@ -52,22 +53,27 @@ const Checkout = () => {
     return today >= from && today <= until;
   });
 
-  const appliedDiscount = discountList.find((d) => d.code === discountCode);
   const finalTotal = appliedDiscount
     ? total - (total * appliedDiscount.discount_percent) / 100
     : total;
 
+  const handleApplyDiscount = () => {
+    const found = validDiscounts.find(
+      (d) => d.code.toLowerCase() === discountCode.trim().toLowerCase()
+    );
+
+    if (found) {
+      setAppliedDiscount(found);
+      setConfirmMsg(`Valid code! ${found.discount_percent}% discount applied.`);
+    } else {
+      setAppliedDiscount(null);
+      setConfirmMsg("Invalid discount code.");
+    }
+  };
+
   const handleOrder = async (e) => {
     e.preventDefault();
-    const discount = discountList.find((d) => d.code === discountCode);
-    if (discount) {
-      const from = new Date(discount.valid_from);
-      const until = new Date(discount.valid_until);
-      if (today < from || today > until) {
-        setConfirmMsg("Il codice sconto non è valido oggi.");
-        return;
-      }
-    }
+    const discount = appliedDiscount;
 
     const orderData = {
       ...order,
@@ -170,18 +176,22 @@ const Checkout = () => {
             />
 
             {/* Discount Code */}
-            <select
-              className="form-select mt-2"
-              value={discountCode}
-              onChange={(e) => setDiscountCode(e.target.value)}
-            >
-              <option value="">Choose your discount code</option>
-              {validDiscounts.map((discount) => (
-                <option key={discount.code} value={discount.code}>
-                  {discount.code} ({discount.discount_percent}% off)
-                </option>
-              ))}
-            </select>
+            <div className="d-flex align-items-center mt-2">
+              <input
+                type="text"
+                className="form-control me-2"
+                placeholder="Enter your discount code"
+                value={discountCode}
+                onChange={(e) => setDiscountCode(e.target.value)}
+              />
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={handleApplyDiscount}
+              >
+                Apply
+              </button>
+            </div>
           </div>
 
           {/* Order Summary */}
