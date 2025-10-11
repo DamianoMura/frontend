@@ -121,7 +121,7 @@ function Products() {
                 value={sort}
                 onChange={(e) => {
                   (e).preventDefault();
-                  if (e.target.value==="all") setCategory("") 
+                  if (e.target.value!="category") setCategory("") 
                   else if (e.target.value==="category") setCategory("Laptop")
                   setSort(e.target.value)
                   
