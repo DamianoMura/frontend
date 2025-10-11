@@ -121,7 +121,8 @@ function Products() {
                 value={sort}
                 onChange={(e) => {
                   (e).preventDefault();
-                  if (e.target.value==="all") setCategory("")
+                  if (e.target.value==="all") setCategory("") 
+                  else if (e.target.value==="category") setCategory("Laptop")
                   setSort(e.target.value)
                   
                 }}
@@ -213,16 +214,11 @@ function Products() {
               )
             ) : <h3>Nessun Risultato Trovato</h3>}
                  <div className="col-12 ps-section my-5">
+
           <div
             className={`row justify-content-start ${showCard ? "g-3" : "g-3"}`}
           >
-         
-          </div>
-        </div> 
-              
-          </div>
-        </div>
-        {/* paginazione - navigazione */}
+         {/* paginazione - navigazione */}
         {
           totalPages>1 &&
         <div className="d-flex justify-content-center align-items-center mt-4 gap-3">
@@ -255,6 +251,12 @@ function Products() {
           </button>
         </div>
         }
+          </div>
+        </div> 
+              
+          </div>
+        </div>
+        
       </div>
     </div>
   );
