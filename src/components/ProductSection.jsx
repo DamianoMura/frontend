@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ProductCard from './ProductCard';
 import '../styles/ProductSection.css';
-
+import { Link } from 'react-router-dom';
 const API_BASE = 'http://localhost:3000';
 
 const getMaxItems = (width) => {
@@ -30,13 +30,7 @@ const ProductSection = ({ title, filter }) => {
     fetchProducts();
   }, [filter]);
 
-  useEffect(() => {
-    const handleResize = () => setWindowWidth(window.innerWidth);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  const maxItems = getMaxItems(windowWidth);
+  
 
   return (
     <div className="ps-section">
@@ -45,13 +39,16 @@ const ProductSection = ({ title, filter }) => {
         <div>Loading...</div>
       ) : (
         <div className="ps-grid">
-          {products.slice(0, 8).map((p) => (
+          {products.slice(0,4).map((p) => (
             <div key={p.product_id} className="ps-grid-item">
               <ProductCard product={p} />
+             
             </div>
           ))}
         </div>
+        
       )}
+       <Link to={`/products?sort=${filter}`}>browse more...</Link>
     </div>
   );
 };

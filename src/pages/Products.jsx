@@ -19,7 +19,7 @@ function Products() {
   const [sort, setSort] = useState("all");
   const [categories,setCategories]=useState([])
   const [category,setCategory]=useState("")
-  const [orderAD,setOrderAD]=useState("price_ASC")
+  const [orderAD,setOrderAD]=useState("price_DESC")
   const baseUrl = "http://localhost:3000";
   // paginazione
   const [currentPage, setCurrentPage] = useState("");
