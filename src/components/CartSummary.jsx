@@ -4,13 +4,24 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faArrowRightToBracket,faCartShopping,faTrashCan,faCartPlus,faCartArrowDown} from "@fortawesome/free-solid-svg-icons";
 import { useCart } from "../context/CartContext";
 import "../styles/CartSummary.css";
-
-const CartSummary = () => {
-  const { cart, total, updateQuantity, removeFromCart } = useCart();
+import { useState,useEffect } from "react";
+const CartSummary = (props) => {
+  
+  props && console.log("cart summary",props.data)//we receive this from the Product Detail Page
+  
+  const { cart, total, updateQuantity, removeFromCart, addToCart } = useCart();
+  const [presence,setPresence]=useState();
   const navigate = useNavigate();
-
-  if (!cart || cart.length === 0) return null;
-
+  // let isInCart = cart.map((item)=>{
+  //   (item.product_id===props.data.product_id);
+  // });
+  // console.log(isInCart.length)
+  const isInCart = () =>{
+     let check = cart.find((item)=> cart.product_id===props.data.product_id)
+    if (check.length>0) setPresence(true)
+    else setPresence(false)
+  }
+   
   return (
     <div className="cart-summary-card">
       <h4 className="mb-3">
@@ -29,23 +40,28 @@ const CartSummary = () => {
             <div className="d-flex align-items-center justify-content-between">
               <div className="mt-3 d-flex gap-2">
                 {/* Trash Icon */}
-                <button
+                {item.quantity==1 && <button
                   className="cart-s-btn"
-                  onClick={() => removeFromCart(item.product_id)}
+                  onClick={() => {
+                    removeFromCart(item.product_id)
+                    setPresence(false)
+                  }}
                   title="Rimuovi completamente"
                 >
                   <FontAwesomeIcon icon={faTrashCan} />
-                </button>
+                </button>}
 
                 {/* Remove One Icon */}
+                {item.quantity>1 && 
                 <button
                   className="cart-s-btn"
                   onClick={() => updateQuantity(item.product_id, "rem")}
                   title="Rimuovi una unità"
-                  disabled={item.quantity <= 1}
+                  
                 >
                   <FontAwesomeIcon icon={faCartArrowDown} />
                 </button>
+                }
 
                 {/* Add One Icon */}
                 <button
@@ -72,6 +88,40 @@ const CartSummary = () => {
             <br />
           </li>
         ))}
+        {
+         
+          (!presence)&& (
+            <li key={props.data.slug} className="mb-1">
+            <div>
+              <strong>{props.data.name}</strong>
+              <span className="ms-2">{props.data.brand}</span>
+            </div>
+
+            <div className="d-flex align-items-center justify-content-between">
+              <div className="mt-3 d-flex gap-2">
+                item is  not in your cart
+
+                
+
+                {/* Add One Icon */}
+                <button
+                  className="cart-s-btn"
+                  onClick={() => {
+                    addToCart(props.data)
+                    setPresence(true)
+                  }}
+                  title="Aggiungi al carrello"
+                >
+                 add to cart <FontAwesomeIcon icon={faCartPlus} />
+                </button>
+              </div>
+
+              
+            </div>
+            <br />
+          </li>
+          )
+        } 
       </ul>
 
       <hr />
@@ -90,6 +140,7 @@ const CartSummary = () => {
         className="btn btn-outline-primary btn-checkout-inside mt-3 w-100"
         onClick={() => navigate("/checkout")}
         title="Vai al Checkout"
+        disabled={cart.length===0}
       >
         <FontAwesomeIcon icon={faArrowRightToBracket} className="me-2" />
         Checkout

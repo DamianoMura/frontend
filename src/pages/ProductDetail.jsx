@@ -43,6 +43,7 @@ const ProductDetail = () => {
 
   return (
     <div className="product-detail-root text-white">
+      
       <div className="product-detail-row">
         {/* Immagine */}
         <div className="product-image-col">
@@ -59,32 +60,16 @@ const ProductDetail = () => {
           <p>{product.description}</p>
           <p>Price: {displayPrice} €</p>
           <p>Brand: {product.brand}</p>
-          <div className="my-3">
-            {!inCart ? (
-              <button
-                className="btn"
-                onClick={() => addToCart(product)}
-                title="Add to cart"
-                disabled={!product || !product.product_id}
-              >
-                <FontAwesomeIcon icon={faCartPlus} />
-              </button>
-            ) : (
-              <button
-                className="btn btn-danger"
-                onClick={() => removeFromCart(product.product_id)}
-                title="Remove from cart"
-              >
-                <FontAwesomeIcon icon={faCartArrowDown} />
-              </button>
-            )}
-          </div>
         </div>
-
-        {/* Summary */}
+          
         <div className="product-summary-col">
-          {cart.length > 0 && <CartSummary className="cart-summary-card" />}
+                 <CartSummary className="cart-summary-card"  data={product}/>
         </div>
+                    
+            
+           
+        {/* Summary */}
+       
       </div>
     </div>
   );
