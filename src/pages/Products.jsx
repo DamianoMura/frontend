@@ -12,24 +12,29 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 function Products() {
+  
+  const navigate = useNavigate();
+  const location = useLocation();
   const [products, setProducts] = useState([]);
-  const [params, setParams] = useState("");
+  const [categories,setCategories]=useState([])
+
+  //variabili di stato che determinano i valori della barra di ricerca sort, search, order e prodotti per pagina
   const [search, setSearch] = useState("");
   const [searchParam,setSearchParam] = useState("")//se non separo e uso un button per settarla mi farebbe una chiamata al db ogni volta che search si aggiorna
-  const [sort, setSort] = useState("all");
-  const [categories,setCategories]=useState([])
   const [category,setCategory]=useState("")
   const [orderAD,setOrderAD]=useState("price_DESC")
+  const [sort, setSort] = useState();
+  const [productsPerPage, setProductsPerPage] = useState(4);
+  
   const baseUrl = "http://localhost:3000";
-  // paginazione
-  const [currentPage, setCurrentPage] = useState("");
-  const [productsPerPage, setProductsPerPage] = useState("");
+  // paginazione 
+  const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState("");
   const [totalResults, setTotalResults] = useState("");
   
-
-  const navigate = useNavigate();
-  const location = useLocation();
+   // switch componente card
+   const [showCard, setShowCard] = useState(false);
+  
 
   // paginazione - quando si effettua una ricerca resetta la paginazione ad 1
   useEffect(() => {
@@ -37,14 +42,6 @@ function Products() {
   }, [totalPages]);
 
    // Leggi i parametri dalla URL al primo caricamento
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    setParams(params)
-    
-  }, [location.search]);
-
-  // switch componente card
-  const [showCard, setShowCard] = useState(false);
 
   const handleToggle = () => {
     setShowCard((prev) => !prev);
@@ -52,8 +49,12 @@ function Products() {
 
   // Fetch iniziale
   useEffect(() => {
-    const Url=`${baseUrl}/products${params && `?${params}` }`
-    fetch( sort==="all" ? `${baseUrl}/products`:Url)
+    //determiniamo la url di partenza perchè ho messo un link da latest e popular dalla home page (funziona tutto per ora)
+    const startingUrl = new URLSearchParams(location.search) 
+    console.log(startingUrl)
+    setSort(startingUrl.get("sort"))
+    const Url=`${baseUrl}/products${location.search||""}`
+    fetch(Url)
       .then((res) => res.json())
       .then((data) =>{
         setProducts(data.results)
@@ -61,7 +62,7 @@ function Products() {
         setTotalResults(data.resultCount)
       })
       .catch((err) => console.error(err));
-  }, [params]);
+  }, [location.search]);
 
     // carichiamo la lista delle categorie
   useEffect(()=>{
@@ -76,16 +77,16 @@ function Products() {
   useEffect(() => {
     const newParams = new URLSearchParams();
     if (searchParam) newParams.set("search", searchParam); 
-    if (sort!="category" && sort) newParams.set("sort", sort);
+    if (sort) newParams.set("sort", sort);
     if (productsPerPage) newParams.set("rpp", productsPerPage);
     if (category) newParams.set("cat", category);
     if (orderAD) newParams.set("order", orderAD);
     if (currentPage) newParams.set("page", currentPage);
      
-    setParams(newParams)
+   
     
-    
-  }, [searchParam, sort, productsPerPage, currentPage, category, orderAD]);
+    navigate({ search: newParams.toString() }, { replace: true });
+  }, [searchParam, sort, productsPerPage, currentPage, category, orderAD, navigate]);
 
 
   if (!products) {
@@ -120,8 +121,9 @@ function Products() {
                 value={sort}
                 onChange={(e) => {
                   (e).preventDefault();
+                  if (e.target.value==="all") setCategory("")
                   setSort(e.target.value)
-                  setCategory("");
+                  
                 }}
               >
                 
@@ -133,7 +135,7 @@ function Products() {
               </select>
             </div>
             {
-              (sort==="category") &&
+              (sort=="category") &&
             <div className="col-4 col-md-4 col-lg-2 d-flex">
               <select
                 className="form-select mb-2"
@@ -145,7 +147,7 @@ function Products() {
                 }}
               >
                 
-                <option value="">search by Categories</option>
+                
                 {!categories ? <option value="name">loading....</option>:
                  categories.map((category,index)=>(<option value={category.name} key={index}>{category.name}</option>))}
                 
