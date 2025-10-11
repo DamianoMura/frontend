@@ -68,14 +68,13 @@ function Products() {
   },[])
   
   useEffect(() => {
-    // Aggiorna la URL senza ricaricare la pagina
-    const params = new URLSearchParams();
-    if (searchParam) params.set("search", searchParam);
+    
+    if (searchParam) params.set("search", searchParam); 
     if (sort) params.set("sort", sort);
     if (productsPerPage) params.set("rpp", productsPerPage);
     if (category) params.set("cat", category);
     if (orderAD) params.set("order", orderAD);
-    
+    setParams()
     
   }, [searchParam, sort, productsPerPage,currentPage, products, orderAD]);
 
@@ -87,7 +86,7 @@ function Products() {
   return (
     <div id="products" className="container-fluid hn-main">
       <div className="row justify-content-center d-flex hn-sections-container">
-        <form role="search" onSubmit={(e) => e.preventDefault()}>
+        <form role="search">
           <div className="row g-1">
             <div className="col-12 d-flex">
               <input
