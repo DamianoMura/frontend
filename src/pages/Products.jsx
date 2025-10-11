@@ -15,15 +15,17 @@ function Products() {
   const [products, setProducts] = useState([]);
   const [params, setParams] = useState("");
   const [search, setSearch] = useState("");
+  const [searchParam,setSearchParam] = useState("")//se non separo e uso un button per settarla mi farebbe una chiamata al db ogni volta che search si aggiorna
   const [sort, setSort] = useState("");
-  const [searchParam,setSearchParam] = useState("")
   const [categories,setCategories]=useState([])
   const [category,setCategory]=useState("")
-  const [orderAD,setOrderAD]=useState("DESC")
+  const [orderAD,setOrderAD]=useState("price_ASC")
   const baseUrl = "http://localhost:3000";
   // paginazione
   const [currentPage, setCurrentPage] = useState("");
   const [productsPerPage, setProductsPerPage] = useState("");
+  const [totalPages, setTotalPages] = useState("");
+  const [totalResults, setTotalResults] = useState("");
   
 
   const navigate = useNavigate();
@@ -32,7 +34,7 @@ function Products() {
   // paginazione - quando si effettua una ricerca resetta la paginazione ad 1
   useEffect(() => {
     setCurrentPage(1); // ← aggiungi questo
-  }, [search, sort]);
+  }, [totalPages]);
 
    // Leggi i parametri dalla URL al primo caricamento
   useEffect(() => {
@@ -50,10 +52,14 @@ function Products() {
 
   // Fetch iniziale
   useEffect(() => {
-    setParams(location.search)
-    fetch(`${baseUrl}/products?${params}`)
+    
+    fetch(`${baseUrl}/products${params && `?${params}` }`)
       .then((res) => res.json())
-      .then((data) => setProducts(data))
+      .then((data) =>{
+        setProducts(data.results)
+        setTotalPages(data.pages)
+        setTotalResults(data.resultCount)
+      })
       .catch((err) => console.error(err));
   }, [params]);
 
@@ -68,18 +74,21 @@ function Products() {
   },[])
   
   useEffect(() => {
+    const newParams = new URLSearchParams();
+    if (searchParam) newParams.set("search", searchParam); 
+    if (sort!="category") newParams.set("sort", sort);
+    if (productsPerPage) newParams.set("rpp", productsPerPage);
+    if (category) newParams.set("cat", category);
+    if (orderAD) newParams.set("order", orderAD);
+    if (currentPage) newParams.set("page", currentPage);
+     
+    setParams(newParams)
     
-    if (searchParam) params.set("search", searchParam); 
-    if (sort) params.set("sort", sort);
-    if (productsPerPage) params.set("rpp", productsPerPage);
-    if (category) params.set("cat", category);
-    if (orderAD) params.set("order", orderAD);
-    setParams()
     
-  }, [searchParam, sort, productsPerPage,currentPage, products, orderAD]);
+  }, [searchParam, sort, productsPerPage, currentPage, category, orderAD]);
 
 
-  if (products.length === 0) {
+  if (!products) {
     return <div className="container loading">Loading...</div>;
   }
 
@@ -88,16 +97,18 @@ function Products() {
       <div className="row justify-content-center d-flex hn-sections-container">
         <form role="search">
           <div className="row g-1">
+            
             <div className="col-12 d-flex">
               <input
                 type="text"
-                className="form-control me-2"
+                className="form-control me-2 text-black"
                 placeholder="Find your products"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
-              <button className="btn" onClick={()=> 
+              <button className="btn" onClick={(e)=> 
                   {
+                  e.preventDefault();
                   setSearchParam(search)
                   }
                 }>search</button>
@@ -111,17 +122,22 @@ function Products() {
               >
                 
                 <option value="">Sort by...</option>
-                <option value="price">Price</option>
+                <option value="category">Category:</option>
                 <option value="latest">Latest arrivals</option>
                 <option value="popular">Best seller</option>
               </select>
             </div>
+            {
+              (sort==="category") &&
             <div className="col-4 col-md-4 col-lg-2 d-flex">
               <select
                 className="form-select mb-2"
                 
                 value={category}
-                onChange={(e) => setCategory(e.target.value)}
+                onChange={(e) => {
+                  
+                  setCategory(e.target.value)
+                }}
               >
                 
                 <option value="">search by Categories</option>
@@ -131,6 +147,7 @@ function Products() {
                
               </select>
             </div>
+            }
             <div className="col-4 col-lg-2 d-flex">
               <select
                   className="form-select"
@@ -138,8 +155,8 @@ function Products() {
                   onChange={(e) => setOrderAD(e.target.value)}
                 >
                   
-                  <option  value={"ASC"}>ASC</option>
-                  <option  value={"DESC"}>DESC</option>
+                  <option  value={"price_ASC"}>PRICE ASC</option>
+                  <option  value={"price_DESC"}>PRICE DESC</option>
                 </select>
             </div>
             <div className="col-6 col-lg-2 d-flex">
@@ -149,11 +166,12 @@ function Products() {
                   value={productsPerPage}
                   onChange={(e) => setProductsPerPage(Number(e.target.value))}
                 >
-                  <option value={products.length-1}>All</option>
+                  <option >All</option>
                   <option value={4}>4 element</option>
                   <option value={8}>8 element</option>
-                  <option value={16}>16 element</option>
-                  <option value={32}>32 element</option>
+                  {totalResults>16 && <option value={16}>16 element</option>}
+                  {totalResults>32 && <option value={32}>32 element</option>}
+                  
                 </select>
             </div>
             <div className="col-6 d-flex flex-row-reverse">
@@ -170,45 +188,60 @@ function Products() {
       </div>
 
       <div className="row">
+        {products && <div className="col-12 text-white fw-bold text-center"><span>{totalResults>1 ? `${totalResults} results found` : `${totalResults} result found`}{totalPages>1 && `, ${totalPages} pages`}</span></div>
+        }
         <div className="col-12 ps-section my-5">
           <div
             className={`row justify-content-start ${showCard ? "g-3" : "g-3"}`}
           >
-            {!products? <span>nothing to show</span>  : products.map((product) =>
-              showCard ? (
-                <ProductList key={product.id} product={product} />
-              ) : (
-                <div key={product.id} className="col-12 col-md-6 col-lg-3">
+            {!products? 
+            <div key={index} className="col-12 col-md-6 col-lg-3 d-flex h-50 align-items-center justify-content-center">
+              <h3>no results found</h3>
+            </div>  : 
+            
+                products.map((product,index) =>
+                      
+                <div key={index} className="col-12 col-md-6 col-lg-3">
                   <ProductCard product={product} />
                 </div>
-              )
-            )}
+                )}
+                  
+              
           </div>
         </div>
         {/* paginazione - navigazione */}
-        {/* <div className="d-flex justify-content-center align-items-center mt-4 gap-3">
+        {
+          totalPages>1 &&
+        <div className="d-flex justify-content-center align-items-center mt-4 gap-3">
+
           <button
             className="btn"
-            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+            onClick={(e) => {
+              e.preventDefault();
+              setCurrentPage(currentPage-1)
+              }}
             disabled={currentPage === 1}
           >
             ← Prev
           </button>
 
           <span className="fw-bold text-white">
-            Pagina {currentPage} di {totalPages}
+             {currentPage}/{totalPages}
           </span>
 
           <button
             className="btn"
-            onClick={() =>
-              setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+            onClick={(e) =>{
+              e.preventDefault();
+              setCurrentPage(currentPage+1)
+            }
             }
             disabled={currentPage === totalPages}
           >
             Next →
           </button>
-        </div> */}
+        </div>
+        }
       </div>
     </div>
   );
