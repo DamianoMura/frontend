@@ -18,7 +18,7 @@ const ProductSection = ({ title, filter }) => {
     const fetchProducts = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`${API_BASE}/products?filter=${filter}`);
+        const res = await fetch(`${API_BASE}/products?sort=${filter}`);
         const data = await res.json();
         setProducts(data);
       } catch (err) {

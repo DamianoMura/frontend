@@ -15,7 +15,7 @@ function ChecklistCard({ orderSent }) {
     discount_code_id,
     id,
   } = orderSent;
-  const total = items.map((item)=> total+=item.price)
+  let total = items.map((item)=> total+=item.price)
   return (
     <div className="card p-4">
       <h2 className="text-center mb-4" style={{ color: "#e100c7" }}>
