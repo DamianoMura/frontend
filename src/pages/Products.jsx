@@ -16,7 +16,7 @@ function Products() {
   const [params, setParams] = useState("");
   const [search, setSearch] = useState("");
   const [searchParam,setSearchParam] = useState("")//se non separo e uso un button per settarla mi farebbe una chiamata al db ogni volta che search si aggiorna
-  const [sort, setSort] = useState("");
+  const [sort, setSort] = useState("all");
   const [categories,setCategories]=useState([])
   const [category,setCategory]=useState("")
   const [orderAD,setOrderAD]=useState("price_ASC")
@@ -52,8 +52,8 @@ function Products() {
 
   // Fetch iniziale
   useEffect(() => {
-    
-    fetch(`${baseUrl}/products${params && `?${params}` }`)
+    const Url=`${baseUrl}/products${params && `?${params}` }`
+    fetch( sort==="all" ? `${baseUrl}/products`:Url)
       .then((res) => res.json())
       .then((data) =>{
         setProducts(data.results)
@@ -118,10 +118,14 @@ function Products() {
               <select
                 className="form-select mb-2"
                 value={sort}
-                onChange={(e) => setSort(e.target.value)}
+                onChange={(e) => {
+                  (e).preventDefault();
+                  setSort(e.target.value)
+                  setCategory("");
+                }}
               >
                 
-                <option value="">Sort by...</option>
+               
                 <option value="all">All products</option>
                 <option value="category">Category:</option>
                 <option value="latest">Latest arrivals</option>
@@ -136,7 +140,7 @@ function Products() {
                 
                 value={category}
                 onChange={(e) => {
-                  
+                  e.preventDefault();
                   setCategory(e.target.value)
                 }}
               >
@@ -153,7 +157,9 @@ function Products() {
               <select
                   className="form-select"
                   value={orderAD}
-                  onChange={(e) => setOrderAD(e.target.value)}
+                  onChange={(e) => {
+                    e.preventDefault();
+                    setOrderAD(e.target.value)}}
                 >
                   
                   <option  value={"price_ASC"}>PRICE ASC</option>
