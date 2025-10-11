@@ -76,7 +76,7 @@ function Products() {
   useEffect(() => {
     const newParams = new URLSearchParams();
     if (searchParam) newParams.set("search", searchParam); 
-    if (sort!="category") newParams.set("sort", sort);
+    if (sort!="category" && sort) newParams.set("sort", sort);
     if (productsPerPage) newParams.set("rpp", productsPerPage);
     if (category) newParams.set("cat", category);
     if (orderAD) newParams.set("order", orderAD);
@@ -122,6 +122,7 @@ function Products() {
               >
                 
                 <option value="">Sort by...</option>
+                <option value="all">All products</option>
                 <option value="category">Category:</option>
                 <option value="latest">Latest arrivals</option>
                 <option value="popular">Best seller</option>
@@ -188,24 +189,28 @@ function Products() {
       </div>
 
       <div className="row">
-        {products && <div className="col-12 text-white fw-bold text-center"><span>{totalResults>1 ? `${totalResults} results found` : `${totalResults} result found`}{totalPages>1 && `, ${totalPages} pages`}</span></div>
+        {totalResults>0 && <div className="col-12 text-white fw-bold text-center"><span>{totalResults>1 ? `${totalResults} results found` : `${totalResults} result found`}{totalPages>1 && `, ${totalPages} pages`}</span></div>
         }
         <div className="col-12 ps-section my-5">
           <div
             className={`row justify-content-start ${showCard ? "g-3" : "g-3"}`}
           >
-            {!products? 
-            <div key={index} className="col-12 col-md-6 col-lg-3 d-flex h-50 align-items-center justify-content-center">
-              <h3>no results found</h3>
-            </div>  : 
-            
-                products.map((product,index) =>
-                      
-                <div key={index} className="col-12 col-md-6 col-lg-3">
+              {products ? products.map((product) =>
+              showCard ? (
+                <ProductList key={product.id} product={product} />
+              ) : (
+                <div key={product.id} className="col-12 col-md-6 col-lg-3">
                   <ProductCard product={product} />
                 </div>
-                )}
-                  
+              )
+            ) : <h3>Nessun Risultato Trovato</h3>}
+                 <div className="col-12 ps-section my-5">
+          <div
+            className={`row justify-content-start ${showCard ? "g-3" : "g-3"}`}
+          >
+         
+          </div>
+        </div> 
               
           </div>
         </div>

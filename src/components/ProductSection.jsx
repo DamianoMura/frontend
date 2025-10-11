@@ -20,7 +20,7 @@ const ProductSection = ({ title, filter }) => {
       try {
         const res = await fetch(`${API_BASE}/products?sort=${filter}`);
         const data = await res.json();
-        setProducts(data);
+        setProducts(data.results);
       } catch (err) {
         console.error(err);
       } finally {
@@ -45,7 +45,7 @@ const ProductSection = ({ title, filter }) => {
         <div>Loading...</div>
       ) : (
         <div className="ps-grid">
-          {products.slice(0, maxItems).map((p) => (
+          {products.slice(0, 8).map((p) => (
             <div key={p.product_id} className="ps-grid-item">
               <ProductCard product={p} />
             </div>

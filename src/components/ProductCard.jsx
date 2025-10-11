@@ -3,11 +3,12 @@ import "../styles/ProductCard.css";
 import { Link } from "react-router-dom";
 
 const ProductCard = ({ product }) => {
-	if (!product) {
-		return <div>Product not available</div>;
-	}
+	
 
 	return (
+		(!product) ?
+		<div>Product not available</div>:
+	
 		<div className="product-card card shadow-sm">
 			<div className="product-card-img-wrapper">
 				<img
