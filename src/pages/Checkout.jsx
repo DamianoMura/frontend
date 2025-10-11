@@ -191,6 +191,7 @@ const Checkout = () => {
                   setOrder({ ...order, country: e.target.value })
                 }
               />
+              <h4 className="my-3">Discount Details</h4>
 
               <div className="d-flex align-items-center mt-2">
                 <input
