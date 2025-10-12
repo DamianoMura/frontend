@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 
 function ChecklistCard({ orderSent }) {
+  const [emailStatus, setEmailStatus] = useState(null);
+
   if (!orderSent) return null;
 
   const {
@@ -25,6 +27,26 @@ function ChecklistCard({ orderSent }) {
   const discountPercentage = discount_code_id ? 10 : 0;
   const discountAmount = (subtotal * discountPercentage) / 100;
   const total = subtotal - discountAmount;
+
+  const handleSendOrder = async () => {
+    try {
+      const res = await fetch("http://localhost:3000/orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(orderSent),
+      });
+
+      if (!res.ok) throw new Error("Errore invio ordine");
+
+      const data = await res.json();
+      setEmailStatus("Ordine inviato con successo! 📧");
+    } catch (err) {
+      console.error(err);
+      setEmailStatus("Errore durante l’invio dell’ordine.");
+    }
+  };
 
   return (
     <div className="card p-4 shadow-sm rounded-4">
@@ -121,6 +143,14 @@ function ChecklistCard({ orderSent }) {
           €
         </h4>
       </div>
+
+      <button className="btn btn-success mt-4" onClick={handleSendOrder}>
+        Invia ordine e conferma via email
+      </button>
+
+      {emailStatus && (
+        <div className="alert alert-info mt-3 text-center">{emailStatus}</div>
+      )}
     </div>
   );
 }
