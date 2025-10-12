@@ -10,6 +10,7 @@ import {
 import { useCart } from "../context/CartContext";
 import axios from "axios";
 import ChecklistCard from "../components/ChecklistCard";
+import BillingSection from "../components/BillingSection";
 
 const API_BASE = "http://localhost:3000";
 const DELIVERY_FEE = 1.9;
@@ -120,110 +121,16 @@ const Checkout = () => {
       <h1 className="checkout-title">Checkout</h1>
       <form className="checkout-form" onSubmit={handleOrder}>
         {/* Billing Section */}
-        <div className="checkout-section mb-3">
-          <h4>Dettagli Cliente</h4>
-          <input
-            type="text"
-            className="form-control mb-2"
-            placeholder="Nome"
-            required
-            value={order.customer_name}
-            onChange={(e) =>
-              setOrder({ ...order, customer_name: e.target.value })
-            }
-          />
-          <input
-            type="email"
-            className="form-control"
-            placeholder="Email"
-            required
-            value={order.customer_email}
-            onChange={(e) =>
-              setOrder({ ...order, customer_email: e.target.value })
-            }
-          />
-        </div>
 
-        {/* Shipping Section */}
-        <div className="checkout-section mb-3">
-          <h4>Dettagli Spedizione</h4>
-          <input
-            type="text"
-            className="form-control mb-2"
-            placeholder="Via"
-            required
-            value={order.address_street}
-            onChange={(e) =>
-              setOrder({ ...order, address_street: e.target.value })
-            }
-          />
-          <input
-            type="number"
-            className="form-control mb-2"
-            placeholder="Numero civico"
-            required
-            value={order.address_street_number}
-            onChange={(e) =>
-              setOrder({ ...order, address_street_number: e.target.value })
-            }
-          />
-          <input
-            type="text"
-            className="form-control mb-2"
-            placeholder="Città"
-            required
-            value={order.address_city}
-            onChange={(e) =>
-              setOrder({ ...order, address_city: e.target.value })
-            }
-          />
-          <input
-            type="text"
-            className="form-control mb-2"
-            placeholder="CAP"
-            required
-            value={order.postal_code}
-            onChange={(e) =>
-              setOrder({ ...order, postal_code: e.target.value })
-            }
-          />
-          <input
-            type="text"
-            className="form-control mb-2"
-            placeholder="Paese"
-            required
-            value={order.country}
-            onChange={(e) => setOrder({ ...order, country: e.target.value })}
-          />
-
-          {/* Discount Code */}
-          <div className="d-flex align-items-center mt-2 mb-1">
-            <input
-              type="text"
-              className="form-control me-2"
-              placeholder="Codice sconto"
-              value={discountCode}
-              onChange={(e) => setDiscountCode(e.target.value)}
-            />
-            <button
-              type="button"
-              className="btn btn-primary"
-              onClick={handleApplyDiscount}
-              disabled={!discountCode.trim()}
-            >
-              Apply
-            </button>
-          </div>
-          {discountMsg && (
-            <div
-              className={`mt-1 ${
-                appliedDiscount ? "text-success" : "text-danger"
-              }`}
-            >
-              {discountMsg}
-            </div>
-          )}
-        </div>
+        <BillingSection
+          order={order}
+          setOrder={setOrder}
+          discountCode={discountCode}
+          setDiscountCode={setDiscountCode}
+          handleApplyDiscount={handleApplyDiscount}
+          discountMsg={discountMsg}
+          appliedDiscount={appliedDiscount}
+        />
 
         {/* Order Summary */}
         <div className="checkout-section mb-3">
@@ -316,7 +223,6 @@ const Checkout = () => {
             </span>
           </div>
         </div>
-
         <button
           className="btn btn-success checkout-btn"
           type="submit"
@@ -324,7 +230,6 @@ const Checkout = () => {
         >
           Confirm and Pay
         </button>
-
         {confirmMsg && (
           <div className="checkout-confirm mt-3">{confirmMsg}</div>
         )}

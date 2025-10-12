@@ -1,0 +1,126 @@
+/* Colore del testo nei campi input */
+input.form-control {
+  color: #ffffff;
+}
+
+/* Sfondo principale della pagina checkout */
+.checkout-bg {
+  min-height: 100vh;
+  width: 100%;
+  background: linear-gradient(180deg, #6e4cb8 0%, #232134 100%);
+}
+
+/* Contenitore centrale del checkout */
+.checkout-container {
+  position: relative;
+  z-index: 1;
+  margin: 2rem auto;
+  max-width: 600px;
+  background: rgba(33, 37, 41, 0.89);
+  border-radius: 16px;
+  box-shadow: 0 0 16px #b73da033;
+  padding: 2.5rem;
+}
+
+/* Titolo principale */
+.checkout-title {
+  font-size: 2.2rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  text-align: center;
+  color: #ffffff;
+  letter-spacing: 1px;
+}
+
+/* Sezione del form */
+.checkout-form {
+  width: 100%;
+  background: transparent;
+  border-radius: 12px;
+  padding: 0;
+  border: none;
+  box-shadow: none;
+}
+
+/* Sezioni interne (cliente, spedizione, riepilogo) */
+.checkout-section {
+  margin-bottom: 2rem;
+  color: #ffffff;
+}
+
+/* Campi input */
+.checkout-form input {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  margin-bottom: 0.7rem;
+  border-radius: 8px;
+  background: #3c3f44;
+  color: #ffffff;
+  font-size: 1.06rem;
+  font-family: inherit;
+  border: 1px solid transparent;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+
+/* Focus su input */
+.checkout-form input:focus {
+  outline: none;
+  border-color: #9F2E8C;
+  background: #fcfbff;
+  color: #232134;
+  box-shadow: 0 0 6px #b73da088;
+}
+
+/* Placeholder leggibile */
+.checkout-form input::placeholder {
+  color: #dddddd;
+}
+
+/* Bottone principale */
+.checkout-btn {
+  background: #9F2E8C;
+  border: none;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 1.18rem;
+  padding: 0.85rem 0;
+  border-radius: 11px;
+  width: 100%;
+  margin-top: 1.3rem;
+  transition: background 0.18s, box-shadow 0.22s, transform 0.18s;
+  box-shadow: 0 4px 14px #b73da022;
+}
+
+/* Hover e focus sul bottone */
+.checkout-btn:hover,
+.checkout-btn:focus {
+  background: #9F2E8C;
+  color: #ffffff;
+  box-shadow: 0 6px 24px #e100c744;
+  transform: translateY(-2px) scale(1.02);
+}
+
+/* Stato attivo (click) */
+.checkout-btn:active {
+  transform: scale(0.98);
+}
+
+/* Messaggio di conferma */
+.checkout-confirm {
+  margin-top: 1.5rem;
+  color: #9F2E8C;
+  font-weight: bold;
+  font-size: 1.09rem;
+  text-align: center;
+}
+
+/* Responsive per dispositivi piccoli */
+@media (max-width: 700px) {
+  .checkout-container {
+    max-width: 100vw;
+    padding: 1.2rem 0.8rem 1.5rem 0.8rem;
+  }
+  .checkout-title {
+    font-size: 1.6rem;
+  }
+}
