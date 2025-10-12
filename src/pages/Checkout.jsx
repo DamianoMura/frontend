@@ -338,6 +338,14 @@ const Checkout = () => {
             </>
           )}
 
+          {appliedDiscount && (
+            <div className="checkout-row mb-2 text-success">
+              <span className="fw-bold">Discount Code</span>
+              <span>{appliedDiscount.code} (-{discountPercentage}%)</span>
+            </div>
+          )}
+
+
 
           {/* Amount Saved */}
           {discountPercentage > 0 && (
