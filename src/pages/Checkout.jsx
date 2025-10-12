@@ -36,9 +36,9 @@ const Checkout = () => {
   const [discountList, setDiscountList] = useState([]);
 
   useEffect(() => {
-    fetch(`${API_BASE}/discount-codes`)
-      .then((res) => res.json())
-      .then((data) => setDiscountList(data))
+    axios
+      .get(`${API_BASE}/discount-codes`)
+      .then((res) => setDiscountList(res.data))
       .catch((err) => console.error(err));
   }, []);
 
