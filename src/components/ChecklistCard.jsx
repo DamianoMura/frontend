@@ -38,13 +38,13 @@ function ChecklistCard({ orderSent }) {
         body: JSON.stringify(orderSent),
       });
 
-      if (!res.ok) throw new Error("Errore invio ordine");
+      if (!res.ok) throw new Error("Something went wrong");
 
       const data = await res.json();
-      setEmailStatus("Ordine inviato con successo! 📧");
+      setEmailStatus("Order sent successfully! 📧");
     } catch (err) {
       console.error(err);
-      setEmailStatus("Errore durante l’invio dell’ordine.");
+      setEmailStatus("Error sending order.");
     }
   };
 
@@ -113,7 +113,7 @@ function ChecklistCard({ orderSent }) {
       {discount_code_id && (
         <>
           <div className="d-flex justify-content-between align-items-center mb-2 text-success">
-            <h5 className="fw-bold">Discount (Code: {discount_code_id})</h5>
+            <h5 className="fw-bold">Discount %</h5>
             <h5>-{discountPercentage}%</h5>
           </div>
 
@@ -145,7 +145,7 @@ function ChecklistCard({ orderSent }) {
       </div>
 
       <button className="btn btn-success mt-4" onClick={handleSendOrder}>
-        Invia ordine e conferma via email
+        Send Order via Email
       </button>
 
       {emailStatus && (

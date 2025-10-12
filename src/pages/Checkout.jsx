@@ -109,7 +109,7 @@ const Checkout = () => {
   if (orderSent) {
     return (
       <div className="checkout-container container my-5">
-        <h1 className="checkout-title">Dettagli Ordine</h1>
+        <h1 className="checkout-title">Order Summary</h1>
         <ChecklistCard orderSent={orderSent} />
       </div>
     );
@@ -211,7 +211,7 @@ const Checkout = () => {
               onClick={handleApplyDiscount}
               disabled={!discountCode.trim()}
             >
-              Applica
+              Apply
             </button>
           </div>
           {discountMsg && (
@@ -229,7 +229,7 @@ const Checkout = () => {
         <div className="checkout-section mb-3">
           <h4 className="mb-3">
             <FontAwesomeIcon icon={faCartShopping} className="me-2" />
-            Riepilogo Ordine
+            Order Summary
           </h4>
           <ul className="list-unstyled mb-3">
             {cart.length > 0 ? (
@@ -277,7 +277,7 @@ const Checkout = () => {
                 </li>
               ))
             ) : (
-              <li>Nessun prodotto nel carrello.</li>
+              <li>Nothing in the cart.</li>
             )}
           </ul>
 
@@ -290,7 +290,7 @@ const Checkout = () => {
 
           <div className="checkout-row mb-2">
             <span className="label fw-bold" style={{ color: "#9F2E8C" }}>
-              Spese di spedizione
+              Shipping Fee
             </span>
             <span className="total-value">
               {formatPrice(deliveryFee)} {hasFreeDelivery && "(Gratuita)"}
@@ -299,7 +299,7 @@ const Checkout = () => {
 
           {appliedDiscount && (
             <div className="checkout-row mb-2 text-success">
-              <span>Sconto ({appliedDiscount.code})</span>
+              <span>Discount ({appliedDiscount.code})</span>
               <span>-{formatPrice(discountAmount)}</span>
             </div>
           )}
@@ -322,7 +322,7 @@ const Checkout = () => {
           type="submit"
           disabled={cart.length === 0}
         >
-          Conferma Ordine
+          Confirm and Pay
         </button>
 
         {confirmMsg && (
