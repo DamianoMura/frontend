@@ -213,7 +213,7 @@ const Checkout = () => {
 
           <div className="checkout-row mb-2">
             <span className="label fw-bold" style={{ color: "#9F2E8C" }}>
-              Totale
+              Total
             </span>
             <span
               className="total-value fw-bold fs-5"

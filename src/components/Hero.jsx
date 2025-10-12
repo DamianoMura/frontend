@@ -6,7 +6,7 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 export default function Hero({
   title = "Benvenuto",
-  subtitle = "Scopri i nostri prodotti",
+  subtitle = "Find your next gadget",
   subtitle2 = " Cerca un prodotto",
   cta = "Scopri",
 }) {
