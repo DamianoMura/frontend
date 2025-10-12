@@ -3,6 +3,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 
 function ChecklistCard({ orderSent }) {
+  if (!orderSent) return null;
+
   const {
     customer_name,
     customer_email,
@@ -11,70 +13,111 @@ function ChecklistCard({ orderSent }) {
     address_city,
     postal_code,
     country,
-    items,
+    items = [],
     discount_code_id,
-    id,
   } = orderSent;
-  let total = items.map((item)=> total+=item.price)
+
+  const subtotal = items.reduce(
+    (acc, item) => acc + item.price * (item.quantity || 1),
+    0
+  );
+
+  const discountPercentage = discount_code_id ? 10 : 0;
+  const discountAmount = (subtotal * discountPercentage) / 100;
+  const total = subtotal - discountAmount;
+
   return (
-    <div className="card p-4">
+    <div className="card p-4 shadow-sm rounded-4">
       <h2 className="text-center mb-4" style={{ color: "#e100c7" }}>
         Order Summary
       </h2>
 
-      <div className="mb-3">
+      <section className="mb-3">
         <h5 className="fw-bold">Customer Details</h5>
         <p>
           <strong>Name:</strong> {customer_name}
         </p>
         <p>
-          <strong>email:</strong> {customer_email}
+          <strong>Email:</strong> {customer_email}
         </p>
-      </div>
+      </section>
 
-      <div className="mb-3">
-        <h5 className="fw-bold">Shipping address</h5>
-        <p>
+      <section className="mb-3">
+        <h5 className="fw-bold">Shipping Address</h5>
+        <address className="mb-0">
           {address_street} {address_street_number},<br />
           {address_city} ({postal_code})<br />
           {country}
-        </p>
-      </div>
+        </address>
+      </section>
 
-      <h5 className="fw-bold mb-3">
-        <FontAwesomeIcon icon={faCartShopping} className="me-2" />
-        Purchased Items
-      </h5>
+      <section>
+        <h5 className="fw-bold mb-3">
+          <FontAwesomeIcon icon={faCartShopping} className="me-2" />
+          Purchased Items
+        </h5>
 
-      <ul className="list-group mb-3">
-        {items.map((item) => (
-          <li
-            key={item.product_id}
-            className="list-group-item d-flex justify-content-between align-items-center"
-          >
-            <div>
-              <strong>{item.name}</strong>
-              <span className=""> ({item.brand}) </span>
-              <div className="">Quantity: {item.quantity}</div>
-            </div>
-            <span className="badge bg-primary rounded-pill">
-              {(item.price * item.quantity).toFixed(2)} €
-            </span>
-          </li>
-        ))}
-      </ul>
+        <ul className="list-group mb-3">
+          {items.map(({ product_id, name, brand, quantity, price }) => (
+            <li
+              key={product_id}
+              className="list-group-item d-flex justify-content-between align-items-center"
+            >
+              <div>
+                <strong>{name}</strong> <span>({brand})</span>
+                <div>Quantity: {quantity}</div>
+              </div>
+              <span className="badge bg-primary rounded-pill">
+                {(price * quantity).toFixed(2)} €
+              </span>
+            </li>
+          ))}
+        </ul>
+      </section>
 
       <hr />
 
-      <div className="d-flex justify-content-between align-items-center">
+      <div className="d-flex justify-content-between align-items-center mb-2">
+        <h5 className="fw-bold">Subtotal</h5>
+        <h5>
+          {subtotal.toLocaleString("it-IT", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })}{" "}
+          €
+        </h5>
+      </div>
+
+      {discount_code_id && (
+        <>
+          <div className="d-flex justify-content-between align-items-center mb-2 text-success">
+            <h5 className="fw-bold">Discount (Code: {discount_code_id})</h5>
+            <h5>-{discountPercentage}%</h5>
+          </div>
+
+          <div className="d-flex justify-content-between align-items-center mb-2 text-success">
+            <span>Amount Saved</span>
+            <span>
+              -
+              {discountAmount.toLocaleString("it-IT", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}{" "}
+              €
+            </span>
+          </div>
+        </>
+      )}
+
+      <div className="d-flex justify-content-between align-items-center mt-3">
         <h4 className="fw-bold" style={{ color: "#e100c7" }}>
           Total
         </h4>
         <h4 className="fw-bold" style={{ color: "#e100c7" }}>
-          {Number(total).toLocaleString("it-IT", {
+          {total.toLocaleString("it-IT", {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
-          })}
+          })}{" "}
           €
         </h4>
       </div>
