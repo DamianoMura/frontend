@@ -276,6 +276,19 @@ const Checkout = () => {
             )}
           </ul>
 
+          {/* Subtotal */}
+          <div className="checkout-row mb-2">
+            <span className="label fw-bold" style={{ color: "#9F2E8C" }}>
+              Subtotal
+            </span>
+            <span className="total-value">
+              {subtotal.toLocaleString("it-IT", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })} €
+            </span>
+          </div>
+ 
           {/* Delivery Fee */}
           <div className="checkout-row mb-2">
             <span className="label fw-bold" style={{ color: "#9F2E8C" }}>
@@ -301,6 +314,20 @@ const Checkout = () => {
                   maximumFractionDigits: 2,
                 })}{" "}
                 €
+              </span>
+            </div>
+          )}
+
+          {/* Amount Saved */}
+          {discountPercentage > 0 && (
+            <div className="checkout-row mb-2 text-success">
+              <span>Amount Saved</span>
+              <span>
+                 -
+                {discountAmount.toLocaleString("it-IT", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })} €
               </span>
             </div>
           )}
