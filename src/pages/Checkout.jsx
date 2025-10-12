@@ -77,8 +77,8 @@ const Checkout = () => {
     e.preventDefault();
 
     if (cart.length === 0) {
-     setConfirmMsg("Il carrello è vuoto. Aggiungi almeno un prodotto.");
-     return;
+      setConfirmMsg("Il carrello è vuoto. Aggiungi almeno un prodotto.");
+      return;
     }
 
     try {
@@ -207,9 +207,8 @@ const Checkout = () => {
           </div>
           {discountMsg && (
             <div
-              className={`mt-1 ${
-                appliedDiscount ? "text-success" : "text-danger"
-              }`}
+              className={`mt-1 ${appliedDiscount ? "text-success" : "text-danger"
+                }`}
             >
               {discountMsg}
             </div>
@@ -288,7 +287,7 @@ const Checkout = () => {
               })} €
             </span>
           </div>
- 
+
           {/* Delivery Fee */}
           <div className="checkout-row mb-2">
             <span className="label fw-bold" style={{ color: "#9F2E8C" }}>
@@ -318,12 +317,34 @@ const Checkout = () => {
             </div>
           )}
 
+          {appliedDiscount && (
+            <>
+              <div className="checkout-row mb-2 text-success">
+                <span className="fw-bold">
+                  Discount Code: {appliedDiscount.code}
+                </span>
+                <span>-{discountPercentage}%</span>
+              </div>
+
+              <div className="checkout-row mb-2 text-success">
+                <span>Amount Saved</span>
+                <span>
+                  -{discountAmount.toLocaleString("it-IT", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })} €
+                </span>
+              </div>
+            </>
+          )}
+
+
           {/* Amount Saved */}
           {discountPercentage > 0 && (
             <div className="checkout-row mb-2 text-success">
               <span>Amount Saved</span>
               <span>
-                 -
+                -
                 {discountAmount.toLocaleString("it-IT", {
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
@@ -350,11 +371,11 @@ const Checkout = () => {
           </div>
         </div>
 
-        <button 
-          className="btn btn-success checkout-btn" 
+        <button
+          className="btn btn-success checkout-btn"
           type="submit"
           disabled={cart.length === 0}
-          >
+        >
           Confirm Order
         </button>
 
