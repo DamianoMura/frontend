@@ -1,13 +1,12 @@
-
 import { NavLink } from "react-router-dom";
 import "../styles/Navbar.css";
 import nerdNestLogo from "../assets/imgs/nerdNest-logo.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
-import { useCart } from "../context/CartContext"; // Assicurati che il path sia corretto
+import { useCart } from "../context/CartContext";
 
 const Navbar = () => {
-  const { cart } = useCart(); // Recupera il carrello dal contesto
+  const { cart } = useCart();
 
   // Calcola il numero totale di prodotti (inclusi i duplicati)
   const totalItems = cart.reduce((acc, item) => acc + (item.quantity || 1), 0);
@@ -20,12 +19,12 @@ const Navbar = () => {
           <span className="brand-text desktop">.nerdNest</span>
           <span className="brand-text mobile">.n</span>
         </NavLink>
+
         <ul className="navbar-nav custom-navbar-nav">
           <li className="nav-item">
             <NavLink
               className={({ isActive }) =>
-                "nav-link" +
-                (isActive ? " nav-active fw-bold" : " fw-semibold")
+                "nav-link" + (isActive ? " nav-active fw-bold" : " fw-semibold")
               }
               to="/"
               end
@@ -33,6 +32,7 @@ const Navbar = () => {
               Home
             </NavLink>
           </li>
+
           <li className="nav-item">
             <NavLink
               className={({ isActive }) =>
@@ -43,15 +43,17 @@ const Navbar = () => {
               Products
             </NavLink>
           </li>
+
           <li className="nav-item">
             <NavLink
               className={({ isActive }) =>
-                "nav-link nav-cart-icon position-relative" +
-                (isActive ? " nav-active fw-bold" : "")
+                `nav-link nav-cart-icon position-relative${
+                  isActive ? " nav-active fw-bold" : " fw-semibold"
+                }`
               }
               to="/cart"
             >
-              <FontAwesomeIcon icon={faCartShopping} style={{ color: "#e100c7" }} />
+              <FontAwesomeIcon icon={faCartShopping} />
               {totalItems > 0 && (
                 <span className="cart-badge">{totalItems}</span>
               )}
@@ -64,4 +66,7 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+
+
 
