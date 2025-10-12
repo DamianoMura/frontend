@@ -75,6 +75,12 @@ const Checkout = () => {
 
   const handleOrder = async (e) => {
     e.preventDefault();
+
+    if (cart.length === 0) {
+     setConfirmMsg("Il carrello è vuoto. Aggiungi almeno un prodotto.");
+     return;
+    }
+
     try {
       const resp = await axios.post(`${API_BASE}/orders/`, {
         ...order,
@@ -317,7 +323,11 @@ const Checkout = () => {
           </div>
         </div>
 
-        <button className="btn btn-success checkout-btn" type="submit">
+        <button 
+          className="btn btn-success checkout-btn" 
+          type="submit"
+          disabled={cart.length === 0}
+          >
           Confirm Order
         </button>
 
