@@ -80,7 +80,10 @@ const ProductDetail = () => {
 			<div className="container">
 				<div className="row">
 					<div className="col-12">
-						<RelatedProducts category={product.category_name} />
+						<RelatedProducts
+							title={"Potrebbero interessarti dalla stessa categoria"}
+							category={product.category_name}
+						/>
 					</div>
 				</div>
 			</div>
