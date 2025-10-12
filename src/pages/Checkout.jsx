@@ -75,10 +75,10 @@ const Checkout = () => {
 
     if (discount) {
       setAppliedDiscount(discount);
-      setDiscountMsg(`Sconto "${discount.code}" applicato!`);
+      setDiscountMsg(`discount "${discount.code}" applied!`);
     } else {
       setAppliedDiscount(null);
-      setDiscountMsg("Codice sconto non valido.");
+      setDiscountMsg("Invalid discount code.");
     }
   };
 
@@ -86,7 +86,7 @@ const Checkout = () => {
     e.preventDefault();
 
     if (cart.length === 0) {
-      setConfirmMsg("Il carrello è vuoto. Aggiungi almeno un prodotto.");
+      setConfirmMsg("The cart is empty. Please add at least one product.");
       return;
     }
 
@@ -100,10 +100,10 @@ const Checkout = () => {
         ...resp.data,
         discount_percent: appliedDiscount?.discount_percent || 0,
       });
-      setConfirmMsg("Ordine effettuato con successo!");
+      setConfirmMsg("Order placed successfully!");
     } catch (err) {
       console.error(err);
-      setConfirmMsg("Errore durante l'invio dell'ordine. Riprova.");
+      setConfirmMsg("Error placing order. Please try again.");
     }
   };
 
@@ -190,7 +190,7 @@ const Checkout = () => {
 
           <div className="checkout-row mb-2">
             <span className="label fw-bold" style={{ color: "#9F2E8C" }}>
-              Subtotale
+              subtotal
             </span>
             <span className="total-value">{formatPrice(subtotal)}</span>
           </div>
@@ -224,7 +224,7 @@ const Checkout = () => {
           </div>
         </div>
         <button
-          className="btn btn-success checkout-btn"
+          className="btn checkout-btn"
           type="submit"
           disabled={cart.length === 0}
         >
