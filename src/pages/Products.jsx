@@ -4,262 +4,271 @@ import ProductCard from "../components/ProductCard";
 import ProductList from "../components/ProductList";
 import "../styles/Products.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faGripHorizontal,
-  faListUl,
-  faPlus,
-  faMinus,
-} from "@fortawesome/free-solid-svg-icons";
+import { faGripHorizontal, faListUl } from "@fortawesome/free-solid-svg-icons";
 
 function Products() {
-  
-  const navigate = useNavigate();
-  const location = useLocation();
-  const [products, setProducts] = useState([]);
-  const [categories,setCategories]=useState([])
+	const navigate = useNavigate();
+	const location = useLocation();
 
-  //variabili di stato che determinano i valori della barra di ricerca sort, search, order e prodotti per pagina
-  const [search, setSearch] = useState("");
-  const [searchParam,setSearchParam] = useState("")//se non separo e uso un button per settarla mi farebbe una chiamata al db ogni volta che search si aggiorna
-  const [category,setCategory]=useState("")
-  const [orderAD,setOrderAD]=useState("price_DESC")
-  const [sort, setSort] = useState();
-  const [productsPerPage, setProductsPerPage] = useState(4);
-  
-  const baseUrl = "http://localhost:3000";
-  // paginazione 
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState("");
-  const [totalResults, setTotalResults] = useState("");
-  
-   // switch componente card
-   const [showCard, setShowCard] = useState(false);
-  
+	// Stati per prodotti e categorie
+	const [products, setProducts] = useState([]);
+	const [categories, setCategories] = useState([]);
 
-  // paginazione - quando si effettua una ricerca resetta la paginazione ad 1
-  useEffect(() => {
-    setCurrentPage(1); // ← aggiungi questo
-  }, [totalPages]);
+	// Filtri e controlli
+	const [search, setSearch] = useState("");
+	const [searchParam, setSearchParam] = useState("");
+	const [sort, setSort] = useState("all");
+	const [category, setCategory] = useState("");
+	const [orderAD, setOrderAD] = useState("price_DESC");
+	const [productsPerPage, setProductsPerPage] = useState(4);
 
-   // Leggi i parametri dalla URL al primo caricamento
+	// Paginazione
+	const [currentPage, setCurrentPage] = useState(1);
+	const [totalPages, setTotalPages] = useState(1);
+	const [totalResults, setTotalResults] = useState(0);
 
-  const handleToggle = () => {
-    setShowCard((prev) => !prev);
-  };
+	// Layout toggle e inizializzazione
+	const [showCard, setShowCard] = useState(false);
+	const [isInitialized, setIsInitialized] = useState(false);
 
-  // Fetch iniziale
-  useEffect(() => {
-    //determiniamo la url di partenza perchè ho messo un link da latest e popular dalla home page (funziona tutto per ora)
-    const startingUrl = new URLSearchParams(location.search) 
-    console.log(startingUrl)
-    setSort(startingUrl.get("sort"))
-    const Url=`${baseUrl}/products${location.search||""}`
-    fetch(Url)
-      .then((res) => res.json())
-      .then((data) =>{
-        setProducts(data.results)
-        setTotalPages(data.pages)
-        setTotalResults(data.resultCount)
-      })
-      .catch((err) => console.error(err));
-  }, [location.search]);
+	const baseUrl = "http://localhost:3000";
 
-    // carichiamo la lista delle categorie
-  useEffect(()=>{
-    fetch(`${baseUrl}/categories`)
-      .then((res) => res.json())
-      .then((data) => {
-        setCategories(data);
-      })
-      .catch((err) => console.error(err));
-  },[])
-  
-  useEffect(() => {
-    const newParams = new URLSearchParams();
-    if (searchParam) newParams.set("search", searchParam); 
-    if (sort) newParams.set("sort", sort);
-    if (productsPerPage) newParams.set("rpp", productsPerPage);
-    if (category) newParams.set("cat", category);
-    if (orderAD) newParams.set("order", orderAD);
-    if (currentPage) newParams.set("page", currentPage);
-     
-   
-    
-    navigate({ search: newParams.toString() }, { replace: true });
-  }, [searchParam, sort, productsPerPage, currentPage, category, orderAD, navigate]);
+	const handleToggle = () => {
+		setShowCard((prev) => !prev);
+	};
 
+	// 1) Leggi parametri da URL e imposta stati iniziali
+	useEffect(() => {
+		const params = new URLSearchParams(location.search);
 
-  if (!products) {
-    return <div className="container loading">Loading...</div>;
-  }
+		setSort(params.get("sort") || "all");
+		setSearchParam(params.get("search") || "");
+		setCategory(params.get("cat") || "");
+		setOrderAD(params.get("order") || "price_DESC");
+		setProductsPerPage(Number(params.get("rpp")) || 4);
+		setCurrentPage(Number(params.get("page")) || 1);
 
-  return (
-    <div id="products" className="container-fluid hn-main">
-      <div className="row justify-content-center d-flex hn-sections-container">
-        <form role="search">
-          <div className="row g-1">
-            
-            <div className="col-12 d-flex">
-              <input
-                type="text"
-                className="form-control me-2 text-black"
-                placeholder="Find your products"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-              <button className="btn" onClick={(e)=> 
-                  {
-                  e.preventDefault();
-                  setSearchParam(search)
-                  }
-                }>search</button>
-            </div>
-              
-            <div className="col-4  col-lg-2 d-flex">
-              <select
-                className="form-select mb-2"
-                value={sort}
-                onChange={(e) => {
-                  (e).preventDefault();
-                  if (e.target.value!="category") setCategory("") 
-                  else if (e.target.value==="category") setCategory("Laptop")
-                  setSort(e.target.value)
-                  
-                }}
-              >
-                
-               
-                <option value="all">All products</option>
-                <option value="category">Category:</option>
-                <option value="latest">Latest arrivals</option>
-                <option value="popular">Best seller</option>
-              </select>
-            </div>
-            {
-              (sort=="category") &&
-            <div className="col-4 col-md-4 col-lg-2 d-flex">
-              <select
-                className="form-select mb-2"
-                
-                value={category}
-                onChange={(e) => {
-                  e.preventDefault();
-                  setCategory(e.target.value)
-                }}
-              >
-                
-                
-                {!categories ? <option value="name">loading....</option>:
-                 categories.map((category,index)=>(<option value={category.name} key={index}>{category.name}</option>))}
-                
-               
-              </select>
-            </div>
-            }
-            <div className="col-4 col-lg-2 d-flex">
-              <select
-                  className="form-select"
-                  value={orderAD}
-                  onChange={(e) => {
-                    e.preventDefault();
-                    setOrderAD(e.target.value)}}
-                >
-                  
-                  <option  value={"price_ASC"}>PRICE ASC</option>
-                  <option  value={"price_DESC"}>PRICE DESC</option>
-                </select>
-            </div>
-            <div className="col-6 col-lg-2 d-flex">
-              
-                <select
-                  className="form-select"
-                  value={productsPerPage}
-                  onChange={(e) => setProductsPerPage(Number(e.target.value))}
-                >
-                  <option >All</option>
-                  <option value={4}>4 element</option>
-                  <option value={8}>8 element</option>
-                  {totalResults>16 && <option value={16}>16 element</option>}
-                  {totalResults>32 && <option value={32}>32 element</option>}
-                  
-                </select>
-            </div>
-            <div className="col-6 d-flex flex-row-reverse">
-              <button type="button" className="btn" onClick={handleToggle}>
-                <FontAwesomeIcon
-                  icon={showCard ? faGripHorizontal : faListUl}
-                />
-              </button>
-            </div>
-              
-            
-          </div>
-        </form>
-      </div>
+		setIsInitialized(true);
+	}, []);
 
-      <div className="row">
-        {totalResults>0 && <div className="col-12 text-white fw-bold text-center"><span>{totalResults>1 ? `${totalResults} results found` : `${totalResults} result found`}{totalPages>1 && `, ${totalPages} pages`}</span></div>
-        }
-        <div className="col-12 ps-section my-5">
-          <div
-            className={`row justify-content-start ${showCard ? "g-3" : "g-3"}`}
-          >
-              {products ? products.map((product) =>
-              showCard ? (
-                <ProductList key={product.id} product={product} />
-              ) : (
-                <div key={product.id} className="col-12 col-md-6 col-lg-3">
-                  <ProductCard product={product} />
-                </div>
-              )
-            ) : <h3>Nessun Risultato Trovato</h3>}
-                 <div className="col-12 ps-section my-5">
+	// 2) Sincronizza URL con stati dopo inizializzazione
+	useEffect(() => {
+		if (!isInitialized) return;
 
-          <div
-            className={`row justify-content-start ${showCard ? "g-3" : "g-3"}`}
-          >
-         {/* paginazione - navigazione */}
-        {
-          totalPages>1 &&
-        <div className="d-flex justify-content-center align-items-center mt-4 gap-3">
+		const newParams = new URLSearchParams();
+		if (searchParam) newParams.set("search", searchParam);
+		if (sort && sort !== "all") newParams.set("sort", sort);
+		if (category) newParams.set("cat", category);
+		if (orderAD) newParams.set("order", orderAD);
+		if (productsPerPage) newParams.set("rpp", productsPerPage);
+		if (currentPage) newParams.set("page", currentPage);
 
-          <button
-            className="btn"
-            onClick={(e) => {
-              e.preventDefault();
-              setCurrentPage(currentPage-1)
-              }}
-            disabled={currentPage === 1}
-          >
-            ← Prev
-          </button>
+		navigate({ search: newParams.toString() }, { replace: true });
+	}, [
+		searchParam,
+		sort,
+		category,
+		orderAD,
+		productsPerPage,
+		currentPage,
+		isInitialized,
+		navigate,
+	]);
 
-          <span className="fw-bold text-white">
-             {currentPage}/{totalPages}
-          </span>
+	// 3) Fetch prodotti quando cambia la query string
+	useEffect(() => {
+		const url = `${baseUrl}/products${location.search}`;
+		fetch(url)
+			.then((res) => res.json())
+			.then((data) => {
+				setProducts(data.results);
+				setTotalPages(data.pages);
+				setTotalResults(data.resultCount);
+			})
+			.catch((err) => console.error(err));
+	}, [location.search]);
 
-          <button
-            className="btn"
-            onClick={(e) =>{
-              e.preventDefault();
-              setCurrentPage(currentPage+1)
-            }
-            }
-            disabled={currentPage === totalPages}
-          >
-            Next →
-          </button>
-        </div>
-        }
-          </div>
-        </div> 
-              
-          </div>
-        </div>
-        
-      </div>
-    </div>
-  );
+	// 4) Fetch categorie una sola volta
+	useEffect(() => {
+		fetch(`${baseUrl}/categories`)
+			.then((res) => res.json())
+			.then((data) => setCategories(data))
+			.catch((err) => console.error(err));
+	}, []);
+
+	// 5) Reset pagina quando cambiano filtri (non totalPages)
+	useEffect(() => {
+		if (!isInitialized) return;
+		setCurrentPage(1);
+	}, [searchParam, sort, category, orderAD, productsPerPage]);
+
+	return (
+		<div id="products" className="container-fluid hn-main">
+			{/* Barra filtri e ricerca */}
+			<div className="row justify-content-center hn-sections-container">
+				<form role="search" className="row g-1">
+					<div className="col-12 d-flex">
+						<input
+							type="text"
+							className="form-control me-2 text-black"
+							placeholder="Find your products"
+							value={search}
+							onChange={(e) => setSearch(e.target.value)}
+						/>
+						<button
+							className="btn"
+							onClick={(e) => {
+								e.preventDefault();
+								setSearchParam(search);
+							}}
+						>
+							Search
+						</button>
+					</div>
+
+					<div className="col-4 col-lg-2 d-flex">
+						<select
+							className="form-select mb-2"
+							value={sort}
+							onChange={(e) => {
+								const val = e.target.value;
+								setSort(val);
+								if (val !== "category") {
+									setCategory("");
+								} else if (categories.length) {
+									setCategory(categories[0].name);
+								}
+							}}
+						>
+							<option value="all">All products</option>
+							<option value="category">Category:</option>
+							<option value="latest">Latest arrivals</option>
+							<option value="popular">Best seller</option>
+						</select>
+					</div>
+
+					{sort === "category" && (
+						<div className="col-4 col-md-4 col-lg-2 d-flex">
+							<select
+								className="form-select mb-2"
+								value={category}
+								onChange={(e) => setCategory(e.target.value)}
+							>
+								{categories.length === 0 ? (
+									<option>Loading...</option>
+								) : (
+									categories.map((cat, i) => (
+										<option key={i} value={cat.name}>
+											{cat.name}
+										</option>
+									))
+								)}
+							</select>
+						</div>
+					)}
+
+					<div className="col-4 col-lg-2 d-flex">
+						<select
+							className="form-select"
+							value={orderAD}
+							onChange={(e) => setOrderAD(e.target.value)}
+						>
+							<option value="price_ASC">PRICE ASC</option>
+							<option value="price_DESC">PRICE DESC</option>
+						</select>
+					</div>
+
+					<div className="col-6 col-lg-2 d-flex">
+						<select
+							className="form-select"
+							value={productsPerPage}
+							onChange={(e) => {
+								const val = e.target.value;
+								setProductsPerPage(val === "All" ? totalResults : Number(val));
+							}}
+						>
+							<option value="All">All</option>
+							<option value={4}>4 items</option>
+							<option value={8}>8 items</option>
+							{totalResults > 16 && <option value={16}>16 items</option>}
+							{totalResults > 32 && <option value={32}>32 items</option>}
+						</select>
+					</div>
+
+					<div className="col-6 d-flex flex-row-reverse">
+						<button type="button" className="btn" onClick={handleToggle}>
+							<FontAwesomeIcon icon={showCard ? faGripHorizontal : faListUl} />
+						</button>
+					</div>
+				</form>
+			</div>
+
+			{/* Risultati */}
+			<div className="row">
+				{totalResults > 0 && (
+					<div className="col-12 text-white fw-bold text-center">
+						<span>
+							{totalResults > 1
+								? `${totalResults} results found`
+								: `${totalResults} result found`}
+							{totalPages > 1 && `, ${totalPages} pages`}
+						</span>
+					</div>
+				)}
+
+				<div className="col-12 ps-section my-5">
+					<div className="row justify-content-start g-3">
+						{products.length > 0 ? (
+							products.map((product) =>
+								showCard ? (
+									<ProductList key={product.id} product={product} />
+								) : (
+									<div key={product.id} className="col-12 col-md-6 col-lg-3">
+										<ProductCard product={product} />
+									</div>
+								)
+							)
+						) : (
+							<h3 className="text-white text-center">
+								Nessun Risultato Trovato
+							</h3>
+						)}
+					</div>
+				</div>
+
+				{/* Navigazione pagine */}
+				{totalPages > 1 && (
+					<div className="col-12 d-flex justify-content-center align-items-center mt-4 gap-3">
+						<button
+							className="btn"
+							onClick={(e) => {
+								e.preventDefault();
+								setCurrentPage((p) => Math.max(p - 1, 1));
+							}}
+							disabled={currentPage === 1}
+						>
+							← Prev
+						</button>
+
+						<span className="fw-bold text-white">
+							{currentPage}/{totalPages}
+						</span>
+
+						<button
+							className="btn"
+							onClick={(e) => {
+								e.preventDefault();
+								setCurrentPage((p) => Math.min(p + 1, totalPages));
+							}}
+							disabled={currentPage === totalPages}
+						>
+							Next →
+						</button>
+					</div>
+				)}
+			</div>
+		</div>
+	);
 }
 
 export default Products;
