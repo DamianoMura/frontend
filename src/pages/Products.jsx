@@ -16,7 +16,6 @@ function Products() {
 	const [categories, setCategories] = useState([]);
 
 	const [search, setSearch] = useState("");
-	const [searchParam, setSearchParam] = useState("");
 	const [sort, setSort] = useState("all");
 	const [category, setCategory] = useState("");
 	const [orderAD, setOrderAD] = useState("price_DESC");
@@ -33,7 +32,7 @@ function Products() {
 	useEffect(() => {
 		const qp = new URLSearchParams(location.search);
 		setSort(qp.get("sort") || "all");
-		setSearchParam(qp.get("search") || "");
+		setSearch(qp.get("search") || "");
 		setCategory(qp.get("cat") || "");
 		setOrderAD(qp.get("order") || "price_DESC");
 		setProductsPerPage(Number(qp.get("rpp")) || 4);
@@ -43,7 +42,7 @@ function Products() {
 	// --- 2) Fetch prodotti ogni volta che cambiano i filtri o la pagina ---
 	useEffect(() => {
 		const qs = new URLSearchParams();
-		if (searchParam) qs.set("search", searchParam);
+		if (search) qs.set("search", search);
 		if (sort && sort !== "all") qs.set("sort", sort);
 		if (category) qs.set("cat", category);
 		if (orderAD) qs.set("order", orderAD);
@@ -61,7 +60,7 @@ function Products() {
 				setTotalResults(data.resultCount || 0);
 			})
 			.catch(console.error);
-	}, [searchParam, sort, category, orderAD, productsPerPage, currentPage]);
+	}, [search, sort, category, orderAD, productsPerPage, currentPage]);
 
 	// --- 3) Sync URL dopo il primo fetch ---
 	useEffect(() => {
@@ -70,7 +69,7 @@ function Products() {
 			return;
 		}
 		const qs = new URLSearchParams();
-		if (searchParam) qs.set("search", searchParam);
+		if (search) qs.set("search", search);
 		if (sort && sort !== "all") qs.set("sort", sort);
 		if (category) qs.set("cat", category);
 		if (orderAD) qs.set("order", orderAD);
@@ -79,7 +78,7 @@ function Products() {
 
 		navigate({ search: qs.toString() }, { replace: true });
 	}, [
-		searchParam,
+		search,
 		sort,
 		category,
 		orderAD,
@@ -99,12 +98,12 @@ function Products() {
 	// --- 5) Reset pagina se cambiano filtri ---
 	useEffect(() => {
 		setCurrentPage(1);
-	}, [searchParam, sort, category, orderAD, productsPerPage]);
+	}, [search, sort, category, orderAD, productsPerPage]);
 
 	return (
 		<div id="products" className="container-fluid hn-main">
 			<div className="row justify-content-center hn-sections-container">
-				<form role="search" className="row g-1">
+				<form role="search" className="row g-1" onSubmit={e => e.preventDefault()}>
 					<div className="col-12 d-flex">
 						<input
 							type="text"
@@ -113,15 +112,6 @@ function Products() {
 							value={search}
 							onChange={(e) => setSearch(e.target.value)}
 						/>
-						<button
-							className="btn"
-							onClick={(e) => {
-								e.preventDefault();
-								setSearchParam(search);
-							}}
-						>
-							Search
-						</button>
 					</div>
 
 					<div className="col-4 col-lg-2 d-flex">
