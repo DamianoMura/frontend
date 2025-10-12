@@ -31,21 +31,16 @@ function ChecklistCard({ orderSent }) {
 
   const handleSendOrder = async () => {
     try {
-      const res = await fetch("http://localhost:3000/orders", {
-        method: "POST",
+      const res = await axios.post("http://localhost:3000/orders", orderSent, {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(orderSent),
       });
 
-      if (!res.ok) throw new Error("Something went wrong");
-
-      const data = await res.json();
-      setEmailStatus("Order sent successfully! 📧");
+      setEmailStatus("Ordine inviato con successo! 📧");
     } catch (err) {
       console.error(err);
-      setEmailStatus("Error sending order.");
+      setEmailStatus("Errore durante l’invio dell’ordine.");
     }
   };
 
