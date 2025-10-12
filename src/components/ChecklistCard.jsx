@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
 
 function ChecklistCard({ orderSent }) {
   const [emailStatus, setEmailStatus] = useState(null);
