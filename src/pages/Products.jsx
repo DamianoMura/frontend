@@ -32,7 +32,7 @@ function Products() {
 		setCategory(qp.get("cat") || "");
 		setOrderAD(qp.get("order") || "price_DESC");
 		setProductsPerPage(Number(qp.get("rpp")) || 4);
-		setCurrentPage(Number(qp.get("page")) || 1);
+		setCurrentPage(Number(qp.get("page")) );
 	}, []);
 
 	useEffect(() => {
@@ -179,7 +179,7 @@ function Products() {
 								{totalResults > 8 && <option value={8}>8 items</option>}
 								{totalResults > 12 && <option value={12}>12 items</option>}
 								{totalResults > 16 && <option value={16}>16 items</option>}
-								{totalResults > 32 && <option value={32}>32 items</option>}
+								{totalResults > 20 && <option value={20}>20 items</option>}
 							</select>
 						</div>
 					</form>
