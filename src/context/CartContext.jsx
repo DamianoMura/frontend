@@ -20,13 +20,14 @@ export function CartProvider({ children }) {
 
   function addToCart(product) {
     const {product_id, name, description,specs,price,stock_quantity, brand}=product;
+    
     if (!cart.some(item => item.product_id === product.product_id)) {
       setCart([...cart, { product_id,
                           name,
                           brand,
                           description,
                           specs,
-                          price,
+                          price : product.discount_percent ? price-price/product.discount_percent : price,
                           stock_quantity,
                           quantity: 1 
                         }]);

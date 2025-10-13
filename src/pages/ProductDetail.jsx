@@ -56,10 +56,20 @@ const ProductDetail = () => {
 
         {/* Dettagli */}
         <div className="product-details-col">
-          <h2>{product.name}</h2>
+          <h2>{product.brand} - {product.name}</h2>
           <p>{product.description}</p>
-          <p>Price: {displayPrice} €</p>
-          <p>Brand: {product.brand}</p>
+          <p className="product-card-price card-text d-flex"> 
+					<span className={`me-2  ${product.discount_percent ? "discounted" : ""} text-white`}>
+						€{product.price} 
+					</span>
+					{product.discount_percent 
+					? <div className="bg-onsale">
+            <span >discounted -{product.discount_percent}%</span>
+            <span className="disc-applied-price"> €{(product.price-product.price/product.discount_percent).toFixed(2)}</span>
+          </div>
+					: ""}
+					</p>
+          <p></p>
         </div>
           
         <div className="product-summary-col">
