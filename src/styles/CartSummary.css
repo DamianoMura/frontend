@@ -1,5 +1,16 @@
 /* src/styles/CartSummary.css */
 
+.badge.d-flex {
+  background-color: #B73DA0;
+  translate: 0;
+}
+
+.not-in-cart {
+  font-size: 13px;
+  color: #f74545;
+  font-weight: 500;
+}
+
 .cart-summary-card {
   transition: box-shadow 0.25s ease-in-out, transform 0.25s ease-in-out;
   cursor: pointer; /* ensure pointer shows */
