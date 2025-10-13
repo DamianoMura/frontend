@@ -2,10 +2,13 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
+import { useCart } from "../context/CartContext";
 
 function ChecklistCard({ orderSent }) {
+  const { clearCart } = useCart();
   const [emailStatus, setEmailStatus] = useState(null);
-  const [sending, setSending] = useState(false); // per disabilitare il bottone durante l'invio
+  const [sending, setSending] = useState(false);
+  const [emailSent, setEmailSent] = useState(false); // nuovo stato per bloccare invii multipli
 
   if (!orderSent) return null;
 
@@ -19,8 +22,7 @@ function ChecklistCard({ orderSent }) {
     country,
     items = [],
     discount_percent = 0,
-    discount_code_id,
-    discount_code, // se vuoi mostrare il codice applicato
+    discount_code,
   } = orderSent;
 
   const subtotal = items.reduce(
@@ -31,15 +33,18 @@ function ChecklistCard({ orderSent }) {
   const discountAmount = (subtotal * discount_percent) / 100;
   const total = subtotal - discountAmount;
 
-  // Funzione per inviare la mail solo quando clicchi il bottone
   const handleSendOrder = async () => {
     setSending(true);
     try {
       await axios.post("http://localhost:3000/orders/send-email", {
         customer_name,
         customer_email,
+        items,
+        total,
       });
       setEmailStatus("Email inviata con successo! 📧");
+      setEmailSent(true); // impedisce ulteriori invii
+      clearCart(); // svuota il carrello
     } catch (err) {
       console.error(err);
       setEmailStatus("Errore durante l’invio della mail.");
@@ -146,9 +151,13 @@ function ChecklistCard({ orderSent }) {
       <button
         className="btn btn-success mt-4"
         onClick={handleSendOrder}
-        disabled={sending}
+        disabled={sending || emailSent} // bottone disabilitato se già inviata
       >
-        {sending ? "Invio in corso..." : "Send Order via Email"}
+        {sending
+          ? "Invio in corso..."
+          : emailSent
+          ? "Email già inviata"
+          : "Send Order via Email"}
       </button>
 
       {emailStatus && (

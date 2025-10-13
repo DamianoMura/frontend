@@ -74,8 +74,17 @@ const Checkout = () => {
     );
 
     if (discount) {
-      setAppliedDiscount(discount);
-      setDiscountMsg(`Discount "${discount.code}" applied!`);
+      const today = new Date();
+      const validFrom = new Date(discount.valid_from);
+      const validUntil = new Date(discount.valid_until);
+
+      if (today >= validFrom && today <= validUntil) {
+        setAppliedDiscount(discount);
+        setDiscountMsg(`Discount "${discount.code}" applied!`);
+      } else {
+        setAppliedDiscount(null);
+        setDiscountMsg("This discount code is not valid today.");
+      }
     } else {
       setAppliedDiscount(null);
       setDiscountMsg("Invalid discount code.");
@@ -97,7 +106,6 @@ const Checkout = () => {
         discount_code_id: appliedDiscount?.code_id || null,
       });
 
-      // Passiamo sia discount_percent che il codice sconto reale a ChecklistCard
       setOrderSent({
         ...resp.data,
         discount_percent: appliedDiscount?.discount_percent || 0,
@@ -124,7 +132,6 @@ const Checkout = () => {
     <div className="checkout-container container my-5">
       <h1 className="checkout-title">Checkout</h1>
       <form className="checkout-form" onSubmit={handleOrder}>
-        {/* Billing Section */}
         <BillingSection
           order={order}
           setOrder={setOrder}
@@ -135,7 +142,6 @@ const Checkout = () => {
           appliedDiscount={appliedDiscount}
         />
 
-        {/* Order Summary */}
         <div className="checkout-section mb-3">
           <h4 className="mb-3">
             <FontAwesomeIcon icon={faCartShopping} className="me-2" />
