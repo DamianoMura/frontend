@@ -81,6 +81,7 @@ const ProductDetail = () => {
 				<div className="row">
 					<div className="col-12">
 						<RelatedProducts
+							excludeSlug={product.slug}
 							title={"Potrebbero interessarti dalla stessa categoria"}
 							category={product.category_name}
 						/>

@@ -3,16 +3,26 @@ import ProductCard from "./ProductCard";
 import "../styles/ProductSection.css";
 import { Link } from "react-router-dom";
 
-// Definita direttamente qui, come avevi fatto tu
 const API_BASE = "http://localhost:3000";
 
-const ProductSection = ({ title, filter, category, excludeId }) => {
+const ProductSection = ({ title, filter, category, excludeSlug }) => {
 	const [products, setProducts] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
 
-	// Mischia array per selezione casuale
 	const shuffleArray = (arr) => [...arr].sort(() => Math.random() - 0.5);
+
+	// Deduplica per product_id se presente, altrimenti per slug
+	const uniqueProducts = (arr) => {
+		const seen = new Set();
+		return arr.filter((p) => {
+			const key = p.product_id ?? p.slug;
+			if (!key) return false; // scarta se non ha identificativo
+			if (seen.has(key)) return false;
+			seen.add(key);
+			return true;
+		});
+	};
 
 	useEffect(() => {
 		let ignore = false;
@@ -27,22 +37,26 @@ const ProductSection = ({ title, filter, category, excludeId }) => {
 				if (category) qs.set("cat", category);
 
 				const res = await fetch(`${API_BASE}/products?${qs.toString()}`);
-				if (!res.ok) throw new Error("Errore nella risposta dal server");
+				if (!res.ok) throw new Error("Errore dal server");
 
-				const data = await res.json();
+				const { results = [] } = await res.json();
 
 				if (!ignore) {
-					// Escludi il prodotto in primo piano
-					let filtered = (data.results || []).filter(
-						(p) => p.product_id !== excludeId
-					);
+					// 1) Escludi lo slug del featured (se fornito)
+					let list = results.filter((p) => {
+						if (excludeSlug) return p.slug !== excludeSlug;
+						return true;
+					});
 
-					// Mischia e prendi 3 random
-					filtered = shuffleArray(filtered).slice(0, 3);
+					// 2) Rimuovi eventuali duplicati (product_id o slug)
+					list = uniqueProducts(list);
 
-					setProducts(filtered);
+					// 3) Mischia e prendi fino a 6
+					list = shuffleArray(list).slice(0, 6);
+
+					setProducts(list);
 				}
-			} catch (err) {
+			} catch {
 				if (!ignore) setError("Impossibile caricare i prodotti");
 			} finally {
 				if (!ignore) setLoading(false);
@@ -53,19 +67,18 @@ const ProductSection = ({ title, filter, category, excludeId }) => {
 		return () => {
 			ignore = true;
 		};
-	}, [filter, category, excludeId]);
+	}, [filter, category, excludeSlug]);
 
 	return (
 		<div className="ps-section">
 			<h2 className="ps-title">{title}</h2>
-
 			{loading && <div>Loading...</div>}
 			{error && <div className="error">{error}</div>}
 
 			{!loading && !error && (
 				<div className="ps-grid">
 					{products.map((p) => (
-						<div key={p.product_id} className="ps-grid-item">
+						<div key={p.product_id ?? p.slug} className="ps-grid-item">
 							<ProductCard product={p} />
 						</div>
 					))}
