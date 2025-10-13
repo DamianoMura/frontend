@@ -100,7 +100,8 @@ const CartSummary = (props) => {
           <li key={props.data.slug} className="mb-1">
             <div>
               <strong>{props.data.name}</strong>
-              <span className="ms-2">{props.data.brand}</span>
+              <span className="ms-2
+              ">{props.data.brand}</span>
             </div>
 
             <div className="d-flex align-items-center justify-content-end">

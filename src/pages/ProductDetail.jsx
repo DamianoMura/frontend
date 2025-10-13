@@ -52,7 +52,7 @@ const ProductDetail = () => {
 
 	return (
 		<div className="product-detail-root text-white">
-			<div className="product-detail-row">
+			<div className="product-detail-row container">
 				{/* Immagine */}
 				<div className="product-image-col">
 					<img
@@ -64,9 +64,12 @@ const ProductDetail = () => {
 
 				{/* Dettagli */}
 				<div className="product-details-col">
-					<h2>
-						{product.brand} - {product.name}
+					<h4 className="product-brand-text">
+						{product.brand}
+					<h2 className="product-text">
+						{product.name}
 					</h2>
+					</h4>
 					<p>{product.description}</p>
 					<p className="product-card-price card-text d-flex">
 						<span

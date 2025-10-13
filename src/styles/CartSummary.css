@@ -5,6 +5,11 @@
   translate: 0;
 }
 
+.ms-2{
+  color:#8D7CBD;
+  font-weight: bold;
+  font-size: smaller;
+}
 .not-in-cart {
   font-size: 13px;
   color: #f74545;
