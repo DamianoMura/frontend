@@ -36,7 +36,7 @@ const ProductSection = ({ title, filter, category, excludeSlug }) => {
 				if (filter) qs.set("sort", filter);
 				if (category) qs.set("cat", category);
 
-				const res = await fetch(`${API_BASE}/products?${qs.toString()}`);
+				const res = await fetch(`${API_BASE}/products?${qs.toString()}&rpp=8`);
 				if (!res.ok) throw new Error("Errore dal server");
 
 				const { results = [] } = await res.json();
