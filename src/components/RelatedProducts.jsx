@@ -33,10 +33,9 @@ const ProductSection = ({ title, filter, category, excludeSlug }) => {
 
 			try {
 				const qs = new URLSearchParams();
-				if (filter) qs.set("sort", filter);
 				if (category) qs.set("cat", category);
 
-				const res = await fetch(`${API_BASE}/products?${qs.toString()}&rpp=8`);
+				const res = await fetch(`${API_BASE}/products?${qs.toString()}`);
 				if (!res.ok) throw new Error("Errore dal server");
 
 				const { results = [] } = await res.json();
@@ -87,7 +86,7 @@ const ProductSection = ({ title, filter, category, excludeSlug }) => {
 
 			<Link
 				className="btn mt-5"
-				to={`/products?sort=${filter}${category ? `&cat=${category}` : ""}`}
+				to={`/products?${category ? `&cat=${category}&rpp=4&page=1` : ""}`}
 			>
 				Lista completa
 			</Link>
