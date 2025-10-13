@@ -2,19 +2,17 @@
 
 /* Full-height flex layout */
 .default-layout {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh; /* Full viewport height */
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh; /* Full viewport height */
 }
 
 /* Main content grows to fill space between Navbar and Footer */
 .default-main {
-  flex: 1; /* Makes main take all remaining vertical space */
-  padding-bottom: 2rem; /*optional, spacing from footer*/
+	flex: 1; /* Makes main take all remaining vertical space */
+	padding-bottom: 2rem; /*optional, spacing from footer*/
 }
 
-
-
-.bg-violet{
-  background: linear-gradient(to bottom, #5b4795 0%, #212529 100%);
+.bg-violet {
+	background: linear-gradient(180deg, #232134 0%, #6e4cb8 50%, #232134 100%);
 }
