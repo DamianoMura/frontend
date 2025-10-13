@@ -76,18 +76,18 @@ const CartSummary = (props) => {
                 </button>
               </div>
 
-              <span className="badge bg-primary ms-2 d-flex">
+              <span className="badge bg-primary ms-2 d-flex"> 
                 {item.quantity > 1
-                  ? `x ${item.quantity} = ${Number(
+                  ? `x ${item.quantity} = € ${Number(
                       item.quantity * item.price
                     ).toLocaleString("it-IT", {
                       minimumFractionDigits: 2,
                       maximumFractionDigits: 2,
                     })}`
-                  : Number(item.price).toLocaleString("it-IT", {
+                  : `1 x € ${Number(item.price).toLocaleString("it-IT", {
                       minimumFractionDigits: 2,
                       maximumFractionDigits: 2,
-                    })}
+                    })}`}
               </span>
             </div>
             <br />
@@ -128,11 +128,11 @@ const CartSummary = (props) => {
           Total
         </span>
         <span className="fw-bold fs-5" style={{ color: "#e100c7" }}>
-          {Number(total).toLocaleString("it-IT", {
+          € {Number(total).toLocaleString("it-IT", {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
           })}{" "}
-          €
+          
         </span>
       </div>
 

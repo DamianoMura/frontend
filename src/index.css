@@ -53,3 +53,42 @@ body {
 }
 
 
+
+.discount-tag{
+  padding:10px;
+  color:white;
+  background-image:linear-gradient(rgb(255, 0, 0),rgba(0, 0, 0, 0)) ;
+  text-decoration: none;
+  position:absolute;
+  top:0;
+  left:0;
+  text-align: center;
+  height:100%;
+}
+
+.discounted {
+  color: red;
+  text-decoration: line-through;
+}
+
+
+
+.card-body {
+  position: relative;
+}
+
+.disc-applied-price {
+  color: green;
+  font-weight: bold;
+}
+
+.bg-onsale{
+  background-color: rgba(255, 255, 0, 0.37);
+  color:black;
+  padding:5px;
+  translate: 10px -5px;
+}
+
+.badge{
+  translate:0px 10px;
+}

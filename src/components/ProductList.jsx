@@ -16,6 +16,8 @@ const ProductList = ({ product }) => {
 						alt={product.name}
 						className="product-card-img"
 					/>
+					{product.discount_percent && <span className="discount-tag h-50">-{product.discount_percent}%</span>}
+					
 				</div>
 				<div className="card-body">
 					<div className="card-header d-flex justify-content-between">
@@ -28,7 +30,13 @@ const ProductList = ({ product }) => {
 					</div>
 					<p className="card-text">{product.specs}</p>
 					<p className="card-text">{product.description}</p>
-					<p className="card-text-price">€ {product.price}</p>
+					<p className={`card-text-price mb-2 ${product.discount_percent && "d-flex"}`}> 
+						<span className={product.discount_percent ? "discounted d-flex me-2" : "d-block"}>€{product.price} 
+						</span> 
+						{product.discount_percent && <span className="disc-applied-price">€ {(product.price-((product.price/100)* product.discount_percent) ).toFixed(2)} </span> }
+					</p> 
+					
+					
 					<Link
 						to={`/products/${product.slug}`}
 						className="btn btn-outline-primary btn-sm product-card-btn">

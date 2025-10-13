@@ -64,10 +64,35 @@ const ProductDetail = () => {
 
 				{/* Dettagli */}
 				<div className="product-details-col">
-					<h2>{product.name}</h2>
+					<h2>
+						{product.brand} - {product.name}
+					</h2>
 					<p>{product.description}</p>
-					<p>Price: {displayPrice} €</p>
-					<p>Brand: {product.brand}</p>
+					<p className="product-card-price card-text d-flex">
+						<span
+							className={`me-2  ${
+								product.discount_percent ? "discounted" : ""
+							} text-white`}
+						>
+							€{product.price}
+						</span>
+						{product.discount_percent ? (
+							<div>
+								<span>discounted -{product.discount_percent}%</span>
+								<span className="disc-applied-price">
+									{" "}
+									€
+									{product.price -
+										((product.price / 100) * product.discount_percent).toFixed(
+											2
+										)}
+								</span>
+							</div>
+						) : (
+							""
+						)}
+					</p>
+					<p></p>
 				</div>
 
 				<div className="product-summary-col">
@@ -75,16 +100,15 @@ const ProductDetail = () => {
 				</div>
 
 				{/* Summary */}
-			</div>
-
-			<div className="container">
-				<div className="row">
-					<div className="col-12">
-						<RelatedProducts
-							excludeSlug={product.slug}
-							title={"Potrebbero interessarti dalla stessa categoria"}
-							category={product.category_name}
-						/>
+				<div className="container">
+					<div className="row">
+						<div className="col-12">
+							<RelatedProducts
+								excludeSlug={product.slug}
+								title={"Potrebbero interessarti dalla stessa categoria"}
+								category={product.category_name}
+							/>
+						</div>
 					</div>
 				</div>
 			</div>
