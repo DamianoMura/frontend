@@ -104,17 +104,17 @@ const CartSummary = (props) => {
             </div>
 
             <div className="d-flex align-items-center justify-content-between">
-              <div className="mt-3 d-flex gap-2">
-                <span>Item not in your cart</span>
+              <div className="mt-3 gap-2">
+                <span className="not-in-cart">Not in Cart</span>
                 <button
-                  className="cart-s-btn"
+                  className="mt-1 cart-s-btn badge d-flex"
                   onClick={() => {
                     addToCart(props.data);
                     setPresence(true);
                   }}
                   title="Aggiungi al carrello"
                 >
-                  Add to cart <FontAwesomeIcon icon={faCartPlus} />
+                  <FontAwesomeIcon icon={faCartPlus} />Add to Cart
                 </button>
               </div>
             </div>
