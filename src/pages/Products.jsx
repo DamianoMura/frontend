@@ -114,6 +114,7 @@ function Products() {
 								<option value="category">Category</option>
 								<option value="latest">Latest arrivals</option>
 								<option value="popular">Best sellers</option>
+								<option value="discounted">On Sale!</option>
 							</select>
 						</div>
 
