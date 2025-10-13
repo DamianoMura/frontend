@@ -86,7 +86,7 @@ const ProductSection = ({ title, filter, category, excludeSlug }) => {
 
 			<Link
 				className="btn mt-5"
-				to={`/products?${category ? `&cat=${category}` : ""}`}
+				to={`/products?${category ? `&cat=${category}&rpp=4&page=1` : ""}`}
 			>
 				Lista completa
 			</Link>
