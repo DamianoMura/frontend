@@ -103,9 +103,8 @@ const CartSummary = (props) => {
               <span className="ms-2">{props.data.brand}</span>
             </div>
 
-            <div className="d-flex align-items-center justify-content-between">
+            <div className="d-flex align-items-center justify-content-end">
               <div className="mt-3 gap-2">
-                <span className="not-in-cart">Not in Cart</span>
                 <button
                   className="mt-1 cart-s-btn badge d-flex"
                   onClick={() => {
