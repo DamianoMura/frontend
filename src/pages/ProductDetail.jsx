@@ -98,17 +98,17 @@ const ProductDetail = () => {
 				<div className="product-summary-col">
 					<CartSummary className="cart-summary-card" data={product} />
 				</div>
+			</div>
 
-				{/* Summary */}
-				<div className="container">
-					<div className="row">
-						<div className="col-12">
-							<RelatedProducts
-								excludeSlug={product.slug}
-								title={"Potrebbero interessarti dalla stessa categoria"}
-								category={product.category_name}
-							/>
-						</div>
+			{/* Summary */}
+			<div className="container">
+				<div className="row">
+					<div className="col-12">
+						<RelatedProducts
+							excludeSlug={product.slug}
+							title={"Potrebbero interessarti dalla stessa categoria"}
+							category={product.category_name}
+						/>
 					</div>
 				</div>
 			</div>
