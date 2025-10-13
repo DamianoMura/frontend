@@ -76,7 +76,7 @@ const CartSummary = (props) => {
                 </button>
               </div>
 
-              <span className="badge bg-primary ms-2 d-flex"> 
+              <span className="badge ms-2 d-flex"> 
                 {item.quantity > 1
                   ? `x ${item.quantity} = € ${Number(
                       item.quantity * item.price
