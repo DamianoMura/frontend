@@ -95,14 +95,13 @@ const ProductDetail = () => {
 					<p></p>
 				</div>
 
+			</div>
 				<div className="product-summary-col">
 					<CartSummary className="cart-summary-card" data={product} />
 				</div>
-			</div>
 
 			{/* Summary */}
-			<div className="container">
-				<div className="row">
+			
 					<div className="col-12">
 						<RelatedProducts
 							excludeSlug={product.slug}
@@ -110,8 +109,6 @@ const ProductDetail = () => {
 							category={product.category_name}
 						/>
 					</div>
-				</div>
-			</div>
 		</div>
 	);
 };
