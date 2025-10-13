@@ -12,33 +12,59 @@
 }
 
 /* Nav link styles */
-.nav-link:hover, .nav-link.fw-semibold:hover {
+.nav-link:hover,
+.nav-link.fw-semibold:hover {
   color: #B73DA0;
 }
 
+/* NON ATTIVO: grigio come richiesto */
 .nav-link.fw-semibold {
-  color: white;
+  color: #D4D4D4;
 }
 
+/* ATTIVO: fucsia */
 .nav-link.nav-active {
   color: #B73DA0 !important;
   font-weight: bold !important;
 }
 
+/* Cart icon styles */
 .nav-cart-icon {
   font-size: 1.3rem;
   display: flex;
   align-items: center;
   padding-left: 8px;
   padding-right: 8px;
+  /* eredita il colore dal link:
+     - non attivo: #D4D4D4
+     - attivo: #B73DA0
+  */
+  transition: color 0.2s ease;
 }
 
-.nav-cart-icon.nav-active {
-  color: #B73DA0 !important;
+/* Badge (cerchio + numero) */
+.cart-badge {
+  position: absolute;
+  top: -8px;           /* leggermente più su per centratura visiva */
+  right: -10px;        /* più spazio tra cerchio e icona carrello */
+  width: 20px;
+  height: 20px;
+  background-color: #D4D4D4; /* cerchio grigio quando NON selezionato */
+  border-radius: 50%;
+  display: flex;
+  align-items: center;  /* centra verticalmente il numero */
+  justify-content: center; /* centra orizzontalmente il numero */
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #2B2B2B;      /* numero nero quando NON selezionato */
+  line-height: 1;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
 }
 
-.nav-cart-icon:hover {
-  color: #B73DA0;
+/* Quando il carrello è selezionato: tutto fucsia, numero bianco */
+.nav-cart-icon.nav-active .cart-badge {
+  background-color: #B73DA0; /* fucsia */
+  color: #FFFFFF;            /* numero bianco */
 }
 
 /* Brand text responsive */
@@ -46,10 +72,12 @@
   display: inline;
   font-family: "Righteous", sans-serif;
 }
+
 .brand-text.mobile {
   display: none;
   font-family: "Righteous", sans-serif;
 }
+
 @media (max-width: 450px) {
   .brand-text.desktop { display: none; }
   .brand-text.mobile { display: inline; }
@@ -77,31 +105,20 @@
   margin: 0 0.2rem;
 }
 
-/* Ensure cart is always visible */
+/* Responsive tweaks */
 @media (max-width: 600px) {
-  .custom-navbar-nav {
-    gap: 0.2rem;
-  }
-  .navbar-logo {
-    height: 40px;
-  }
+  .custom-navbar-nav { gap: 0.2rem; }
+  .navbar-logo { height: 40px; }
   .nav-cart-icon {
     font-size: 1.1rem;
     padding: 4px;
   }
+  .cart-badge {
+    width: 18px;
+    height: 18px;
+    font-size: 0.66rem;
+    top: -7px;
+    right: -9px; /* mantieni un po' di spazio anche su mobile */
+  }
 }
 
-.cart-badge {
-  position: absolute;
-  top: -6px;
-  right: -6px;
-  background-color: #e100c7;
-  color: white;
-  border-radius: 50%;
-  padding: 2px 6px;
-  font-size: 0.75rem;
-  font-weight: bold;
-  z-index: 10;
-  line-height: 1;
-  transition: transform 0.2s ease-in-out;
-}
