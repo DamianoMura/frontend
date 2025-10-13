@@ -5,6 +5,7 @@ import axios from "axios";
 
 function ChecklistCard({ orderSent }) {
   const [emailStatus, setEmailStatus] = useState(null);
+  const [sending, setSending] = useState(false); // per disabilitare il bottone durante l'invio
 
   if (!orderSent) return null;
 
@@ -17,7 +18,9 @@ function ChecklistCard({ orderSent }) {
     postal_code,
     country,
     items = [],
+    discount_percent = 0,
     discount_code_id,
+    discount_code, // se vuoi mostrare il codice applicato
   } = orderSent;
 
   const subtotal = items.reduce(
@@ -25,22 +28,23 @@ function ChecklistCard({ orderSent }) {
     0
   );
 
-  const discountPercentage = discount_code_id ? 10 : 0;
-  const discountAmount = (subtotal * discountPercentage) / 100;
+  const discountAmount = (subtotal * discount_percent) / 100;
   const total = subtotal - discountAmount;
 
+  // Funzione per inviare la mail solo quando clicchi il bottone
   const handleSendOrder = async () => {
+    setSending(true);
     try {
-      const res = await axios.post("http://localhost:3000/orders", orderSent, {
-        headers: {
-          "Content-Type": "application/json",
-        },
+      await axios.post("http://localhost:3000/orders/send-email", {
+        customer_name,
+        customer_email,
       });
-
-      setEmailStatus("Ordine inviato con successo! 📧");
+      setEmailStatus("Email inviata con successo! 📧");
     } catch (err) {
       console.error(err);
-      setEmailStatus("Errore durante l’invio dell’ordine.");
+      setEmailStatus("Errore durante l’invio della mail.");
+    } finally {
+      setSending(false);
     }
   };
 
@@ -106,13 +110,12 @@ function ChecklistCard({ orderSent }) {
         </h5>
       </div>
 
-      {discount_code_id && (
+      {discount_percent > 0 && (
         <>
           <div className="d-flex justify-content-between align-items-center mb-2 text-success">
-            <h5 className="fw-bold">Discount %</h5>
-            <h5>-{discountPercentage}%</h5>
+            <h5 className="fw-bold">Discount ({discount_code})</h5>
+            <h5>-{discount_percent}%</h5>
           </div>
-
           <div className="d-flex justify-content-between align-items-center mb-2 text-success">
             <span>Amount Saved</span>
             <span>
@@ -140,8 +143,12 @@ function ChecklistCard({ orderSent }) {
         </h4>
       </div>
 
-      <button className="btn btn-success mt-4" onClick={handleSendOrder}>
-        Send Order via Email
+      <button
+        className="btn btn-success mt-4"
+        onClick={handleSendOrder}
+        disabled={sending}
+      >
+        {sending ? "Invio in corso..." : "Send Order via Email"}
       </button>
 
       {emailStatus && (

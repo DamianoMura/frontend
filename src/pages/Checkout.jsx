@@ -75,7 +75,7 @@ const Checkout = () => {
 
     if (discount) {
       setAppliedDiscount(discount);
-      setDiscountMsg(`discount "${discount.code}" applied!`);
+      setDiscountMsg(`Discount "${discount.code}" applied!`);
     } else {
       setAppliedDiscount(null);
       setDiscountMsg("Invalid discount code.");
@@ -96,10 +96,14 @@ const Checkout = () => {
         items: cart,
         discount_code_id: appliedDiscount?.code_id || null,
       });
+
+      // Passiamo sia discount_percent che il codice sconto reale a ChecklistCard
       setOrderSent({
         ...resp.data,
         discount_percent: appliedDiscount?.discount_percent || 0,
+        discount_code: appliedDiscount?.code || null,
       });
+
       setConfirmMsg("Order placed successfully!");
     } catch (err) {
       console.error(err);
@@ -121,7 +125,6 @@ const Checkout = () => {
       <h1 className="checkout-title">Checkout</h1>
       <form className="checkout-form" onSubmit={handleOrder}>
         {/* Billing Section */}
-
         <BillingSection
           order={order}
           setOrder={setOrder}
@@ -190,7 +193,7 @@ const Checkout = () => {
 
           <div className="checkout-row mb-2">
             <span className="label fw-bold" style={{ color: "#9F2E8C" }}>
-              subtotal
+              Subtotal
             </span>
             <span className="total-value">{formatPrice(subtotal)}</span>
           </div>
