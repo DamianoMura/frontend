@@ -1,7 +1,8 @@
 /* src/styles/CartSummary.css */
 
-.badge.ms-2.d-flex {
+.badge.d-flex {
   background-color: #B73DA0;
+  translate: 0;
 }
 
 .cart-summary-card {

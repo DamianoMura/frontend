@@ -5,7 +5,8 @@ import {
   faCartShopping,
   faTrashCan,
   faCartPlus,
-  faCartArrowDown,
+  faSquareMinus,
+  faSquarePlus,
 } from "@fortawesome/free-solid-svg-icons";
 import { useCart } from "../context/CartContext";
 import "../styles/CartSummary.css";
@@ -41,9 +42,10 @@ const CartSummary = (props) => {
               <span className="ms-2">{item.brand}</span>
             </div>
 
-            <div className="d-flex align-items-center justify-content-between">
-              <div className="mt-3 d-flex gap-2">
-                {item.quantity === 1 && (
+            <div className="d-flex align-items-center justify-content-end">
+              {/* --- Bottoni quantità con badge al centro --- */}
+              <div className="mt-3 d-flex gap-2 align-items-center">
+                {item.quantity === 1 ? (
                   <button
                     className="cart-s-btn"
                     onClick={() => {
@@ -55,41 +57,41 @@ const CartSummary = (props) => {
                   >
                     <FontAwesomeIcon icon={faTrashCan} />
                   </button>
-                )}
-
-                {item.quantity > 1 && (
+                ) : (
                   <button
                     className="cart-s-btn"
                     onClick={() => updateQuantity(item.product_id, "rem")}
                     title="Rimuovi una unità"
                   >
-                    <FontAwesomeIcon icon={faCartArrowDown} />
+                    <FontAwesomeIcon icon={faSquareMinus} />
                   </button>
                 )}
+
+                {/* --- Badge centrata tra i pulsanti --- */}
+                <span className="badge d-flex">
+                  {item.quantity > 1
+                    ? `x ${item.quantity} = € ${Number(
+                        item.quantity * item.price
+                      ).toLocaleString("it-IT", {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}`
+                    : `1 x € ${Number(item.price).toLocaleString("it-IT", {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}`}
+                </span>
 
                 <button
                   className="cart-s-btn"
                   onClick={() => updateQuantity(item.product_id, "add")}
                   title="Aggiungi una unità"
                 >
-                  <FontAwesomeIcon icon={faCartPlus} />
+                  <FontAwesomeIcon icon={faSquarePlus} />
                 </button>
               </div>
-
-              <span className="badge ms-2 d-flex"> 
-                {item.quantity > 1
-                  ? `x ${item.quantity} = € ${Number(
-                      item.quantity * item.price
-                    ).toLocaleString("it-IT", {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })}`
-                  : `1 x € ${Number(item.price).toLocaleString("it-IT", {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })}`}
-              </span>
             </div>
+
             <br />
           </li>
         ))}
@@ -128,11 +130,11 @@ const CartSummary = (props) => {
           Total
         </span>
         <span className="fw-bold fs-5" style={{ color: "#e100c7" }}>
-          € {Number(total).toLocaleString("it-IT", {
+          €{" "}
+          {Number(total).toLocaleString("it-IT", {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
           })}{" "}
-          
         </span>
       </div>
 
@@ -150,3 +152,4 @@ const CartSummary = (props) => {
 };
 
 export default CartSummary;
+
