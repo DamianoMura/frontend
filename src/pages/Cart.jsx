@@ -19,11 +19,9 @@ const Cart = () => {
 
   return (
     <div className="cart-container container my-5">
-      <h2 className="cart-title">Your Shopping Cart</h2>
+      <h2 className="cart-title">Your Shopping Cart{cart.length<1 && " is empty"}</h2>
 
-      {cart.length === 0 ? (
-        <p className="text-white bold">Your cart is empty.</p>
-      ) : (
+      {cart.length > 0 &&  (
         <CartSummary />
       )}
     </div>
