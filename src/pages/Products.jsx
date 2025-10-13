@@ -15,24 +15,16 @@ function Products() {
 	const [search, setSearch] = useState("");
 	const [sort, setSort] = useState("all");
 	const [category, setCategory] = useState("");
-	const [orderAD, setOrderAD] = useState();
-	const [productsPerPage, setProductsPerPage] = useState();
-	const [currentPage, setCurrentPage] = useState();
-	const [totalPages, setTotalPages] = useState();//state 12
+	const [orderAD, setOrderAD] = useState("");
+	const [productsPerPage, setProductsPerPage] = useState("");
+	const [currentPage, setCurrentPage] = useState("");
+	const [totalPages, setTotalPages] = useState("");//state 12
 	const [totalResults, setTotalResults] = useState(0);//state 13
 	const [showCard, setShowCard] = useState(false);//state 14
-	const [params, setParams]= useState(); //state 15
 	
 
 	const baseUrl = "http://localhost:3000";
-//setting up the state variables for the first time and location.search
-useEffect(()=>{
-		const qS = new URLSearchParams(location.search);
-			qS.set("page",currentPage||1)
-			qS.set("rpp",productsPerPage||4)
 
-		navigate({ search: qS.toString() }, { replace: true });
-	},[])
 	// we make a db call with location.search as string query
 	useEffect(()=>{
 		fetch(`${baseUrl}/products${location.search}`)
@@ -68,12 +60,16 @@ useEffect(()=>{
 		if(qS.get("cat")!="") setCategory(qS.get("cat"))   
 			navigate({ search: qS.toString() }, { replace: true });
 	},[location.search])
-	//set categories
+	
 	useEffect(() => {
+		//set categories
 		fetch(`${baseUrl}/categories`)
 			.then((r) => r.json())
 			.then(setCategories)
 			.catch(console.error);
+		//set default variables
+		setCurrentPage(1);
+		setProductsPerPage(4);
 	}, []);
 
 
@@ -110,8 +106,8 @@ useEffect(()=>{
 								onChange={(e) => {
 									const v = e.target.value;
 									setSort(v);
-									
-									 if (categories.length) setCategory(categories[0].name);
+										if (v !== "category") setCategory("");
+									  else setCategory(categories[0].name);
 								}}
 							>
 								<option value="all">All products</option>
@@ -149,6 +145,7 @@ useEffect(()=>{
 								value={orderAD}
 								onChange={(e) => setOrderAD(e.target.value)}
 							>
+								<option value="">Price filter</option>
 								<option value="price_ASC">Price ↑</option>
 								<option value="price_DESC">Price ↓</option>
 							</select>
