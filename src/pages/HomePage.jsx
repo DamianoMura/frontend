@@ -13,16 +13,10 @@ const HomePage = () => {
 				{/* Sections side by side */}
 				<section className="hn-sections-container">
 					<div className="hn-section-column">
-						<ProductSection
-							title="Latest Arrivals"
-							filter="latest"
-						/>
+						<ProductSection title="Latest Arrivals" filter="latest" />
 					</div>
 					<div className="hn-section-column">
-						<ProductSection
-							title="Best Sellers"
-							filter="popular"
-						/>
+						<ProductSection title="Best Sellers" filter="popular" />
 					</div>
 				</section>
 			</main>
