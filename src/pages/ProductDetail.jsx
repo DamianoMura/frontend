@@ -63,9 +63,9 @@ const ProductDetail = () => {
 						€{product.price} 
 					</span>
 					{product.discount_percent 
-					? <div className="bg-onsale">
+					? <div >
             <span >discounted -{product.discount_percent}%</span>
-            <span className="disc-applied-price"> €{(product.price-product.price/product.discount_percent).toFixed(2)}</span>
+            <span className="disc-applied-price"> €{product.price-((product.price/100)* product.discount_percent).toFixed(2)}</span>
           </div>
 					: ""}
 					</p>

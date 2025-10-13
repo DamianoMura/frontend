@@ -33,7 +33,7 @@ const ProductList = ({ product }) => {
 					<p className={`card-text-price mb-2 ${product.discount_percent && "d-flex"}`}> 
 						<span className={product.discount_percent ? "discounted d-flex me-2" : "d-block"}>€{product.price} 
 						</span> 
-						{product.discount_percent && <span className="disc-applied-price">€ {(product.price-product.price/product.discount_percent).toFixed(2)} </span> }
+						{product.discount_percent && <span className="disc-applied-price">€ {(product.price-((product.price/100)* product.discount_percent) ).toFixed(2)} </span> }
 					</p> 
 					
 					

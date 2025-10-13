@@ -27,7 +27,7 @@ export function CartProvider({ children }) {
                           brand,
                           description,
                           specs,
-                          price : product.discount_percent ? price-price/product.discount_percent : price,
+                          price : product.discount_percent ? price-((price/100)* product.discount_percent) : price,
                           stock_quantity,
                           quantity: 1 
                         }]);
