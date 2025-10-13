@@ -58,10 +58,7 @@ function Products() {
 	}, [search, sort, category, orderAD, productsPerPage, currentPage]);
 
 	useEffect(() => {
-		if (skipUrlSync.current) {
-			skipUrlSync.current = false;
-			return;
-		}
+	
 		const qs = new URLSearchParams();
 		if (search) qs.set("search", search);
 		if (sort && sort !== "all") qs.set("sort", sort);
@@ -177,9 +174,10 @@ function Products() {
 									setProductsPerPage(v === "All" ? totalResults : Number(v));
 								}}
 							>
-								<option value="All">All</option>
-								<option value={4}>4 items</option>
-								<option value={8}>8 items</option>
+								
+								{totalResults > 4 && <option value={4}>4 items</option>}
+								{totalResults > 8 && <option value={8}>8 items</option>}
+								{totalResults > 12 && <option value={12}>12 items</option>}
 								{totalResults > 16 && <option value={16}>16 items</option>}
 								{totalResults > 32 && <option value={32}>32 items</option>}
 							</select>
