@@ -12,7 +12,11 @@
   padding: 2rem;
   box-sizing: border-box;
 }
-
+.mascotte-404 {
+  width: 300px;
+  height: auto;
+  margin-bottom: 2rem;
+}
 .notfound-title {
   font-size: 3rem;
   font-weight: 700;
