@@ -14,7 +14,7 @@ export default function Hero({
     <section id="hero" role="region" aria-label="Hero">
       <div className="p-5 container-fluid hero-container">
         <h1 className="text-center">.nerdNest</h1>
-        <h3 className="text-center my-3">Your refuge for all things tech.</h3>
+        <h3 className="text-center my-3">Your refuge for every innovation.</h3>
         <div className="d-flex justify-content-center gap-3">
           <Link to="/products" className="btn">
             {subtitle}
