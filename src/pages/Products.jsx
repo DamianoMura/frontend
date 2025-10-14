@@ -69,7 +69,7 @@ function Products() {
 			.catch(console.error);
 		//set default variables
 		setCurrentPage(1);
-		setProductsPerPage(4);
+		setProductsPerPage(8);
 	}, []);
 
 
@@ -105,6 +105,7 @@ function Products() {
 								value={sort}
 								onChange={(e) => {
 									const v = e.target.value;
+									setCurrentPage(1);
 									setSort(v);
 										if (v !== "category") setCategory("");
 									  else setCategory(categories[0].name);
@@ -124,7 +125,9 @@ function Products() {
 								<select
 									className="form-select hn-select"
 									value={category}
-									onChange={(e) => setCategory(e.target.value)}
+									onChange={(e) => {
+										setCategory(e.target.value)
+										setCurrentPage(1);}}
 								>
 									{categories.length === 0 ? (
 										<option>Loading...</option>
@@ -144,7 +147,9 @@ function Products() {
 							<select
 								className="form-select hn-select"
 								value={orderAD}
-								onChange={(e) => setOrderAD(e.target.value)}
+								onChange={(e) => {
+									setOrderAD(e.target.value)
+									setCurrentPage(1);}}
 							>
 								<option value="">Price filter</option>
 								<option value="price_ASC">Price ↑</option>
@@ -158,6 +163,7 @@ function Products() {
 								className="form-select hn-select"
 								value={productsPerPage}
 								onChange={(e) => {
+									setCurrentPage(1);
 									const v = e.target.value;
 									setProductsPerPage(v === "All" ? totalResults : Number(v));
 								}}

@@ -16,7 +16,7 @@ export default function Hero({
         <h1 className="text-center">.nerdNest</h1>
         <h3 className="text-center my-3">Your refuge for every innovation.</h3>
         <div className="d-flex justify-content-center gap-3">
-          <Link to="/products?rpp=4&page=1" className="btn">
+          <Link to="/products?rpp=8&page=1" className="btn">
             {subtitle}
           </Link>
         </div>
