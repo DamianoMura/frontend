@@ -44,7 +44,7 @@ const ProductSection = ({ title, filter }) => {
 					))}
 				</div>
 			)}
-			<Link className="btn mt-5" to={`/products?sort=${filter}`}>
+			<Link className="btn mt-5" to={`/products?sort=${filter}?rpp=4&page=1`}>
 				Lista completa
 			</Link>
 		</div>

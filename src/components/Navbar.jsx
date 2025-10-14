@@ -38,7 +38,7 @@ const Navbar = () => {
               className={({ isActive }) =>
                 "nav-link" + (isActive ? " nav-active fw-bold" : "")
               }
-              to="/products"
+              to="/products?rpp=4&page=1"
             >
               Products
             </NavLink>
