@@ -72,7 +72,7 @@ const ProductDetail = () => {
 					<p className="product-card-price card-text d-flex">
 						<span
 							className={`fw-bolder fs-3 me-2  ${
-								product.discount_percent ? "discounted" : ""
+								product.discount_percent ? "discounted fst-italic" : ""
 							} text-white`}
 						>
 							€{product.price}
