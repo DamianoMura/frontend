@@ -66,14 +66,12 @@ const ProductDetail = () => {
 				<div className="product-details-col">
 					<h4 className="product-brand-text">
 						{product.brand}
-					<h2 className="product-text">
-						{product.name}
-					</h2>
+						<h2 className="product-text">{product.name}</h2>
 					</h4>
 					<p>{product.description}</p>
 					<p className="product-card-price card-text d-flex">
 						<span
-							className={`me-2  ${
+							className={`fw-bolder fs-3 me-2  ${
 								product.discount_percent ? "discounted" : ""
 							} text-white`}
 						>
@@ -82,7 +80,7 @@ const ProductDetail = () => {
 						{product.discount_percent ? (
 							<div>
 								<span>discounted -{product.discount_percent}%</span>
-								<span className="disc-applied-price">
+								<span className="fw-bolder fs-3 disc-applied-price">
 									{" "}
 									€
 									{product.price -
