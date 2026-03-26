@@ -20,7 +20,7 @@ const ProductSection = ({ title, filter }) => {
 			try {
 				const res = await fetch(`${API_BASE}/products?sort=${filter}&rpp=8`);
 				const data = await res.json();
-				setProducts(data.results);
+				setProducts(data.results ?? []);
 			} catch (err) {
 				console.error(err);
 			} finally {
