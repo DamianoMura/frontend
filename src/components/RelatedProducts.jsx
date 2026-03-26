@@ -3,7 +3,7 @@ import ProductCard from "./ProductCard";
 import "../styles/ProductSection.css";
 import { Link } from "react-router-dom";
 
-const API_BASE = "http://localhost:3000";
+import API_BASE from "../config";
 
 const ProductSection = ({ title, filter, category, excludeSlug }) => {
 	const [products, setProducts] = useState([]);

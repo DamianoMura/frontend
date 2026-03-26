@@ -5,6 +5,7 @@ import ProductList from "../components/ProductList";
 import "../styles/Products.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGripHorizontal, faListUl } from "@fortawesome/free-solid-svg-icons";
+import API_BASE from "../config";
 
 function Products() {
 	const navigate = useNavigate();
@@ -23,7 +24,7 @@ function Products() {
 	const [showCard, setShowCard] = useState(false);//state 14
 	
 
-	const baseUrl = "http://localhost:3000";
+	const baseUrl = API_BASE;
 
 	// we make a db call with location.search as string query
 	useEffect(()=>{

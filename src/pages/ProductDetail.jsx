@@ -6,7 +6,7 @@ import { faCartPlus, faCartArrowDown } from "@fortawesome/free-solid-svg-icons";
 import { useCart } from "../context/CartContext";
 import CartSummary from "../components/CartSummary";
 import RelatedProducts from "../components/RelatedProducts";
-
+import API_BASE from "../config";
 const ProductDetail = () => {
 	const { id } = useParams();
 	const [product, setProduct] = useState(null);
@@ -18,7 +18,7 @@ const ProductDetail = () => {
 		setLoading(true);
 		setError(false);
 
-		fetch(`http://localhost:3000/products/${id}`)
+		fetch(`${API_BASE}/products/${id}`)
 			.then((res) => res.json())
 			.then((data) => {
 				if (data && data.product_id) {

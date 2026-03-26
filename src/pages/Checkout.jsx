@@ -12,7 +12,8 @@ import axios from "axios";
 import ChecklistCard from "../components/ChecklistCard";
 import BillingSection from "../components/BillingSection";
 
-const API_BASE = "http://localhost:3000";
+import API_BASE from "../config";
+
 const DELIVERY_FEE = 1.9;
 const FREE_DELIVERY_THRESHOLD = 1500;
 
