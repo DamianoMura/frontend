@@ -16,6 +16,9 @@ import DefaultLayout from "./layouts/DefaultLayout";
 // Context Providers
 import { CartProvider } from "./context/CartContext";
 
+// Components
+import DisclaimerModal from "./components/DisclaimerModal";
+
 /**
  * Main App component
  * - Wraps the application in the CartProvider for global cart state
@@ -25,6 +28,7 @@ import { CartProvider } from "./context/CartContext";
 function App() {
   return (
     <CartProvider>
+      <DisclaimerModal />
       <BrowserRouter>
         <Routes>
           {/* DefaultLayout wraps all pages to provide consistent header/footer */}
